@@ -1,0 +1,10 @@
+
+cherryWorkspace/.metadata/
+*.classpath
+*.project
+** /settings/
+**/bin/
+setup/
+cherryWorkspace/javaPrj/.settings/
+cherryWorkspace/.gitignore
+cherryWorkspace/javaPrj/.gitignore
