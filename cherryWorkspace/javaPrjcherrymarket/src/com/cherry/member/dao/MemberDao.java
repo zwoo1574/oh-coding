@@ -1,6 +1,7 @@
 package com.cherry.member.dao;
 
 import java.sql.*;
+import java.util.*;
 
 import com.cherry.jdbc.JDBCTemplate;
 import com.cherry.member.vo.MemberVo;
@@ -72,6 +73,31 @@ public class MemberDao {
 		JDBCTemplate.close(pstmt);
 		
 		return userVo;
+	}
+	
+public int quit(Connection conn,String no) throws Exception{
+		
+		String sql = "UPDATE MEMBER_MINI SET QUIT_YN = 'Y' WHERE MEMBER_NO = ?";
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, no);
+		int result = pstmt.executeUpdate();
+		
+		JDBCTemplate.close(pstmt);
+		return result;
+	}
+
+	public int editPwd(Connection conn, HashMap<String, String> map) throws Exception{
+		
+		String sql = "";
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, map.get("oldPwd"));
+		pstmt.setString(2, map.get("newPwd"));
+		pstmt.executeUpdate();
+		
+		return 0;
+		
 	}
 
 }

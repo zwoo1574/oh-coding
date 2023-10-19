@@ -1,6 +1,7 @@
 package com.cherry.member.service;
 
 import java.sql.*;
+import java.util.*;
 
 import com.cherry.jdbc.JDBCTemplate;
 import com.cherry.member.dao.MemberDao;
@@ -44,5 +45,22 @@ public int join(MemberVo vo) throws Exception{
 		
 		JDBCTemplate.close(conn);
 		return userdb;
+	}
+	
+	public int quit(String no) throws Exception{
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.quit(conn,no);
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
+	public int editPwd(HashMap<String, String> map) throws Exception{
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.editPwd(conn,map);
+		JDBCTemplate.close(conn);
+		
+		return result;
 	}
 }
