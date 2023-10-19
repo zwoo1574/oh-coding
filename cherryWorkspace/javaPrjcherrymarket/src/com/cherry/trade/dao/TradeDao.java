@@ -11,14 +11,11 @@ import com.cherry.jdbc.JDBCTemplate;
 import com.cherry.main.Main;
 import com.cherry.trade.vo.TradeVo;
 
-import oracle.jdbc.proxy.annotation.Pre;
-
 public class TradeDao {
 
-	// 게시글 목록 (중고거래 메인)
 	public List<TradeVo> printPost(Connection conn) throws Exception {
 
-		String sql = "SELECT RPAD(T.BOARD_NO, 20, ' ') BOARD_NO ,RPAD(T.TITLE, 60, ' ') TITLE ,RPAD(T.PRODUCT, 40, ' ') PRODUCT ,RPAD(T.PRICE, 20, ' ') PRICE ,RPAD(M.NICK, 20, ' ') NICK ,RPAD(TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD'), 20, ' ') ENROLL_DATE ,T.PRODUCT ,T.PRICE FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE DEL_YN = 'N' ORDER BY ENROLL_DATE DESC";
+		String sql = "SELECT RPAD(T.BOARD_NO, 20, ' ') BOARD_NO ,RPAD(T.TITLE, 60, ' ') TITLE ,RPAD(T.PRODUCT, 40, ' ') PRODUCT ,RPAD(T.PRICE, 20, ' ') PRICE ,RPAD(M.NICK, 20, ' ') NICK ,RPAD(TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD'), 20, ' ') ENROLL_DATE ,T.PRODUCT ,T.PRICE FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE DEL_YN = 'N' ORDER BY BOARD_NO DESC";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
 		
@@ -48,7 +45,6 @@ public class TradeDao {
 		return voList;
 	}
 
-	// 게시글 조회
 	public TradeVo showContent(String select, Connection conn) throws Exception {
 		
 		String sql = "SELECT T.BOARD_NO, T.TITLE, T.CONTENT, T.TRADE_AREAS, T.PRODUCT, T.PRICE, T.ENROLL_DATE, T.EDIT_DATE, M.NICK, A.AREAS_NAME FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO JOIN AREAS A ON M.AREAS_CODE = A.AREAS_CODE WHERE T.BOARD_NO = ? AND T.COMPLETE_YN = 'N' AND T.DEL_YN = 'N'";
@@ -88,7 +84,6 @@ public class TradeDao {
 		return vo;
 	}
 
-	// 게시글 수정
 	public int editPost(TradeVo vo, Connection conn) throws Exception {
 		
 		String sql = "UPDATE TRADE SET TITLE = ? ,PRODUCT = ? ,PRICE = ? ,TRADE_AREAS = ? ,CONTENT = ? ,EDIT_DATE = SYSDATE WHERE BOARD_NO = ?";
@@ -107,17 +102,23 @@ public class TradeDao {
 		return result;
 	}
 
-	// 게시글 작성
 	public int writePost(TradeVo vo, Connection conn) throws Exception {
 		
-		String sql = "INSERT INTO TRADE(BOARD_NO, MEMBER_NO, AREAS_CODE, TITLE, PRODUCT, PRICE, TRADE_AREAS, CONTENT) VALUES(SEQ_BOARD_NO.NEXTVAL,?, ?, ?, ?, ?, ?, ?)";
+//		String sql = "INSERT INTO TRADE(BOARD_NO, MEMBER_NO, AREAS_CODE, TITLE, PRODUCT, PRICE, TRADE_AREAS, CONTENT) VALUES(SEQ_BOARD_NO.NEXTVAL,?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO TRADE(BOARD_NO, TITLE, PRODUCT, PRICE, TRADE_AREAS, CONTENT) VALUES(SEQ_BOARD_NO.NEXTVAL, ?, ?, ?, ?, ?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);	
-		pstmt.setString(1, Main.loginMember.getMemberNo());
-		pstmt.setString(2, Main.loginMember.getAreasCode());
-		pstmt.setString(3, vo.getTitle());
-		pstmt.setString(4, vo.getProduct());
-		pstmt.setString(5, vo.getPrice());
-		pstmt.setString(6, vo.getTradeAreas());
+//		pstmt.setString(1, Main.loginUser.getMemberNo);
+//		pstmt.setString(2, Main.loginUser.getAreaCode);
+//		pstmt.setString(3, vo.getTitle());
+//		pstmt.setString(4, vo.getProduct());
+//		pstmt.setString(5, vo.getPrice());
+//		pstmt.setString(6, vo.getTradeAreas());
+//		pstmt.setString(7, vo.getContent());
+
+		pstmt.setString(1, vo.getTitle());
+		pstmt.setString(2, vo.getProduct());
+		pstmt.setString(3, vo.getPrice());
+		pstmt.setString(4, vo.getTradeAreas());
 		
         String content = vo.getContent();
         StringBuilder sb = new StringBuilder();
@@ -133,7 +134,7 @@ public class TradeDao {
         
         content = sb.toString();
   
-        pstmt.setString(7, content);
+        pstmt.setString(5, content);
 		
 		int result = pstmt.executeUpdate();
 
@@ -142,126 +143,10 @@ public class TradeDao {
 		return result;
 	}
 
-	// 게시글 삭제
 	public int delPost(String del, Connection conn) {
 		
 		
 		
 		return 0;
 	}
-
-	// 관심목록 추가
-	public int addWishList(String x, Connection conn) throws Exception {
-		
-		String sql = "INSERT INTO WISHLIST(WISHLIST_NO, BOARD_NO, MEMBER_NO) VALUES (SEQ_WISHLIST_NO.NEXTVAL, ?, ?)";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, x);
-		pstmt.setString(2, Main.loginMember.getMemberNo());
-		int result = pstmt.executeUpdate();
-		
-		JDBCTemplate.close(pstmt);
-		
-		return result;
-		
-		
-	}
-
-	// 게시글 정보 조회
-	public TradeVo searchPostInfo(String boardNo, Connection conn) throws Exception {
-		
-		String sql = "SELECT T.* ,M.NICK ,A.AREAS_NAME FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO JOIN AREAS A ON M.AREAS_CODE = A.AREAS_CODE WHERE BOARD_NO = ?";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, boardNo);
-		ResultSet rs = pstmt.executeQuery();
-	
-		TradeVo vo = null;
-		if(rs.next()) {
-			String memberNo = rs.getString("MEMBER_NO");
-			String nick = rs.getString("NICK");
-			String areaName = rs.getString("AREAS_NAME");
-			String boardNum = rs.getString("BOARD_NO");
-			String title = rs.getString("TITLE");
-			String content = rs.getString("CONTENT");
-			String tradeArea = rs.getString("TRADE_AREAS");
-			String product = rs.getString("PRODUCT");
-			String price = rs.getString("PRICE");
-			String enrollDate = rs.getString("ENROLL_DATE");
-			String editDate = rs.getString("EDIT_DATE");
-			
-			vo = new TradeVo();
-			vo.setMemberNo(memberNo);
-			vo.setMemberNick(nick);
-			vo.setAreasName(areaName);
-			vo.setBoardNo(boardNum);
-			vo.setTitle(title);
-			vo.setContent(content);
-			vo.setTradeAreas(tradeArea);
-			vo.setProduct(product);
-			vo.setPrice(price);
-			vo.setEnrollDate(enrollDate);
-			vo.setEditDate(editDate);
-		}
-		
-		JDBCTemplate.close(rs);
-		JDBCTemplate.close(pstmt);
-		
-		return vo;
-	}
-
-	// 구매 확정 - 히스토리 남기기
-	public int confirmPurchase(TradeVo vo, Connection conn) throws Exception {
-		
-		String sql = "INSERT INTO PURCHASE_HISTORY(PURCHASE_NO, BUYER_NO, BOARD_NO) VALUES (SEQ_PURCHASE_NO.NEXTVAL, ?, ?)";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, Main.loginMember.getMemberNo());
-		pstmt.setString(2, vo.getBoardNo());
-		
-		int result = pstmt.executeUpdate();
-		
-		if(result == 1) {
-			String sql2 = "UPDATE TRADE SET COMPLETE_YN = ? WHERE BOARD_NO = ?";
-			PreparedStatement pstmt2= conn.prepareStatement(sql2);
-			pstmt2.setString(1, "Y");
-			pstmt2.setString(2, vo.getBoardNo());
-			
-			pstmt2.executeUpdate();
-		}
-		
-		JDBCTemplate.close(pstmt);
-		
-		return result;
-	}
-	
-	// 매너온도 평가
-	public int selectPoint(String x, Connection conn) throws Exception {
-		String sql = "UPDATE MEMBER SET SCORE = SCORE ?";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		switch(x) {
-		case "1" : pstmt.setString(1, "+ 1"); 		// 최고에요
-		case "2" : pstmt.setString(1, "+ 0"); 	// 괜찮아요
-		case "3" : pstmt.setString(1, "- 1");	// 별로에요
-		default : pstmt.setString(1, "+ 0");
-		}			
-		
-		int result = pstmt.executeUpdate();
-		
-		JDBCTemplate.close(pstmt);
-		
-		return result;
-	}
-
-	
-	// 구매 후기 작성
-	public int writeReview(String content, Connection conn) throws Exception {
-		String sql = "INSERT INTO REVIEW(REVIEW_NO, CONTENT) VALUES (SEQ_REVIEW_NO.NEXTVAL, ?)";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, content);
-		
-		int result = pstmt.executeUpdate();
-		
-		JDBCTemplate.close(pstmt);
-		
-		return result;
-	}
-
 }
