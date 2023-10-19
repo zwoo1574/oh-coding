@@ -15,6 +15,7 @@ public class TradeService {
 		dao = new TradeDao();
 	}
 
+	// 게시글 목록 
 	public List<TradeVo> printPost() throws Exception {
 		
 		Connection conn = JDBCTemplate.getConnection();
@@ -26,6 +27,7 @@ public class TradeService {
 		return voList;
 	}
 
+	// 게시글 조회
 	public TradeVo showContent(String select) throws Exception {
 		
 		Connection conn = JDBCTemplate.getConnection();
@@ -35,7 +37,8 @@ public class TradeService {
 		JDBCTemplate.close(conn);
 		return vo;
 	}
-
+	
+	// 게시글 수정
 	public int editPost(TradeVo vo) throws Exception {
 		
 		Connection conn = JDBCTemplate.getConnection();
@@ -53,6 +56,7 @@ public class TradeService {
 		return result;
 	}
 
+	// 게시글 작성
 	public int writePost(TradeVo vo) throws Exception {
 		
 		Connection conn = JDBCTemplate.getConnection();
@@ -70,6 +74,7 @@ public class TradeService {
 		return result;
 	}
 
+	// 게시글 삭제
 	public int delPost(String del) throws Exception {
 		
 		Connection conn = JDBCTemplate.getConnection();
@@ -86,4 +91,88 @@ public class TradeService {
 		
 		return result;
 	}
+
+	// 관심목록 추가
+	public int addWishList(String x) throws Exception {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int result = dao.addWishList(x, conn);
+		
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
+	// 게시글 정보 조회
+	public TradeVo searchPostInfo(String boardNo) throws Exception {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		TradeVo vo = dao.searchPostInfo(boardNo, conn);
+		
+		JDBCTemplate.close(conn);
+		
+		return vo;
+	}
+	
+	// 구매 확정 - 히스토리 남기기
+	public void confirmPurchase(TradeVo vo) throws Exception {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int result = dao.confirmPurchase(vo, conn);
+		
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+	}
+	
+	// 매너온도 평가
+	public int selectPoint(String x) throws Exception {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int result = dao.selectPoint(x, conn);
+		
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+	
+
+	// 구매 후기 작성
+	public int writeReview(String content, TradeVo vo) throws Exception {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int result = dao.writeReview(content, conn);
+		
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
 }
