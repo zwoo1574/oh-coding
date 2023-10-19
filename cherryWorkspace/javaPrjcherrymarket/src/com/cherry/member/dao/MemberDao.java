@@ -77,7 +77,7 @@ public class MemberDao {
 	
 public int quit(Connection conn,String no) throws Exception{
 		
-		String sql = "UPDATE MEMBER_MINI SET QUIT_YN = 'Y' WHERE MEMBER_NO = ?";
+		String sql = "UPDATE MEMBER SET QUIT_YN = 'Y' WHERE MEMBER_NO = ?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, no);
