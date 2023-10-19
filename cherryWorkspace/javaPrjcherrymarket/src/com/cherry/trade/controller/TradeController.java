@@ -39,7 +39,7 @@ public class TradeController {
 
 	public void postMenu(String boardNo) {
 		
-		if(Main.loginUser != null) {               // 로그인중인 유저 넘버 불러와서 메뉴 선택창 다르게 만들기
+		if(Main.loginMember != null) {               // 로그인중인 유저 넘버 불러와서 메뉴 선택창 다르게 만들기
 			System.out.println("<메뉴> 1. 게시글 수정 2. 게시글 삭제 3. 목록으로 돌아가기");
 			System.out.print("선택할 메뉴 : " + Color.CYAN);
 			String select = sc.nextLine();
@@ -54,7 +54,7 @@ public class TradeController {
 
 	public void writePost() {
 		try {
-			System.out.printf("%-120s\n", "접속중인 회원 : " + Color.YELLOW + Main.loginUser + Color.EXIT);
+			System.out.printf("%-120s\n", "접속중인 회원 : " + Color.YELLOW + Main.loginMember + Color.EXIT);
 			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			System.out.printf("제목 : ");
 			String title = sc.nextLine();
@@ -91,7 +91,7 @@ public class TradeController {
 	
 	public void editPost(String boardNo) {
 		try {
-			System.out.printf("%-120s\n", "접속중인 회원 : " + Color.YELLOW + Main.loginUser + Color.EXIT);
+			System.out.printf("%-120s\n", "접속중인 회원 : " + Color.YELLOW + Main.loginMember + Color.EXIT);
 			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			System.out.printf("제목 : ");
 			String title = sc.nextLine();
@@ -155,7 +155,7 @@ public class TradeController {
 	public void tradeMain() {
 		try {
 			Util.clearConsole();
-			System.out.printf("%-120s\n", "접속중인 회원 : " + Color.YELLOW + Main.loginUser + Color.EXIT);
+			System.out.printf("%-120s\n", "접속중인 회원 : " + Color.YELLOW + Main.loginMember + Color.EXIT);
 			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			System.out.printf("%-30s%-50s%-30s%-30s%-30s%-30s\n", "번호", "제목", "물품명", "가격", "작성자", "날짜");
 			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
