@@ -22,11 +22,19 @@ private final MemberService service;
 		System.out.println(" 3: 로그아웃");
 		System.out.println(" 4: 비밀번호 변경");
 		System.out.println(" 5: 닉네임 변경");
-		System.out.println(" 6: 내 정보 보기");
+		System.out.println(" 6: 내 정보 보기");	//+닉네임변경 +비밀번호 변경 [Dath 구조]
 		System.out.println(" 7: 회원탈퇴");
 		System.out.println(" 8: 구매내역");
 		System.out.println(" 9: 관심목록");
 		System.out.println("10: 매너온도");
+		/* 관리자 기능 */
+		System.out.println("11: 관리자 회원전체 조회");
+		System.out.println("12: 관리자 회원 상세 조회(번호/아이디/닉네임)");
+		System.out.println("13: 관리자 회원 강제 탈퇴");
+		System.out.println("14: 관리자 회원 비번 초기화");
+		/*사용자 기능 - 뺴 먹은 거*/
+		System.out.println("15: 아이디 찾기");
+		System.out.println("16: 비밀번호 찾기");
 		
 		String num = Main.SC.nextLine();
 		
@@ -34,43 +42,52 @@ private final MemberService service;
 		case "1" :join(); break;
 		case "2" :login(); break;
 		case "3" :logout(); break;
-		case "4" :editPwd(); break;
-//		case "5" :editNick(); break;
-//		case "6" :Info(); break;
+		case "4" :changePwd(); break;
+		case "5" :changeNick(); break;
+		case "6" :Info(); break;
 		case "7" :quit(); break;
 //		case "8" :purchaseList(); break;
 //		case "9" :wishList(); break;
 //		case "10" :score(); break;
 		}
 	}
-	//비밀번호 변경
-	private void editPwd() {
-		System.out.println("===== 비밀번호 변경 ======");
+	// 내정보 보기 (마이페이지)
+	private void Info() {
+		System.out.println("===== 마이페이지 ======");
 		try {
+			//로그인 검사
 			if(Main.loginMember == null) {
-				throw new Exception("로그인 후 이용해주세요");
+				throw new Exception("로그인부터 진행해주세요");
 			}
-			System.out.print("새로운 비밀번호를 입력하세요 : ");
-			String newPwd = Main.SC.nextLine();
-			String oldPwd = Main.loginMember.getPwd();
-			HashMap<String, String> map = new HashMap<String,String>();
-			map.put("newPwd", newPwd);
-			map.put("oldPwd",oldPwd);
-			int result = service.editPwd(map);
 			
-			if(result != 1) {
-				throw new Exception();
+			//결과
+			System.out.println("========== 마이페이지 ==========");
+			System.out.println("아이디 : "+Main.loginMember.getId());
+			System.out.println("비밀번호 : "+Main.loginMember.getPwd());
+			System.out.println("닉네임 : "+Main.loginMember.getNick());
+			System.out.println("가입일시 : "+Main.loginMember.getJoinDate());
+			System.out.println("==============================");
+			
+			//정보변경
+			System.out.println("1. 비밀번호 변경 2: 닉네임 변경 3:이전으로 돌아가기");
+			String num = Main.SC.nextLine();
+			
+			switch(num) {
+			case "1" : changePwd(); break;
+			case "2" : changeNick(); break;
+			case "9" : return; 
+			default : System.out.println("잘못 입력하였습니다.");
 			}
-			System.out.println("비밀번호 변경 완료");
+			
 			
 		}catch(Exception e) {
-			System.out.println("비밀번호 변경 실패");
+			System.out.println("마이페이지 조회 실패");
 			e.printStackTrace();
 		}
 		
 	}
+	//회원가입
 	public void join() {
-
 		System.out.println("===== 회원가입 ======");
 		try {
 			System.out.println("ID : ");
@@ -108,13 +125,16 @@ private final MemberService service;
 			System.out.println("회원가입 실패");
 			e.printStackTrace();
 		}
-		
-		
-		
 	}
+	//로그인
 	public void login() {
 		System.out.println("===== 로그인 ======");
 		try {
+			if(Main.loginMember != null) {
+				System.out.println("이미 로그인 상태입니다.");
+				return;
+			}
+			
 			System.out.println("ID : ");
 			String id = Main.SC.nextLine();
 			System.out.println("PWD : ");
@@ -135,6 +155,7 @@ private final MemberService service;
 			e.printStackTrace();
 		}
 	}
+	//로그아웃
 	public void logout() {
 		System.out.println("===== 로그아웃 ======");
 		if(Main.loginMember == null) {
@@ -143,12 +164,10 @@ private final MemberService service;
 		}
 		Main.loginMember = null;
 		System.out.println("로그아웃 되었습니다.");
-		
 	}
-
+	//회원탈퇴
 	public void quit() {
 		System.out.println("===== 회원탈퇴 ======");
-		
 		try {
 			if(Main.loginMember == null) {
 				System.out.println("로그인 후 회원 탈퇴를 시도하세요");
@@ -162,13 +181,70 @@ private final MemberService service;
 				throw new Exception();
 			}
 			System.out.println("회원탈퇴 성공");	
-				
+			logout();
 			
 		}catch(Exception e) {
 			System.out.println("회원탈퇴 실패");
 			e.printStackTrace();
 		}
-		
-		
+	}
+
+	//비밀번호 변경
+	private void changePwd() {
+		System.out.println("===== 비밀번호 변경 ======");
+		try {
+			if(Main.loginMember == null) {
+				throw new Exception("로그인 후 이용해주세요");
+			}
+			System.out.println("현재 비밀번호 입력 : ");
+			String oldPwd = Main.SC.nextLine();
+			
+			System.out.print("새로운 비밀번호를 입력하세요 : ");
+			String newPwd = Main.SC.nextLine();
+			
+			String memberNo = Main.loginMember.getMemberNo();
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("oldPwd",oldPwd);
+			map.put("newPwd",newPwd);
+			map.put("memberNo",memberNo);
+			
+			int result = service.changePwd(map);
+			
+			if(result != 1) {
+				throw new Exception();
+			}
+			System.out.println("비밀번호 변경 완료");
+			logout();
+		}catch(Exception e) {
+			System.out.println("비밀번호 변경 실패");
+			e.printStackTrace();
+		}
+	}
+
+	//닉네임 변경
+	private void changeNick() {
+		System.out.println("===== 닉네임 변경 ======");
+		try {
+			if(Main.loginMember == null) {
+				throw new Exception("로그인 후 이용해주세요");
+			}
+			System.out.print("새로운 닉네임을 입력하세요 : ");
+			String newNick = Main.SC.nextLine();
+			MemberVo vo = new MemberVo();
+			
+			vo.setNick(newNick);
+			vo.setMemberNo(Main.loginMember.getMemberNo());
+			
+			int result = service.changeNick(vo);
+			
+			if(result != 1) {
+				throw new Exception();
+			}
+			System.out.println("닉네임 변경 완료");
+			logout();
+		}catch(Exception e) {
+			System.out.println("닉네임 변경 실패");
+			e.printStackTrace();
+		}	
 	}
 }
