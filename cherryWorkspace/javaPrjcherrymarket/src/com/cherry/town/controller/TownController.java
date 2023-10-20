@@ -1,5 +1,6 @@
 package com.cherry.town.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,7 +22,7 @@ public class TownController {
 		System.out.println("=====동네생활=====");
 		
 		System.out.println("1.게시글 작성");
-		System.out.println("2.게시글 수정");
+		System.out.println("2.게시글 삭제");
 		System.out.println("3.게시글 목록");
 		System.out.println("4.게시글 상세 조회");
 		System.out.println("5.댓글달기");
@@ -29,7 +30,7 @@ public class TownController {
 		String num = Main.SC.nextLine();
 		switch(num) {
 		case "1" : write(); break;
-		case "2" : update(); break;
+		case "2" : towndelete(); break;
 		case "3" : boardList(); break;
 		case "4" : townDetailByNo(); break;
 		//case "5" : tcom.towncommentselect(); break;
@@ -51,11 +52,14 @@ public class TownController {
 			//데이터
 			System.out.println("제목 : ");
 			String title = Main.SC.nextLine();
+			System.out.println("카테고리 : ");
+			String category = Main.SC.nextLine();
 			System.out.println("내용 : ");
 			String content = Main.SC.nextLine();
 			
 			TownVo vo = new TownVo();
 			vo.setTitle(title);
+			vo.setCategory(category);
 			vo.setContent(content);
 			
 			//서비스
@@ -72,8 +76,32 @@ public class TownController {
 		}
 	}
 	
-	//-----------------------게시글수정------------------------------
-	public void update() {
+	//-----------------------게시글삭제------------------------------
+	public void towndelete() {
+		try {
+			System.out.println("-----게시글 삭제----");
+			
+			if(Main.loginMember == null) {
+				throw new Exception("로그인 해주세요.");
+			}
+			
+			System.out.println("게시글 번호 : ");
+			String num = Main.SC.nextLine();
+			String memberNo = Main.loginMember.getMemberNo();
+			
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("TOWN_NO", num);
+			map.put("loginMemberNo", memberNo);
+			int result = service.towndelete(map);
+			
+			if(result != 1) {
+				throw new Exception();
+			}
+			System.out.println("게시글 삭제완료");
+		}catch(Exception e) {
+			System.out.println("게시글 삭제 실패");
+			e.printStackTrace();
+		}		
 		
 	}
 	
@@ -88,8 +116,10 @@ public class TownController {
 			//결과
 			System.out.print("NO");
 			System.out.print("|");
+			System.out.print("카테고리");
+			System.out.print("|");
 			System.out.print("제목");
-			System.out.print("");
+			System.out.print("|");
 			System.out.print("닉네임");
 			System.out.print("|");
 			System.out.print("조회수");
@@ -98,6 +128,8 @@ public class TownController {
 			System.out.println();
 			for(TownVo vo : townList) {
 				System.out.print(vo.getTownNO());
+				System.out.print("|");
+				System.out.print(vo.getCategory());
 				System.out.print("|");
 				System.out.print(vo.getTitle());
 				System.out.print("|");
@@ -145,5 +177,6 @@ public class TownController {
 			System.out.println("게시글 상세 조회 실패하였습니다.");
 			e.printStackTrace();
 		}
+		System.out.println("댓글달기");
 	}
 }
