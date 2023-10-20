@@ -3,6 +3,7 @@ package com.cherry.faq.service;
 import java.sql.Connection;
 
 import com.cherry.faq.dao.FaqDao;
+import com.cherry.faq.vo.FaqVo;
 import com.cherry.jdbc.JDBCTemplate;
 
 public class FaqService {
@@ -16,13 +17,13 @@ public class FaqService {
 	}
 	
 	//게시판 생성
-	public int write() throws Exception {
+	public int write(FaqVo vo) throws Exception {
 		
 		//conn
 		Connection conn = JDBCTemplate.getConnection();
 		
 		//dao
-		int result = fd.write(conn);
+		int result = fd.write(conn, vo);
 		
 		//tx
 		if(result == 1) {
@@ -35,6 +36,20 @@ public class FaqService {
 		JDBCTemplate.close(conn);
 		
 		return result;
+	}
+	
+	//게시판 조회
+	public static FaqVo boardPrintByNo(String num) throws Exception {
+		//conn
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//DAO
+		FaqVo vo = FaqDao.boardPrintByNo(conn, num);
+		
+		//close
+		JDBCTemplate.close(conn);
+		
+		return vo;
 	}
 
 	//게시판 수정
