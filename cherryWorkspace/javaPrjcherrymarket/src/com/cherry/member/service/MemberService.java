@@ -14,8 +14,8 @@ public class MemberService {
 	public MemberService() {
 		dao = new MemberDao();
 	}
-	
-public int join(MemberVo vo) throws Exception{
+
+	public int join(MemberVo vo) throws Exception{
 		
 		Connection conn = JDBCTemplate.getConnection();
 		
@@ -85,4 +85,31 @@ public int join(MemberVo vo) throws Exception{
 		
 		return result;
 	}
+
+	public int changeAddress(MemberVo vo) throws Exception{
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.changeAddress(conn,vo);
+		if(result == 1 ) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
+	public int changePhone(MemberVo vo) throws Exception{
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.changePhone(conn,vo);
+		if(result == 1 ) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
 }
