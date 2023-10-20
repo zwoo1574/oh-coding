@@ -31,8 +31,15 @@ public class TradeService {
 	public TradeVo showContent(String select) throws Exception {
 		
 		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.increaseHit(select, conn);
 		
 		TradeVo vo = dao.showContent(select, conn);
+		
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
 		
 		JDBCTemplate.close(conn);
 		return vo;
@@ -138,26 +145,7 @@ public class TradeService {
 		JDBCTemplate.close(conn);
 	}
 	
-	// 매너온도 평가
-	public int selectPoint(String x) throws Exception {
-		
-		Connection conn = JDBCTemplate.getConnection();
-		
-		int result = dao.selectPoint(x, conn);
-		
-		if(result == 1) {
-			JDBCTemplate.commit(conn);
-		} else {
-			JDBCTemplate.rollback(conn);
-		}
-		
-		JDBCTemplate.close(conn);
-		
-		return result;
-	}
-	
-
-	// 구매 후기 작성
+	// 구매 후기 작성 (매너온도 포함)
 	public int writeReview(String content, TradeVo vo) throws Exception {
 		
 		Connection conn = JDBCTemplate.getConnection();

@@ -48,13 +48,18 @@ public class TradeDao {
 		return voList;
 	}
 
-	// 게시글 조회
+	// 게시글 조회   -- 조회수 추가해야함
 	public TradeVo showContent(String select, Connection conn) throws Exception {
 		
 		String sql = "SELECT T.BOARD_NO, T.TITLE, T.CONTENT, T.TRADE_AREAS, T.PRODUCT, T.PRICE, T.ENROLL_DATE, T.EDIT_DATE, M.NICK, A.AREAS_NAME FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO JOIN AREAS A ON M.AREAS_CODE = A.AREAS_CODE WHERE T.BOARD_NO = ? AND T.COMPLETE_YN = 'N' AND T.DEL_YN = 'N'";
+		String hit = "UPDATE TRADE SET HIT = HIT +1 WHERE BOARD_NO = ? ";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
+		PreparedStatement pstmt2 = conn.prepareStatement(hit);		
 		pstmt.setString(1, select);
+		pstmt2.setString(1, select);
+		pstmt2.executeUpdate();
 		ResultSet rs = pstmt.executeQuery();
+		
 		TradeVo vo = null;
 		
 		if(rs.next()) {
@@ -88,6 +93,25 @@ public class TradeDao {
 		return vo;
 	}
 
+	// 조회수 증가
+	public int increaseHit(String select, Connection conn) throws Exception {
+		
+		String sql = "UPDATE TRADE SET HIT = HIT + 1 WHERE BOARD_NO = ? AND MEMBER_NO != ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, select);
+		if(Main.loginMember != null) {
+			pstmt.setString(2, Main.loginMember.getMemberNo());
+		} else {
+			pstmt.setString(2, "0");
+		}
+		
+		int result = pstmt.executeUpdate();
+		
+		JDBCTemplate.close(pstmt);
+		
+		return result;
+	}
+	
 	// 게시글 수정
 	public int editPost(TradeVo vo, Connection conn) throws Exception {
 		
@@ -142,7 +166,7 @@ public class TradeDao {
 		return result;
 	}
 
-	// 게시글 삭제
+	// 게시글 삭제     -- 미완성
 	public int delPost(String del, Connection conn) {
 		
 		
@@ -150,14 +174,18 @@ public class TradeDao {
 		return 0;
 	}
 
-	// 관심목록 추가
+	// 관심목록 추가 
 	public int addWishList(String x, Connection conn) throws Exception {
 		
-		String sql = "INSERT INTO WISHLIST(WISHLIST_NO, BOARD_NO, MEMBER_NO) VALUES (SEQ_WISHLIST_NO.NEXTVAL, ?, ?)";
+		String sql = "INSERT INTO WISHLIST (WISHLIST_NO, BOARD_NO, MEMBER_NO) SELECT SEQ_WISHLIST_NO.NEXTVAL, ?, ? FROM WISHLIST WHERE NOT EXISTS ( SELECT 1 FROM WISHLIST WHERE BOARD_NO = ? AND MEMBER_NO = ? )";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, x);
 		pstmt.setString(2, Main.loginMember.getMemberNo());
+		pstmt.setString(3, x);
+		pstmt.setString(4, Main.loginMember.getMemberNo());
 		int result = pstmt.executeUpdate();
+		
+		
 		
 		JDBCTemplate.close(pstmt);
 		
@@ -232,26 +260,8 @@ public class TradeDao {
 		return result;
 	}
 	
-	// 매너온도 평가
-	public int selectPoint(String x, Connection conn) throws Exception {
-		String sql = "UPDATE MEMBER SET SCORE = SCORE ?";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		switch(x) {
-		case "1" : pstmt.setString(1, "+ 1"); 		// 최고에요
-		case "2" : pstmt.setString(1, "+ 0"); 	// 괜찮아요
-		case "3" : pstmt.setString(1, "- 1");	// 별로에요
-		default : pstmt.setString(1, "+ 0");
-		}			
-		
-		int result = pstmt.executeUpdate();
-		
-		JDBCTemplate.close(pstmt);
-		
-		return result;
-	}
-
 	
-	// 구매 후기 작성
+	// 구매 후기 작성  (매너온도 포함)  -- 미완성
 	public int writeReview(String content, Connection conn) throws Exception {
 		String sql = "INSERT INTO REVIEW(REVIEW_NO, CONTENT) VALUES (SEQ_REVIEW_NO.NEXTVAL, ?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);

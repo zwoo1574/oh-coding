@@ -19,13 +19,47 @@ public class TradeVo {
 	private String areasName;
 	private String memberNick;
 	
+	// 구매 내역
+	private String purchaseNo; // 구매 내역 번호 
+	private String purchaseDate;  // 구매일시 , ENROLL_DATE
+	private String buyerNo; // 구매자번호
 	
+	// 거래 후기
+	private String reviewNo; // 후기 번호
+	private String score; // 매너온도
+	private String reviewContent ; // 리뷰 내용 , CONTENT
+	private String reviewDate; // 리뷰일시 , ENROLL_DATE
 	
-	public String getMemberNick() {
-		return memberNick;
+	public TradeVo() {
+		super();
 	}
-	public void setMemberNick(String memberNick) {
+	public TradeVo(String boardNo, String memberNo, String areasCode, String title, String tradeAreas, String content,
+			String completeYn, String delYn, String product, String price, String enrollDate, String editDate,
+			String memberName, String areasName, String memberNick, String purchaseNo, String purchaseDate,
+			String buyerNo, String reviewNo, String score, String reviewContent, String reviewDate) {
+		super();
+		this.boardNo = boardNo;
+		this.memberNo = memberNo;
+		this.areasCode = areasCode;
+		this.title = title;
+		this.tradeAreas = tradeAreas;
+		this.content = content;
+		this.completeYn = completeYn;
+		this.delYn = delYn;
+		this.product = product;
+		this.price = price;
+		this.enrollDate = enrollDate;
+		this.editDate = editDate;
+		this.memberName = memberName;
+		this.areasName = areasName;
 		this.memberNick = memberNick;
+		this.purchaseNo = purchaseNo;
+		this.purchaseDate = purchaseDate;
+		this.buyerNo = buyerNo;
+		this.reviewNo = reviewNo;
+		this.score = score;
+		this.reviewContent = reviewContent;
+		this.reviewDate = reviewDate;
 	}
 	public String getBoardNo() {
 		return boardNo;
@@ -111,28 +145,53 @@ public class TradeVo {
 	public void setAreasName(String areasName) {
 		this.areasName = areasName;
 	}
-	public TradeVo() {
-		super();
+	public String getMemberNick() {
+		return memberNick;
 	}
-	public TradeVo(String boardNo, String memberNo, String areasCode, String title, String tradeAreas, String content,
-			String completeYn, String delYn, String product, String price, String enrollDate, String editDate,
-			String memberName, String areasName, String memberNick) {
-		super();
-		this.boardNo = boardNo;
-		this.memberNo = memberNo;
-		this.areasCode = areasCode;
-		this.title = title;
-		this.tradeAreas = tradeAreas;
-		this.content = content;
-		this.completeYn = completeYn;
-		this.delYn = delYn;
-		this.product = product;
-		this.price = price;
-		this.enrollDate = enrollDate;
-		this.editDate = editDate;
-		this.memberName = memberName;
-		this.areasName = areasName;
+	public void setMemberNick(String memberNick) {
 		this.memberNick = memberNick;
+	}
+	public String getPurchaseNo() {
+		return purchaseNo;
+	}
+	public void setPurchaseNo(String purchaseNo) {
+		this.purchaseNo = purchaseNo;
+	}
+	public String getPurchaseDate() {
+		return purchaseDate;
+	}
+	public void setPurchaseDate(String purchaseDate) {
+		this.purchaseDate = purchaseDate;
+	}
+	public String getBuyerNo() {
+		return buyerNo;
+	}
+	public void setBuyerNo(String buyerNo) {
+		this.buyerNo = buyerNo;
+	}
+	public String getReviewNo() {
+		return reviewNo;
+	}
+	public void setReviewNo(String reviewNo) {
+		this.reviewNo = reviewNo;
+	}
+	public String getScore() {
+		return score;
+	}
+	public void setScore(String score) {
+		this.score = score;
+	}
+	public String getReviewContent() {
+		return reviewContent;
+	}
+	public void setReviewContent(String reviewContent) {
+		this.reviewContent = reviewContent;
+	}
+	public String getReviewDate() {
+		return reviewDate;
+	}
+	public void setReviewDate(String reviewDate) {
+		this.reviewDate = reviewDate;
 	}
 	@Override
 	public String toString() {
@@ -140,9 +199,13 @@ public class TradeVo {
 				+ title + ", tradeAreas=" + tradeAreas + ", content=" + content + ", completeYn=" + completeYn
 				+ ", delYn=" + delYn + ", product=" + product + ", price=" + price + ", enrollDate=" + enrollDate
 				+ ", editDate=" + editDate + ", memberName=" + memberName + ", areasName=" + areasName + ", memberNick="
-				+ memberNick + "]";
+				+ memberNick + ", purchaseNo=" + purchaseNo + ", purchaseDate=" + purchaseDate + ", buyerNo=" + buyerNo
+				+ ", reviewNo=" + reviewNo + ", score=" + score + ", reviewContent=" + reviewContent + ", reviewDate="
+				+ reviewDate + "]";
 	}
-
+	
+	
+	
 	
 	
 }

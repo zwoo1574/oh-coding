@@ -13,46 +13,11 @@ public class TradeController {
 
 	private final Scanner sc;
 	private final TradeService ts;
-//	private TradeVo currentlyPost;
 	
 	public TradeController() {
 		sc = new Scanner(System.in);
 		ts = new TradeService();
 	}
-
-	// 게시글 목록 - 메뉴
-	public void mainMenu() {
-		System.out.println("<메뉴> 1. 게시글 작성 2. 게시글 조회 3. 관심목록에 추가 4. 메인으로 돌아가기");
-		System.out.print("선택할 메뉴 : " + Color.CYAN);
-		String select = sc.nextLine();
-		System.out.print(Color.EXIT);
-		switch(select) {
-			case "1" : writePost(); break;
-			case "2" : showContent(); break;
-			case "3" : addWishList(); break;
-			case "4" : return;
-			default : System.out.println("잘못 입력하셨습니다.");
-		}
-	}
-	
-	// 관심목록 추가
-	public void addWishList() {
-		try {
-			System.out.print("관심목록에 추가할 게시글 번호 : ");
-			String x = Main.SC.nextLine();
-			
-			int result = ts.addWishList(x);
-		
-			if(result == 1) {
-				System.out.println(x + "번 게시글을 관심목록에 추가했습니다");
-			} else {
-				throw new Exception();
-			}
-		} catch(Exception e) {
-			System.out.println("관심목록 추가 실패");
-		}
-	}
-
 	// 게시글 조회 - 메뉴
 	public void postMenu(String boardNo) {
 		try {
@@ -96,7 +61,7 @@ public class TradeController {
 			switch(x) {
 				case "y" : 
 					ts.confirmPurchase(vo);   // 구매확정 (히스토리 남기기)
-					selectPoint(vo); 				   // 매너온도 평가
+					writeReview(vo); 				   // 후기 남기기 (매너온도 포함)
 					break; 
 				case "n" : return;
 				default : System.out.println("잘못 입력했습니다");
@@ -106,25 +71,8 @@ public class TradeController {
 			e.printStackTrace();
 		}
 	}
-	
-	// 매너온도 평가 
-	private void selectPoint(TradeVo vo) {
-		try {
-			System.out.println("<매너온도 평가> 1. 최고에요 2.괜찮아요 3.별로에요");
-			String x = Main.SC.nextLine();
-			int result = ts.selectPoint(x);
-			if(result == 1) {
-				writeReview(vo);
-			} else {
-				throw new Exception();
-			}
- 			
-		} catch(Exception e) {
-			System.out.println("매너온도 평가 실패");
-			e.printStackTrace();
-		}
 		
-	}
+	
 
 	// 구매후기 작성
 	private void writeReview(TradeVo vo) {
@@ -146,49 +94,11 @@ public class TradeController {
 		
 	}
 
-	// 게시글 작성
-	public void writePost() {
-		try {
-			System.out.printf("%-120s\n", "접속중인 회원 : " + Color.YELLOW + Main.loginMember + Color.EXIT);
-			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
-			System.out.printf("제목 : ");
-			String title = sc.nextLine();
-			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
-			System.out.print("물품명 : " );
-			String product = sc.nextLine();
-			System.out.print("가격 : ");
-			String price = sc.nextLine();
-			System.out.print("거래 지역 : ");
-			String tradeArea = sc.nextLine();
-	//		System.out.println("접속 지역 : " +);스태틱변수에서 받아오기
-			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
-			System.out.print("내용 : ");
-			String content = sc.nextLine();
-			
-			TradeVo vo = new TradeVo();
-			vo.setTitle(title);
-			vo.setProduct(product);
-			vo.setPrice(price);
-			vo.setTradeAreas(tradeArea);
-			vo.setContent(content);
-			
-			int result = ts.writePost(vo);
-			
-			if(result == 1) {
-				System.out.println("글 작성 완료");
-			} else {
-				throw new Exception();
-			}
-		} catch(Exception e) {
-			System.out.println("글 작성 실패");
-			e.printStackTrace();
-		}
-	}
 	
 	// 게시글 수정
 	public void editPost(String boardNo) {
 		try {
-			System.out.printf("%-120s\n", "접속중인 회원 : " + Color.YELLOW + Main.loginMember + Color.EXIT);
+			System.out.printf("%-120s\n", "접속중인 회원 : " + Color.YELLOW + Main.loginMember.getNick() + Color.EXIT);
 			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			System.out.printf("제목 : ");
 			String title = sc.nextLine();
@@ -197,12 +107,13 @@ public class TradeController {
 			String product = sc.nextLine();
 			System.out.print("가격 : ");
 			String price = sc.nextLine();
-			System.out.print("거래 지역 : ");
+			System.out.print("거래 장소 : ");
 			String tradeArea = sc.nextLine();
-//			System.out.println("접속 지역 : " + 로그인멤버.어쩌구); 스태틱변수에서 받아오기
+			System.out.println("접속 지역 : " + Main.loginMember.getAreasName());
 			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			System.out.print("내용 : ");
 			String content = sc.nextLine();
+			System.out.println();
 			
 			TradeVo vo = new TradeVo();
 			vo.setTitle(title);
@@ -248,11 +159,12 @@ public class TradeController {
 	}
 
 	
-	// 게시글 목록(중고거래 메인)
+	// 게시글 목록 (중고거래 메인)
 	public void tradeMain() {
 		try {
 			Util.clearConsole();
-			System.out.printf("%-120s\n", "접속중인 회원 : " + Color.YELLOW + Main.loginMember + Color.EXIT);
+			System.out.println("접속중인 회원 : " + Color.YELLOW + Main.loginMember.getNick() + Color.EXIT);
+			System.out.println("접속 지역 : " + Color.YELLOW + Main.loginMember.getAreasName() + Color.EXIT );
 			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			System.out.printf("%-30s%-50s%-30s%-30s%-30s%-30s\n", "번호", "제목", "물품명", "가격", "판매자", "날짜");
 			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
@@ -268,7 +180,72 @@ public class TradeController {
 		}
 	}
 	
-	// 게시글 조회
+	// 게시글 목록 - 메뉴선택
+	public void mainMenu() {
+		System.out.println("<메뉴> 1. 게시글 작성 2. 게시글 조회 3. 관심목록에 추가 4. 메인으로 돌아가기");
+		System.out.print("선택할 메뉴 : " + Color.CYAN);
+		String select = sc.nextLine();
+		System.out.print(Color.EXIT);
+		
+		switch(select) {
+			case "1" : writePost(); break;
+			case "2" : showContent(); break;
+			case "3" : addWishList(); break;
+			case "4" : return;
+			default : System.out.println("잘못 입력하셨습니다.");
+		}
+	}
+	
+	// 게시글 목록(메인) -> 게시글 작성
+		public void writePost() {
+			try {
+				Util.clearConsole();
+				System.out.println("접속중인 회원 : " + Color.YELLOW + Main.loginMember.getNick() + Color.EXIT);
+				System.out.println("접속 지역 : " + Color.YELLOW + Main.loginMember.getAreasName() + Color.EXIT );
+				System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+				System.out.printf("제목 : ");
+				String title = sc.nextLine();
+				System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+				System.out.print("물품명 : " );
+				String product = sc.nextLine();
+				System.out.print("가격 : ");
+				String price = sc.nextLine();
+				System.out.print("거래 장소 : ");
+				String tradeArea = sc.nextLine();
+				System.out.println("접속 지역 : " + Main.loginMember.getAreasName());
+				System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+				System.out.print("내용 : ");
+				String content = sc.nextLine();
+				
+				TradeVo vo = new TradeVo();
+				vo.setTitle(title);
+				vo.setProduct(product);
+				vo.setPrice(price);
+				vo.setTradeAreas(tradeArea);
+				vo.setContent(content);
+				
+				int result = ts.writePost(vo);
+				
+				if(result == 1) {
+					System.out.println("글 작성 완료");
+				} else {
+					throw new Exception();
+				}
+			} catch(Exception e) {
+				System.out.println(Color.RED + "게시글 작성 실패" + Color.EXIT);
+				String ex = e.getMessage();
+				if(ex.contains("TITLE")) {System.out.println("제목을 입력해주세요");} 
+				else if(ex.contains("CONTENT")){System.out.println("내용을 입력해주세요");}
+				else if(ex.contains("PRODUCT")){System.out.println("물품명을 입력해주세요");}
+				else if(ex.contains("PRICE")){System.out.println("가격을 입력해주세요");}
+				else if(ex.contains("TRADE_AREAS")){System.out.println("거래장소를 입력해주세요");}
+				else if(ex.contains("ORA-01722")) {System.out.println("가격은 숫자로 입력해주세요");}				
+//				e.printStackTrace();
+			}
+		}
+	
+	
+	// 게시글 목록(메인) -> 게시글 조회
 	public void showContent() {
 		try {
 			System.out.print("조회할 게시글 번호 : " + Color.CYAN);
@@ -277,13 +254,15 @@ public class TradeController {
 			TradeVo vo = ts.showContent(select);
 			if(vo != null) {
 				Util.clearConsole();
+				System.out.println("접속중인 회원 : " + Color.YELLOW + Main.loginMember.getNick() + Color.EXIT);
+				System.out.println("접속 지역 : " + Color.YELLOW + Main.loginMember.getAreasName() + Color.EXIT );
 				System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 				System.out.println(vo.getTitle());
 				System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 				System.out.println("물품명 : " + vo.getProduct());
 				System.out.println("가격 : " + vo.getPrice());
-				System.out.println("거래지역 : " + vo.getTradeAreas());
-				System.out.println("판매자 동네 : " + vo.getAreasName());
+				System.out.println("거래 장소 : " + vo.getTradeAreas());
+				System.out.println("접속 지역 : " + vo.getAreasName());
 				System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 				String content = vo.getContent();
 				
@@ -293,22 +272,46 @@ public class TradeController {
 		            System.out.println(con);
 		        }
 				
-				System.out.println("작성일자 : " + vo.getEnrollDate());
+				System.out.println(Color.YELLOW +"작성일자 : " +  vo.getEnrollDate() + Color.EXIT);
 				if(vo.getEditDate() != null) {
-					System.out.println("수정일자 : " + vo.getEditDate());
+					System.out.println(Color.YELLOW +"수정일자 : " + vo.getEditDate() + Color.EXIT);
 				}
 				System.out.println("▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​");
 				postMenu(vo.getBoardNo());
 				
 			} else {
-				System.out.println("게시글 없음");
-				return;
+				throw new Exception();
 			}
 		} catch(Exception e) {
 			System.out.println("게시글 조회 실패");
-			e.printStackTrace();
+			String ex = e.getMessage();
+			if(ex.contains("ORA-01722")) {System.out.println("숫자만 입력해주세요."); }
+			else if(ex.contains("null")) {System.out.println("존재하지 않는 게시글입니다.");}  // 미완성
+			// 삭제된 게시글 조회시도 하는 경우
 		}
 	}
+	
+	// 게시글 목록(메인) -> 관심목록 추가
+		public void addWishList() {
+			try {
+				System.out.print("관심목록에 추가할 게시글 번호 : " + Color.CYAN);
+				String x = Main.SC.nextLine();
+				System.out.print(Color.EXIT);
+				int result = ts.addWishList(x);
+			
+				if(result == 1) {
+					System.out.println(Color.YELLOW+ x + "번 게시글을 관심목록에 추가했습니다." + Color.EXIT);
+				} else {
+					throw new Exception("이미 관심목록에 존재합니다.");
+				}
+			} catch(Exception e) {
+				System.out.println(Color.RED + "관심목록 추가 실패" + Color.EXIT);
+				String x = e.getMessage();
+				if(x.contains("NULL")) {System.out.println("게시글 번호를 입력해주세요.");}
+				else if(x.contains("ORA-02291")) {System.out.println("존재하지 않는 번호입니다.");}
+				else {System.out.println(x);}
+			}
+		}
 	
 	
 }
