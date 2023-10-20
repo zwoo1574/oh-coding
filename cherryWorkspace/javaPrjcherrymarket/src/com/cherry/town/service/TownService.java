@@ -1,6 +1,7 @@
 package com.cherry.town.service;
 
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
 
 import com.cherry.jdbc.JDBCTemplate;
@@ -41,14 +42,25 @@ public class TownService {
 		return result;
 	}
 	
-	//---------------게시글수정----------------
+	//---------------게시글삭제----------------
+	public int towndelete(HashMap<String, String> map) throws Exception {
 		//conn
-
+		Connection conn = JDBCTemplate.getConnection();
+		
 		//DAO
-		
+		int result = dao.towndelete(conn, map);
 		//tx
-		
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
 		//close
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+		
 	
 	//---------------게시글목록----------------
 	public List<TownVo> townList() throws Exception {
@@ -87,6 +99,8 @@ public class TownService {
 		JDBCTemplate.close(conn);
 		return vo;
 	}
+
+	
 	
 	
 }

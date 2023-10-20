@@ -1,8 +1,11 @@
 package com.cherry.town_comment.controller;
 
+import java.util.HashMap;
+
 import com.cherry.main.Main;
 import com.cherry.town.controller.TownController;
 import com.cherry.town_comment.service.TowncommentService;
+import com.cherry.town_comment.vo.TowncommentVo;
 
 public class TowncommentController {
 
@@ -28,21 +31,55 @@ public class TowncommentController {
 		default : System.out.println("잘못입력하셨습니다");
 		}
 	}
-	private void commentwrite() {
+
+	//  ---------------------댓글삭제---------------------------------------
+//	private void commentdelete() {
+//		try {
+//			System.out.println("------댓글삭제-----");
+//			
+//			if(Main.loginMember == null) {
+//				throw new Exception("로그인 해주세요");
+//			}
+//			
+//			System.out.println("댓글번호 : ");
+//			String num = Main.SC.nextLine();
+//			String memberNo = Main.loginMember.getMemberNo();
+//			
+//			HashMap<String, String> map = new HashMap<String,String>();
+//			map.put("commentNo", memberNo);
+//			map.put("loginMemberNo", memberNo);
+//			int result = service.delete(map);
+//			
+//			if(result != 1) {
+//				throw new Exception();
+//			}
+//			System.out.println("댓글이 삭제되었습니다.");
+//			
+//		}catch(Exception e) {
+//			System.out.println("댓글삭제 실패");
+//			e.printStackTrace();
+//		}
+//	}
+
+//  ---------------------댓글작성---------------------------------------
+	public void commentwrite() {
 		try {
 			System.out.println("-------댓글작성------");
 			
 			System.out.println("내용 : ");
 			String content = Main.SC.nextLine();
 			
-			int result = service.commentwrite(null);
+			TowncommentVo vo = new TowncommentVo();
+			vo.setContent(content);
+			
+			int result = service.commentwrite(vo);
 			
 		}catch(Exception e) {
 			System.out.println("댓글작성실패");
 			e.printStackTrace();
 		}
 		
-		
+
 	}
 	
 }

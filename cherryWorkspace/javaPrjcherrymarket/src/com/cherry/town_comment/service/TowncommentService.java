@@ -1,6 +1,7 @@
 package com.cherry.town_comment.service;
 
 import java.sql.Connection;
+import java.util.HashMap;
 
 import com.cherry.jdbc.JDBCTemplate;
 import com.cherry.town_comment.dao.TowncommentDao;
@@ -30,4 +31,20 @@ public class TowncommentService {
 		
 		return result;
 	}
+//
+//	public int delete(HashMap<String, String> map) throws Exception {
+//		Connection conn = JDBCTemplate.getConnection();
+//		
+//		int result = dao.delete(conn, map);
+//		
+//		if(result == 1) {
+//			JDBCTemplate.commit(conn);
+//		}else {
+//			JDBCTemplate.rollback(conn);
+//		}
+//		
+//		JDBCTemplate.close(conn);
+//		
+//		return result;
+//	}
 }
