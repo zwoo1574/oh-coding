@@ -2,6 +2,7 @@ package com.cherry.notice.service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.cherry.jdbc.JDBCTemplate;
 import com.cherry.member.dao.MemberDao;
@@ -35,7 +36,8 @@ public class NoticeService {
 		JDBCTemplate.close(conn);
 		return result;
 	}
-
+	
+	//공지글 조회(최신순)
 	public ArrayList<NoticeVo> noticeList() throws Exception  {
 		//conn
 		Connection conn=JDBCTemplate.getConnection();
@@ -48,6 +50,61 @@ public class NoticeService {
 		JDBCTemplate.close(conn);
 		return voList;
 				
+	}
+	
+	//공지사항 상세 조회
+	public NoticeVo noticeDetailByNo(String num) throws Exception {
+		//conn
+		Connection conn=JDBCTemplate.getConnection();
+		
+		//dao
+		int result=dao.Hit(conn,num);
+		NoticeVo vo=dao.noticeDetailByNo(conn,num);
+		
+		//tx
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		//close
+		JDBCTemplate.close(conn);
+		return vo;
+	}
+	
+	//공지글 검색(제목)
+	public ArrayList<NoticeVo> searchNoticeByTitle(String search) throws Exception {
+		//conn
+		Connection conn=JDBCTemplate.getConnection();
+		
+		//dao
+		ArrayList<NoticeVo> voList= dao.searchNoticeByTitle(conn,search);
+		//tx
+		
+		//close
+		JDBCTemplate.close(conn);
+		return voList;
+	}
+
+	public int secret(HashMap<String, String> map) throws Exception {
+		//conn
+		Connection conn=JDBCTemplate.getConnection();
+		
+		//dao
+		int result=dao.secret(conn,map);
+		//tx
+		if(result==1) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		//close
+		JDBCTemplate.close(conn);
+		return result;
+			
+
+	
 	}
 	
 

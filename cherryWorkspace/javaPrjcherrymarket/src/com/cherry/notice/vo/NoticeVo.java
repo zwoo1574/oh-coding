@@ -5,7 +5,7 @@ public class NoticeVo {
 	private String title;
 	private String content;
 	private String managerNo;
-	private String writerNick;	
+	private String managerName;	
 	private String hit;
 	private String enrolldate;
 	private String editDate;
@@ -16,14 +16,14 @@ public class NoticeVo {
 		// TODO Auto-generated constructor stub
 	}
 
-	public NoticeVo(String no, String title, String content, String managerNo, String writerNick, String hit,
+	public NoticeVo(String no, String title, String content, String managerNo, String managerName, String hit,
 			String enrolldate, String editDate, String secretYn) {
 		super();
 		this.no = no;
 		this.title = title;
 		this.content = content;
 		this.managerNo = managerNo;
-		this.writerNick = writerNick;
+		this.managerName = managerName;
 		this.hit = hit;
 		this.enrolldate = enrolldate;
 		this.editDate = editDate;
@@ -62,12 +62,12 @@ public class NoticeVo {
 		this.managerNo = managerNo;
 	}
 
-	public String getWriterNick() {
-		return writerNick;
+	public String getManagerName() {
+		return managerName;
 	}
 
-	public void setWriterNick(String writerNick) {
-		this.writerNick = writerNick;
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
 	}
 
 	public String getHit() {
@@ -105,7 +105,7 @@ public class NoticeVo {
 	@Override
 	public String toString() {
 		return "NoticeVo [no=" + no + ", title=" + title + ", content=" + content + ", managerNo=" + managerNo
-				+ ", writerNick=" + writerNick + ", hit=" + hit + ", enrolldate=" + enrolldate + ", editDate="
+				+ ", managerName=" + managerName + ", hit=" + hit + ", enrolldate=" + enrolldate + ", editDate="
 				+ editDate + ", secretYn=" + secretYn + "]";
 	}
 	
