@@ -41,13 +41,12 @@ public class TownDao {
 	public List<TownVo> townList(Connection conn) throws Exception {
 		
 		//SQL
-		String sql = "";
+		String sql = "SELECT T.TOWN_NO, T.TITLE, M.MEMBER_NO AS WRITER_NICK, T.HIT , T.ENROLL_DATE FROM TOWN T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
-		
 		List<TownVo> voList = new ArrayList<TownVo>();
 		while(rs.next()) {
-			String no = rs.getString("NO");
+			String no = rs.getString("TOWN_NO");
 			String title = rs.getString("TITLE");
 			String writerNick = rs.getString("WRITER_NICK");
 			String hit = rs.getString("HIT");
@@ -75,7 +74,7 @@ public class TownDao {
 	public TownVo townDetailByNo(Connection conn, String num) throws Exception {
 		
 		//SQL
-		String sql = "";
+		String sql = "SELECT T.TOWN_NO, T.TITLE, T.CONTENT, M.MEMBER_NO AS WRITER_NICK, T.HIT , TO_CHAR(T.ENROLL_DATE , 'MM/DD') AS ENROLL_DATE  FROM TOWN T  JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.TOWN_NO = ? AND T.DELETE_YN = 'N'";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1,num);
 		ResultSet rs = pstmt.executeQuery();
@@ -109,7 +108,7 @@ public class TownDao {
 	public int increaseHit(Connection conn, String num)throws Exception {
 		
 		//SQL
-		String sql = "";
+		String sql = "UPDATE TOWN SET HIT = HIT+1 WHERE TOWN_NO ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, num);
 		int result = pstmt.executeUpdate();

@@ -6,17 +6,16 @@ import java.util.Scanner;
 import com.cherry.main.Main;
 import com.cherry.town.service.TownService;
 import com.cherry.town.vo.TownVo;
+import com.cherry.town_comment.controller.TowncommentController;
 
 public class TownController {
 
 	//필드
-	private final TownService service;
-	
+	private TownService service;
 	//기본생성자
 	public TownController() {
 		service = new TownService();
 	}
-	
 	//메뉴선택
 	public void selectMenu() throws Exception {
 		System.out.println("=====동네생활=====");
@@ -25,6 +24,7 @@ public class TownController {
 		System.out.println("2.게시글 수정");
 		System.out.println("3.게시글 목록");
 		System.out.println("4.게시글 상세 조회");
+		System.out.println("5.댓글달기");
 		
 		String num = Main.SC.nextLine();
 		switch(num) {
@@ -32,10 +32,13 @@ public class TownController {
 		case "2" : update(); break;
 		case "3" : boardList(); break;
 		case "4" : townDetailByNo(); break;
+		//case "5" : tcom.towncommentselect(); break;
 		default : System.out.println("잘못 입력하셨습니다.");
 		}
 	}
 	
+
+
 	//---------------------게시글작성---------------------------------
 	public void write() throws Exception{
 		try {
@@ -65,7 +68,7 @@ public class TownController {
 			System.out.println("게시글 작성이 완료 되었습니다.");
 		}catch(Exception e) {
 			System.out.println("게시글 작성이 완료 되지 않았습니다.");
-			throw new Exception();
+			e.printStackTrace();
 		}
 	}
 	
@@ -80,29 +83,29 @@ public class TownController {
 			System.out.println("-----게시글 목록-----");
 			
 			//서비스
-			List<TownVo> voList = service.townList();
+			List<TownVo> townList = service.townList();
 			
 			//결과
 			System.out.print("NO");
-			System.out.print(":");
+			System.out.print("|");
 			System.out.print("제목");
-			System.out.print(":");
+			System.out.print("");
 			System.out.print("닉네임");
-			System.out.print(":");
+			System.out.print("|");
 			System.out.print("조회수");
-			System.out.print(":");
+			System.out.print("|");
 			System.out.print("작성일자");
 			System.out.println();
-			for(TownVo vo : voList) {
-				System.out.println(vo.getTownNO());
-				System.out.println(":");
-				System.out.println(vo.getTitle());
-				System.out.println(":");
-				System.out.println(vo.getWirterNick());
-				System.out.println(":");
-				System.out.println(vo.getHit());
-				System.out.println(":");
-				System.out.println(vo.getEnrollDate());
+			for(TownVo vo : townList) {
+				System.out.print(vo.getTownNO());
+				System.out.print("|");
+				System.out.print(vo.getTitle());
+				System.out.print("|");
+				System.out.print(vo.getWirterNick());
+				System.out.print("|");
+				System.out.print(vo.getHit());
+				System.out.print("|");
+				System.out.print(vo.getEnrollDate());
 				
 				System.out.println();
 			}

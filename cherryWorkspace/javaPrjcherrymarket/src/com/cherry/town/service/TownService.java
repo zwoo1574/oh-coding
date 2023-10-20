@@ -57,14 +57,14 @@ public class TownService {
 		Connection conn = JDBCTemplate.getConnection();
 		
 		//DAO
-		List<TownVo> result = dao.townList(conn);
+		List<TownVo> voList = dao.townList(conn);
 		
 		//tx
 	
 		//close
 		JDBCTemplate.close(conn);
 		
-		return townList();
+	return voList;
 	}
 	//---------------게시글조회----------------
 	public TownVo townDetailByNo(String num) throws Exception {
