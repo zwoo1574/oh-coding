@@ -16,7 +16,7 @@ public class QnaService {
 		dao = new QnaDao();
 	}
 	
-	//문의글 작성
+	// 1.문의글 작성
 	public int write(QnaVo vo) throws Exception {
 		
 		// conn
@@ -38,7 +38,7 @@ public class QnaService {
 		return result;
 	}
 
-	//문의글 목록 (최신순)
+	//2.문의글 목록 (최신순)
 	public List<QnaVo> qnaList() throws Exception {
 		
 		// conn
@@ -53,7 +53,7 @@ public class QnaService {
 		
 	}//qnaList end
 	
-	//문의글 상세조회 (번호)
+	// 3.문의글 상세조회 (번호)
 	public QnaVo qnaDetailByNo(String num) throws Exception{
 		
 		// conn
@@ -75,5 +75,39 @@ public class QnaService {
 		return vo;
 		
 	}//qnaDetailByNo end
+	
+	// 4.문의글 검색 (제목)
+	public List<QnaVo> searchQnaByTitle(String searchValue) throws Exception {
+		
+		//conn
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//dao
+		List<QnaVo> voList = dao.searchQnaByTitle(conn, searchValue);
+		
+		//tx
+		
+		//close
+		JDBCTemplate.close(conn);
+		return voList;
+		
+	}//searchQnaByTitle end
+	
+	// 5. 내가 작성한 문의글
+	public List<QnaVo> qnaMyList(String loginMember) throws Exception{
+		
+		// conn
+		Connection conn = JDBCTemplate.getConnection();
+		
+		// dao
+		List<QnaVo> voList = dao.qnaMyList(conn, loginMember);
+		
+		// tx
+		
+		// close
+		JDBCTemplate.close(conn);
+		return voList;
+		
+	}//qnaMyList end
 	
 }
