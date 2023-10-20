@@ -9,6 +9,7 @@ public class FaqVo {
 	private String enrollDate;
 	private String secretYn;
 	private String editDate;
+	private String hit;
 	
 	//기본 생성자
 	public FaqVo() {
@@ -18,7 +19,7 @@ public class FaqVo {
 	
 	//생성자
 	public FaqVo(String faqNo, String managerNo, String title, String content, String enrollDate, String secretYn,
-			String editDate) {
+			String editDate, String hit) {
 		super();
 		this.faqNo = faqNo;
 		this.managerNo = managerNo;
@@ -27,6 +28,7 @@ public class FaqVo {
 		this.enrollDate = enrollDate;
 		this.secretYn = secretYn;
 		this.editDate = editDate;
+		this.hit = hit;
 	}
 	
 	public String getFaqNo() {
@@ -71,12 +73,18 @@ public class FaqVo {
 	public void setEditDate(String editDate) {
 		this.editDate = editDate;
 	}
+	public String getHit() {
+		return hit;
+	}
+	public void setHit(String hit) {
+		this.hit = hit;
+	}
 	
 	
 	@Override
 	public String toString() {
 		return "FaqVo [faqNo=" + faqNo + ", managerNo=" + managerNo + ", title=" + title + ", content=" + content
-				+ ", enrollDate=" + enrollDate + ", secretYn=" + secretYn + ", editDate=" + editDate + "]";
+				+ ", enrollDate=" + enrollDate + ", secretYn=" + secretYn + ", editDate=" + editDate + ", hit=" + hit + "]";
 	}
 	
 	
