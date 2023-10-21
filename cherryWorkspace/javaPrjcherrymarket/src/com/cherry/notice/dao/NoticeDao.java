@@ -39,7 +39,7 @@ public class NoticeDao {
 	//공지글 조회(최신순)
 	public ArrayList<NoticeVo> noticeList(Connection conn) throws Exception {
 		//sql
-		String sql="SELECT NOTICE_NO,TITLE,HIT,TO_CHAR(ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE FROM NOTICE ORDER BY NOTICE_NO DESC";
+		String sql="SELECT NOTICE_NO,TITLE,HIT,TO_CHAR(ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE FROM NOTICE WHERE SECRET_YN='N' ORDER BY NOTICE_NO DESC";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		ResultSet rs= pstmt.executeQuery();
 		
@@ -101,10 +101,10 @@ public class NoticeDao {
 		JDBCTemplate.close(pstmt);
 		return vo;
 	}
-
+	//조회수
 	public int Hit(Connection conn, String num) throws Exception {
 		//sql
-		String sql="UPDATE NOTICE SET HIT= HIT+1 WHERE NOTICE_NO =?";
+		String sql="UPDATE NOTICE SET HIT= HIT+1 WHERE NOTICE_NO =? AND SECRET_YN='N'";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		pstmt.setString(1, num);
 		int result=pstmt.executeUpdate();
@@ -120,7 +120,7 @@ public class NoticeDao {
 	//공지글 검색(제목)
 	public ArrayList<NoticeVo> searchNoticeByTitle(Connection conn, String search) throws Exception {
 		//sql
-		String sql="SELECT N.NOTICE_NO,N.TITLE,N.CONTENT,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE,N.EDIT_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.TITLE LIKE '%'||?||'%' ORDER BY N.NOTICE_NO DESC";
+		String sql="SELECT N.NOTICE_NO,N.TITLE,N.CONTENT,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE,N.EDIT_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.TITLE LIKE '%'||?||'%' AND SECRET_YN='N' ORDER BY N.NOTICE_NO DESC";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		pstmt.setString(1, search);
 		ResultSet rs=pstmt.executeQuery();
@@ -155,9 +155,38 @@ public class NoticeDao {
 		
 		
 	}
-
-	public int secret(Connection conn, HashMap<String, String> map) {
-		// TODO Auto-generated method stub
-		return 0;
+	//공지글 감추기
+	public int secret(Connection conn, HashMap<String, String> map) throws Exception {
+		//sql
+		String sql="UPDATE NOTICE SET SECRET_YN=?, EDIT_DATE= SYSDATE WHERE NOTICE_NO=? ";
+		PreparedStatement pstmt=conn.prepareStatement(sql);
+		pstmt.setString(1, map.get("secretChoice"));
+		pstmt.setString(2, map.get("noticeNum"));
+		
+		int result=pstmt.executeUpdate();
+		
+		//rs
+		
+		//close
+		JDBCTemplate.close(pstmt);
+		return result;
+	}
+	
+	//공지글 수정
+	public int modify(Connection conn, NoticeVo vo) throws Exception {
+		//sql
+		String sql="UPDATE NOTICE SET TITLE=?, CONTENT=?, EDIT_DATE= SYSDATE WHERE NOTICE_NO=? AND SECRET_YN='Y' ";
+		PreparedStatement pstmt=conn.prepareStatement(sql);
+		pstmt.setString(1, vo.getTitle());
+		pstmt.setString(2, vo.getContent());
+		pstmt.setString(3, vo.getNo());
+		
+		int result=pstmt.executeUpdate();
+		//rs
+		
+		//close
+		JDBCTemplate.close(pstmt);
+		return result;
+		
 	}	
 }
