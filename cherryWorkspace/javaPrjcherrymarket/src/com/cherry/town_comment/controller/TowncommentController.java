@@ -64,7 +64,7 @@ public class TowncommentController {
 //  ---------------------댓글작성---------------------------------------
 	public void commentwrite() {
 		try {
-			System.out.println("-------댓글작성------");
+			System.out.println("--------댓글작성-------");
 			
 			System.out.println("내용 : ");
 			String content = Main.SC.nextLine();

@@ -22,6 +22,10 @@ public class TowncommentDao {
 		return result;
 	}
 
+	public int delete(Connection conn, HashMap<String, String> map) {
+		return 0;
+	}
+
 
 //	public int delete(Connection conn, HashMap<String, String> map) throws Exception {
 //		String sql = "UPDATE TOWN_COMMENT SET ENROLL_DATE = SYSDATE WHERE COMMENT_NO = ?, MEMBER_NO = ? ";

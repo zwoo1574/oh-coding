@@ -31,20 +31,20 @@ public class TowncommentService {
 		
 		return result;
 	}
-//
-//	public int delete(HashMap<String, String> map) throws Exception {
-//		Connection conn = JDBCTemplate.getConnection();
-//		
-//		int result = dao.delete(conn, map);
-//		
-//		if(result == 1) {
-//			JDBCTemplate.commit(conn);
-//		}else {
-//			JDBCTemplate.rollback(conn);
-//		}
-//		
-//		JDBCTemplate.close(conn);
-//		
-//		return result;
-//	}
+
+	public int delete(HashMap<String, String> map) throws Exception {
+  	Connection conn = JDBCTemplate.getConnection();
+		
+		int result = dao.delete(conn, map);
+		
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
 }
