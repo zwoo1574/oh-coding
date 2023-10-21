@@ -28,11 +28,7 @@ public class MemberController {
 		System.out.println(" 8: 구매내역");		//유저가 구매한 내역 확인
 		System.out.println(" 9: 관심목록");
 		System.out.println("10: 매너온도");
-		/* 관리자 기능 */
-		System.out.println("11: 관리자 회원전체 조회");
-		System.out.println("12: 관리자 회원 상세 조회(번호/아이디/닉네임)");
-		System.out.println("13: 관리자 회원 강제 탈퇴");
-		System.out.println("14: 관리자 회원 비번 초기화");
+		
 		/*사용자 기능 - 뺴 먹은 거*/
 		System.out.println("15: 아이디 찾기");
 		System.out.println("16: 비밀번호 찾기");
