@@ -2,6 +2,7 @@ package com.cherry.qna.controller;
 
 import java.util.List;
 
+import com.cherry.jdbc.JDBCTemplate;
 import com.cherry.main.Main;
 import com.cherry.qna.service.QnaService;
 import com.cherry.qna.vo.QnaVo;
@@ -35,9 +36,9 @@ public class QnaController {
 		case "3":qnaDetailByNo();break;
 		case "4":searchQnaByTitle();break;
 		case "5":qnaMyList();break;
-//		case "6":qnaListManager();break;
-//		case "7" : 
-//		case "8" : 
+		case "6":qnaListManager();break;
+		case "7" : answer();break;
+		case "8" : answerEdit();break;
 		}
 
 	}// selectMenu end
@@ -93,6 +94,9 @@ public class QnaController {
 			List<QnaVo> voList = service.qnaList();
 
 			// 결과
+			if(voList.size() == 0) {
+				System.out.println("게시글이 없습니다.");
+			}
 			System.out.print("번호");
 			System.out.print(" / ");
 			System.out.print("제목");
@@ -103,7 +107,7 @@ public class QnaController {
 			System.out.print(" / ");
 			System.out.print("작성일자");
 			System.out.println();
-
+			
 			for (QnaVo vo : voList) {
 				System.out.print(vo.getQnaNo());
 				System.out.print(" / ");
@@ -139,7 +143,7 @@ public class QnaController {
 
 			// 결과
 			if (vo == null) {
-				throw new Exception();
+				System.out.println("해당글이 존재하지 않습니다.");
 			}
 			System.out.println("---------------------------------------");
 			System.out.println("글번호: " + vo.getQnaNo());
@@ -172,7 +176,7 @@ public class QnaController {
 
 			// 결과
 			if (voList.size() == 0) {
-				System.out.println("검색 결과가 없습니다.");
+				System.out.println("해당글이 존재하지 않습니다.");
 			}
 			for (QnaVo vo : voList) {
 				System.out.println(vo);
@@ -204,7 +208,7 @@ public class QnaController {
 			
 			//결과
 			if(voList.size() == 0) {
-				System.out.println("검색결과가 없습니다.");
+				System.out.println("내가 작성한 글이 없습니다.");
 			}
 			for(QnaVo vo : voList) {
 				System.out.println(vo);
@@ -218,45 +222,128 @@ public class QnaController {
 	} // qnaMyList
 
 	// 6. 문의글 목록 (관리자용)
-//	public void qnaListManager() {
-//		try {
-//			System.out.println("------- 문의글 목록 (관리자용) -------");
-//			
-//			// 데이터
-//			
-//			// 서비스
-//			List<QnaVo> voList = service.qnaListManager();
-//			
+	public void qnaListManager() {
+		try {
+			System.out.println("------- 문의글 목록 (관리자용) -------");
+			
+			// 관리자 체크
+			if(Main.loginManager == null) {
+				throw new Exception("관리자만 사용할 수 있습니다.");
+			}
+			
+			// 데이터
+			
+			// 서비스
+			List<QnaVo> voList = service.qnaListManager();
+			
 			// 결과
-//			System.out.print("번호");
-//			System.out.print(" / ");
-//			System.out.print("제목");
-//			System.out.print(" / ");
-//			System.out.print("닉네임");
-//			System.out.print(" / ");
-//			System.out.print("조회수");
-//			System.out.print(" / ");
-//			System.out.print("작성일자");
-//			System.out.println();
-//			
-//			for(QnaVo vo : voList) {
-//				System.out.print(vo.getQnaNo());
-//				System.out.print(" / ");
-//				System.out.print(vo.getTitle());
-//				System.out.print(" / ");
-//				System.out.print(vo.getWriterNick());
-//				System.out.print(" / ");
-//				System.out.print(vo.getHit());
-//				System.out.print(" / ");
-//				System.out.print(vo.getMemberEnrollDate());
-//				System.out.println();
-//			}
-//			
-//		}catch(Exception e) {
-//			System.out.println("게시글 목록 조회 실패 ...");
-//			e.printStackTrace();
-//		}
-//		
-//	}//qnaListManger end
+			if(voList.size() == 0) {
+				System.out.println("게시글이 존재하지 않습니다.");
+			}
+			System.out.print("번호");
+			System.out.print(" / ");
+			System.out.print("제목");
+			System.out.print(" / ");
+			System.out.print("닉네임");
+			System.out.print(" / ");
+			System.out.print("조회수");
+			System.out.print(" / ");
+			System.out.print("작성일자");
+			System.out.println();
+			
+			for(QnaVo vo : voList) {
+				System.out.print(vo.getQnaNo());
+				System.out.print(" / ");
+				System.out.print(vo.getTitle());
+				System.out.print(" / ");
+				System.out.print(vo.getWriterNick());
+				System.out.print(" / ");
+				System.out.print(vo.getHit());
+				System.out.print(" / ");
+				System.out.print(vo.getMemberEnrollDate());
+				System.out.println();
+			}
+			
+		}catch(Exception e) {
+			System.out.println("게시글 목록 조회 실패 ...");
+			e.printStackTrace();
+		}
+		
+	}//qnaListManger end
+	
+	// 7. 관리자 답변작성
+	public void answer() {
+		try {
+			System.out.println("------- 관리자 답변작성 -------");
+			
+			// 관리자 체크
+			if(Main.loginManager == null) {
+				throw new Exception("관리자만 사용할 수 있습니다.");
+			}
+
+			// 데이터
+			System.out.print("답글을 작성할 글 번호: ");
+			String no = Main.SC.nextLine();
+			System.out.print("내용: ");
+			String answer = Main.SC.nextLine();
+			
+			QnaVo vo = new QnaVo();
+			vo.setQnaNo(no);
+			vo.setAnswer(answer);
+			
+			// 서비스
+			int result = service.answer(vo);
+			
+			// 결과
+			if(result != 1) {
+				throw new Exception();
+			}
+			System.out.println("답변 작성 성공 !!!");
+			
+		}catch(Exception e) {
+			System.out.println("답변 작성 실패 ...");
+			e.printStackTrace();
+		}
+		
+	}//answer end
+	
+	
+	// 8. 관리자 답변수정
+	public void answerEdit() {
+
+		try {
+			System.out.println("------- 관리자 답변 수정 -------");
+			
+			// 관리자 체크
+			if(Main.loginManager == null) {
+				throw new Exception("관리자만 사용할 수 있습니다.");
+			}
+			
+			// 데이터
+			System.out.print("수정할 글 번호: ");
+			String no = Main.SC.nextLine();
+			System.out.print("수정한 내용: ");
+			String answer = Main.SC.nextLine();
+			
+			QnaVo vo = new QnaVo();
+			vo.setQnaNo(no);
+			vo.setAnswer(answer);
+			
+			// 서비스
+			int result = service.answerEdit(vo);
+			
+			// 결과 
+			if(result != 1) {
+				throw new Exception();
+			}
+			System.out.println("답변 수정 성공 !!!");
+			
+		}catch(Exception e) {
+			System.out.println("답변 수정 실패 ...");
+			e.printStackTrace();
+		}
+		
+	}//answerEdit end
+	
 	
 }

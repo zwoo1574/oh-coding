@@ -205,5 +205,74 @@ public class QnaDao {
 		
 	}//qnaMyList end
 	
+	// 6. 문의글 목록 (관리자용)
+	public List<QnaVo> qnaListManager(Connection conn) throws Exception {
+		
+		//sql
+		String sql = "SELECT Q.QNA_NO , Q.TITLE , M.NICK AS WRITER_NICK , Q.HIT , TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO ORDER BY QNA_NO DESC";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		ResultSet rs = pstmt.executeQuery();
+		
+		//rs
+		List<QnaVo> voList = new ArrayList<QnaVo> ();
+		while (rs.next()) {
+			String no = rs.getString("QNA_NO");
+			String title = rs.getString("TITLE");
+			String nick = rs.getString("WRITER_NICK");
+			String hit = rs.getString("HIT");
+			String enrollDate = rs.getString("ENROLL_DATE");
+			
+			QnaVo vo = new QnaVo();
+			vo.setQnaNo(no);
+			vo.setTitle(title);
+			vo.setWriterNick(nick);
+			vo.setHit(hit);
+			vo.setMemberEnrollDate(enrollDate);
+			
+			voList.add(vo);
+		}
+		
+		//close
+		JDBCTemplate.close(pstmt);
+		JDBCTemplate.close(rs);
+		return voList;
+		
+	}//qnaListManager end
+	
+	// 7. 관리자 답변작성
+	public int answer(Connection conn, QnaVo vo) throws Exception {
+		
+		//sql
+		String sql = "UPDATE QNA SET ANSWER = ? WHERE QNA_NO = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, vo.getAnswer());
+		pstmt.setString(2, vo.getQnaNo());
+		int result = pstmt.executeUpdate();
+		
+		//rs
+		
+		//close
+		JDBCTemplate.close(pstmt);
+		return result;
+		
+	}//answer end
+	
+	// 8. 관리자 답변수정
+	public int answerEdit(Connection conn, QnaVo vo) throws Exception {
+		
+		//sql
+		String sql = "UPDATE QNA SET ANSWER =? WHERE QNA_NO = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, vo.getAnswer());
+		pstmt.setString(2, vo.getQnaNo());
+		int result = pstmt.executeUpdate();
+				
+		//rs
+		
+		//close
+		JDBCTemplate.close(pstmt);
+		return result;
+		
+	}//answerEdit end
 	
 }
