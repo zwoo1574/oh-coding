@@ -110,4 +110,66 @@ public class QnaService {
 		
 	}//qnaMyList end
 	
+	// 6. 문의글 목록 (관리자용)
+	public List<QnaVo> qnaListManager() throws Exception {
+		
+		//conn
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//dao
+		List<QnaVo> voList = dao.qnaListManager(conn);
+		
+		//tx
+		
+		//close
+		JDBCTemplate.close(conn);
+		return voList;
+		
+	}// qnaListManager end
+	
+	// 7. 관리자 답변작성
+	public int answer(QnaVo vo) throws Exception {
+		
+		//conn
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//dao
+		int result = dao.answer(conn, vo);
+		
+		//tx
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		//close
+		JDBCTemplate.close(conn);
+		return result;
+		
+	}//answer end
+	
+	// 8. 관리자 답변수정
+	public int answerEdit(QnaVo vo) throws Exception {
+		
+		//conn
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//dao
+		int result = dao.answerEdit(conn, vo);
+		
+		//tx
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		//close
+		JDBCTemplate.close(conn);
+		return result;
+		
+	}//answerEdit end
+	
+	
 }
