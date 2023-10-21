@@ -3,11 +3,13 @@ package com.cherry.faq.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.cherry.faq.vo.FaqVo;
 import com.cherry.jdbc.JDBCTemplate;
+import com.cherry.main.Main;
 
 public class FaqDao {
 
@@ -28,12 +30,49 @@ public class FaqDao {
 
 		return result;
 	}
+	
+	//게시글 수정
+	public int edit(Connection conn, String no, String content) throws Exception {
+		//SQL
+		String sql = "UPDATE FAQ SET CONTENT = ? WHERE FAQ_NO = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, content);
+		pstmt.setString(2, no);
+		
+		int result = pstmt.executeUpdate();
+		
+		//close
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
 
-	//게시판 검색(게시판번호)
+	//게시판 삭제
+	public int delete(Connection conn, String no) throws Exception {
+		
+		//SQL
+		String sql = "UPDATE FAQ SET SECRET_YN = 'Y' WHERE FAQ_NO = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, no);
+
+		int result = pstmt.executeUpdate();
+		
+		//close
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
+	//게시판 조회(게시판번호)
 	public static FaqVo boardPrintByNo(Connection conn, String num) throws Exception {
 		
 		//SQL
-		String sql = "SELECT * FROM FAQ WHERE FAQ_NO = ? AND SECRET_YN = 'N' ";
+		String sql;
+		if(Main.loginMember != null) {  //회원일 때
+			sql = "SELECT * FROM FAQ WHERE FAQ_NO = ? AND SECRET_YN = 'N' ";
+		}else {  //관리자일 때
+			sql = "SELECT * FROM FAQ WHERE FAQ_NO = ? ";
+		}
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, num);
 		
@@ -75,7 +114,12 @@ public class FaqDao {
 	public List<FaqVo> boardList(Connection conn) throws Exception {
 		
 		//SQL
-		String sql = "SELECT * FROM FAQ ORDER BY FAQ_NO DESC";	
+		String sql;
+		if(Main.loginMember != null) { //회원일 때
+			sql = "SELECT * FROM FAQ WHERE SECRET_YN = 'N' ORDER BY FAQ_NO DESC";
+		}else { //관리자일 때
+			sql = "SELECT * FROM FAQ ORDER BY FAQ_NO DESC";
+		}
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		
 		ResultSet rs = pstmt.executeQuery();
@@ -118,7 +162,12 @@ public class FaqDao {
 	public FaqVo boardDetailByNo(Connection conn, String no) throws Exception {
 		
 		//SQL
-		String sql = "SELECT * FROM FAQ WHERE FAQ_NO = ?";
+		String sql;
+		if(Main.loginMember != null) { //회원일 때
+			sql = "SELECT * FROM FAQ WHERE SECRET_YN = 'N' AND FAQ_NO = ?";
+		}else { //관리자일 때
+			sql = "SELECT * FROM FAQ  WHERE FAQ_NO = ?";
+		}
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, no);
 		
@@ -158,6 +207,7 @@ public class FaqDao {
 		
 	}
 
+	//조회수 증가
 	public int increaseHit(Connection conn, String no) throws Exception{
 		//SQL
 		String sql = "UPDATE FAQ SET HIT = HIT + 1 WHERE FAQ_NO = ?";
@@ -172,6 +222,48 @@ public class FaqDao {
 		return result;
 		
 	}
+
+	public FaqVo boardPrintByTitle(Connection conn, String boardTitle) throws Exception {
+		
+		//SQL
+		String sql = "SELECT * FROM FAQ WHERE TITLE = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, boardTitle);
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		//rs
+		FaqVo vo = null;
+		if(rs.next()) {
+			String faqNo = rs.getString("FAQ_NO");
+			String managerNo = rs.getString("MANAGER_NO");
+			String title = rs.getString("TITLE");
+			String content = rs.getString("CONTENT");
+			String enrollDate = rs.getString("ENROLL_DATE");
+			String secretYn = rs.getString("SECRET_YN");
+			String editDate = rs.getString("EDIT_DATE");
+			String hit = rs.getString("HIT");
+			
+			vo = new FaqVo();
+			
+			vo.setFaqNo(faqNo);
+			vo.setManagerNo(managerNo);
+			vo.setTitle(title);
+			vo.setContent(content);
+			vo.setEnrollDate(enrollDate);
+			vo.setSecretYn(secretYn);
+			vo.setEditDate(editDate);
+			vo.setHit(hit);
+	
+		}
+		
+		//close
+		JDBCTemplate.close(pstmt);
+		JDBCTemplate.close(rs);
+		
+		return vo;
+	}
+	
 			
 }//class
 		
