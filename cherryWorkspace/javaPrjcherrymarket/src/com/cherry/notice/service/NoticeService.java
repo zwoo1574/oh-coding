@@ -86,7 +86,7 @@ public class NoticeService {
 		JDBCTemplate.close(conn);
 		return voList;
 	}
-
+	//공지글 감추기
 	public int secret(HashMap<String, String> map) throws Exception {
 		//conn
 		Connection conn=JDBCTemplate.getConnection();
@@ -105,6 +105,25 @@ public class NoticeService {
 			
 
 	
+	}
+	
+	//공지글 수정
+	public int modify(NoticeVo vo) throws Exception {
+		//conn
+		Connection conn=JDBCTemplate.getConnection();
+		
+		//dao
+		int result=dao.modify(conn,vo);
+		//tx
+		if(result==1) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		//close
+		JDBCTemplate.close(conn);
+		return result;
+				
 	}
 	
 

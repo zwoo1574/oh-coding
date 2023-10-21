@@ -26,24 +26,27 @@ public class NoticeController {
 		System.out.println("3. 최신순으로 공지글 조회");
 		System.out.println("4. 제목으로 공지글 검색");
 		System.out.println("5. 공지 번호로 검색해서 글 상세조회");
-		System.out.println("6. 공지글 공개여부(관리자만)");
+		System.out.println("6. 공지글 공개여부");
 
 		String num = Main.SC.nextLine();
 		switch (num) {
 		case "1":write(); break;
-//		case "2": modify(); break;
+		case "2": modify(); break;
 		case "3":noticeList(); break;
 		case "4":searchNoticeByTitle(); break;		
 		case "5": noticeDetailByNo(); break;
-//		case "6": secret(); break;
-		default: System.out.println("잘못입력 하셨습니다.");
+		case "6": secret(); break;
+		default: System.out.println("잘 못 입력하셨습니다.");
 		}
 	}
 
-	// 공지글 작성
+	// 공지글 작성(관리자만)
 	public void write() {
-		System.out.println("===공지글 작성===");
 		try {
+//			if(Main.loginManager==null) {
+//			throw new Exception("관리자 로그인 하고 진행하세요");
+//			}
+			System.out.println("===공지글 작성===");
 			// 데이터
 			System.out.print("제목: ");
 			String title = Main.SC.nextLine();
@@ -66,7 +69,7 @@ public class NoticeController {
 			}
 			System.out.println("공지글 작성에 성공하셨습니다.");
 		} catch (Exception e) {
-			System.out.println("작성에 실패 하셨습니다.");
+			System.out.println("공지글 작성에 실패하셨습니다.");
 			e.printStackTrace();
 		}
 
@@ -103,7 +106,7 @@ public class NoticeController {
 				}
 			
 		}catch(Exception e) {
-			System.out.println("공지글 목록 조회를 실패 하셨습니다.");
+			System.out.println("공지글 목록 조회를 실패하였습니다.");
 			e.printStackTrace();
 			}
 	}
@@ -127,7 +130,7 @@ public class NoticeController {
 			System.out.println("글번호: "+vo.getNo());
 			System.out.println("제목: "+vo.getTitle());
 			System.out.println("내용: "+vo.getContent());
-			System.out.println("닉네임: "+vo.getManagerName());
+			System.out.println("관리자 닉네임: "+vo.getManagerName());
 			System.out.println("조회수: "+vo.getHit());
 			System.out.println("작성일시: "+vo.getEnrolldate());
 			System.out.println("------------------------------");
@@ -172,33 +175,69 @@ public class NoticeController {
 		
 		
 	}
-	//공지글 수정
+	//공지글 수정(관리자만,비공개 된 계시판만)
+	public void modify() {
+		
+		try{
+//			if(Main.loginManager==null) {
+//				throw new Exception("관리자 로그인 하고 진행하세요");
+			System.out.println("==공지글 수정==");
+			//데이터
+			System.out.print("수정할 공지글 번호: ");
+			String num=Main.SC.nextLine();
+			System.out.print("수정할 공지글 제목: ");
+			String title=Main.SC.nextLine();
+			System.out.print("수정할 공지글 내용: ");
+			String content=Main.SC.nextLine();
+			
+			
+			NoticeVo vo= new NoticeVo();
+			vo.setNo(num);
+			vo.setTitle(title);
+			vo.setContent(content);
+			
 	
-	//공지글 감추기(update del_yn)
+			//서비스
+			int result=service.modify(vo);
+			//결과
+			if(result!=1) {
+				throw new Exception();
+			}
+			System.out.println("공지글 수정을 성공하셨습니다.");
+		}catch(Exception e) {
+			System.out.println("공지글 수정을 실패하셨습니다.");
+			e.printStackTrace();
+		}
+	}
+	//공지글 공개 여부(관리자만)
 	public void secret() {
 		
 		try {
-			System.out.println("==공지글 비공개==");
+//			if(Main.loginManager==null) {
+//				throw new Exception("관리자 로그인 하고 진행하세요");
+//			}
+			System.out.println("==공지글 공개 여부==");
 			//데이터
 			System.out.print("공지글 번호: ");
 			String num=Main.SC.nextLine();
-			System.out.println("관리자 번호");
-			String mgNo=Main.SC.nextLine();
-			
-			//서비스
+			System.out.print("공지글 공개 여부: ");
+			String choice=Main.SC.nextLine();
+		
 			HashMap<String, String> map= new HashMap<String,String>();
 			map.put("noticeNum", num);
-			map.put("managerNo", mgNo);
+			map.put("secretChoice", choice);
+			
+			//서비스
 			int result=service.secret(map);
 			
 			//결과
 			if(result!=1) {
 				throw new Exception();
 			}
-			System.out.println("공지글 비공개 완료");
+			System.out.println("공지글 공개 여부를 완료하셨습니다.");
 
 		}catch(Exception e) {
-			System.out.println("공지글 비공개 실패");
+			System.out.println("공지글 공개 여부를 실패하셨습니다.");
 			e.printStackTrace();
 		}
 	}
