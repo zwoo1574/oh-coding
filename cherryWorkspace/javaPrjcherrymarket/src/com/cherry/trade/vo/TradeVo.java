@@ -18,6 +18,7 @@ public class TradeVo {
 	private String memberName;
 	private String areasName;
 	private String memberNick;
+	private String hit;
 	
 	// 구매 내역
 	private String purchaseNo; // 구매 내역 번호 
@@ -36,7 +37,7 @@ public class TradeVo {
 	public TradeVo(String boardNo, String memberNo, String areasCode, String title, String tradeAreas, String content,
 			String completeYn, String delYn, String product, String price, String enrollDate, String editDate,
 			String memberName, String areasName, String memberNick, String purchaseNo, String purchaseDate,
-			String buyerNo, String reviewNo, String score, String reviewContent, String reviewDate) {
+			String buyerNo, String reviewNo, String score, String reviewContent, String reviewDate, String hit) {
 		super();
 		this.boardNo = boardNo;
 		this.memberNo = memberNo;
@@ -60,6 +61,16 @@ public class TradeVo {
 		this.score = score;
 		this.reviewContent = reviewContent;
 		this.reviewDate = reviewDate;
+		this.hit = hit;
+	}
+	
+	
+	
+	public String getHit() {
+		return hit;
+	}
+	public void setHit(String hit) {
+		this.hit = hit;
 	}
 	public String getBoardNo() {
 		return boardNo;
@@ -199,10 +210,12 @@ public class TradeVo {
 				+ title + ", tradeAreas=" + tradeAreas + ", content=" + content + ", completeYn=" + completeYn
 				+ ", delYn=" + delYn + ", product=" + product + ", price=" + price + ", enrollDate=" + enrollDate
 				+ ", editDate=" + editDate + ", memberName=" + memberName + ", areasName=" + areasName + ", memberNick="
-				+ memberNick + ", purchaseNo=" + purchaseNo + ", purchaseDate=" + purchaseDate + ", buyerNo=" + buyerNo
-				+ ", reviewNo=" + reviewNo + ", score=" + score + ", reviewContent=" + reviewContent + ", reviewDate="
-				+ reviewDate + "]";
+				+ memberNick + ", hit=" + hit + ", purchaseNo=" + purchaseNo + ", purchaseDate=" + purchaseDate
+				+ ", buyerNo=" + buyerNo + ", reviewNo=" + reviewNo + ", score=" + score + ", reviewContent="
+				+ reviewContent + ", reviewDate=" + reviewDate + "]";
 	}
+
+	
 	
 	
 	
