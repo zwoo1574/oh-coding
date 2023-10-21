@@ -23,26 +23,34 @@ public class TradeController {
 		try {
 			TradeVo vo = ts.searchPostInfo(boardNo);
 			
-			if(Main.loginMember.getMemberNo().equals(vo.getMemberNo())) {             
+			if(Main.loginMember.getMemberNo().equals(vo.getMemberNo())) {            
+				
 				System.out.println("<메뉴> 1. 게시글 수정 2. 게시글 삭제 3. 목록으로 돌아가기");
+				
 				System.out.print("선택할 메뉴 : " + Color.CYAN);
 				String select = sc.nextLine();
 				System.out.print(Color.EXIT);
+				
 				switch(select) {
+				
 					case "1" : editPost(boardNo); break;
 					case "2" : delPost(boardNo); break;
 					case "3" : return;
 					default : System.out.println("잘못 입력하셨습니다");
 				} 					
+				
 			} else if(!Main.loginMember.getMemberNo().equals(vo.getMemberNo())) {
+				
 				System.out.println("<메뉴> 1. 구매 신청 2. 목록으로 돌아가기");
 				System.out.print("선택할 메뉴 : " + Color.CYAN);
 				String select = sc.nextLine();
 				System.out.print(Color.EXIT);
+				
 				switch(select) {
 					case "1" : purchaseRequest(vo); break;
 					case "2" : return;
 					default : System.out.println("잘못 입력하셨습니다.");
+					
 				}
 			} 
 			// 관리자일때 목록 추가
@@ -57,11 +65,11 @@ public class TradeController {
 			System.out.println("구매신청");
 			System.out.println(vo);
 			System.out.print("거래완료 (y/n) : ");
-			String x = Main.SC.nextLine();
+			String x = sc.nextLine();
 			switch(x) {
 				case "y" : 
-					ts.confirmPurchase(vo);   // 구매확정 (히스토리 남기기)
-					writeReview(vo); 				   // 후기 남기기 (매너온도 포함)
+					ts.confirmPurchase(vo);   // 구매확정 (히스토리 남기기) -- 미완성
+					writeReview(vo); 				   // 후기 남기기 (매너온도 포함) -- 미완성
 					break; 
 				case "n" : return;
 				default : System.out.println("잘못 입력했습니다");
@@ -78,7 +86,7 @@ public class TradeController {
 	private void writeReview(TradeVo vo) {
 		try {
 			System.out.print("구매후기 : ");
-			String content = Main.SC.nextLine();
+			String content = sc.nextLine();
 			
 			int result = ts.writeReview(content, vo);
 			
@@ -98,11 +106,11 @@ public class TradeController {
 	// 게시글 수정
 	public void editPost(String boardNo) {
 		try {
-			System.out.printf("%-120s\n", "접속중인 회원 : " + Color.YELLOW + Main.loginMember.getNick() + Color.EXIT);
-			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+			System.out.println(Color.RED + "                        게시글 수정 | 수정할 내용을 입력해주세요");
+			System.out.println(Color.GREEN + "▃▃▃​​​​▃​​​​▃▃​​​​​​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			System.out.printf("제목 : ");
 			String title = sc.nextLine();
-			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+			System.out.println(Color.GREEN + "▃▃▃​​​​​▃▃▃​​​​▃​​​​​▃​​​​​▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			System.out.print("물품명 : " );
 			String product = sc.nextLine();
 			System.out.print("가격 : ");
@@ -110,9 +118,10 @@ public class TradeController {
 			System.out.print("거래 장소 : ");
 			String tradeArea = sc.nextLine();
 			System.out.println("접속 지역 : " + Main.loginMember.getAreasName());
-			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+			System.out.println(Color.GREEN + "▃▃▃​​​​​▃▃▃​​​​​​​​​▃▃▃​​​​▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			System.out.print("내용 : ");
 			String content = sc.nextLine();
+			System.out.println(Color.GREEN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​▃​​​​​▃​​​​​▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			System.out.println();
 			
 			TradeVo vo = new TradeVo();
@@ -126,11 +135,13 @@ public class TradeController {
 			int result = ts.editPost(vo);
 			
 			if(result != 1) {
-				System.out.println("게시글 수정 실패");
-				return;
+				throw new Exception("게시글 수정 실패");
 			}
+			
 			System.out.println("게시글 수정 완료");
+			
 		}  catch(Exception e) {
+//			System.out.println("게시글 수정 실패");
 			e.printStackTrace();
 		}
 		
@@ -140,16 +151,22 @@ public class TradeController {
 	public void delPost(String boardNo) {
 		try {
 			System.out.println("비밀번호를 입력해주세요");
-			System.out.print("비밀번호 : ");
+			System.out.print("비밀번호 : " + Color.CYAN);
 			String pwd = sc.nextLine();
+			System.out.print(Color.EXIT);
 			
-			int result = ts.delPost(pwd);
-			
-			if(result == 1) {
-				System.out.println("게시글을 삭제했습니다.");
+			int result = 0;
+			if(pwd.equals(Main.loginMember.getPwd())) {
+				result = ts.delPost(boardNo);
 			} else {
+				System.out.println("비밀번호가 올바르지 않습니다.");
+			}
+			
+			if(result != 1) {
 				throw new Exception();
 			}
+			
+			System.out.println("게시글을 삭제했습니다.");
 			
 		} catch(Exception e) {
 			System.out.println(Color.RED + "게시글 삭제 실패" + Color.EXIT);
@@ -163,16 +180,22 @@ public class TradeController {
 	public void tradeMain() {
 		try {
 			Util.clearConsole();
+			
 			System.out.println("접속중인 회원 : " + Color.YELLOW + Main.loginMember.getNick() + Color.EXIT);
 			System.out.println("접속 지역 : " + Color.YELLOW + Main.loginMember.getAreasName() + Color.EXIT );
 			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
-			System.out.printf("%-30s%-50s%-30s%-30s%-30s%-30s\n", "번호", "제목", "물품명", "가격", "판매자", "날짜");
+			System.out.printf("%-30s%-50s%-30s%-30s%-30s%-30s%-30s\n", "번호", "제목", "물품명", "가격", "판매자", "작성일", "조회수");
 			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			List<TradeVo> voList = ts.printPost();
 			for(TradeVo vo : voList) {
-				System.out.println(vo.getBoardNo() + vo.getTitle() + vo.getProduct() + vo.getPrice() + vo.getMemberNick() + vo.getEnrollDate());
+				
+				if(vo.getMemberNo().equals(Main.loginMember.getMemberNo())) {
+					System.out.printf("%-30s%-50s%-30s%-30s%-30s%-30s%-30s\n", Color.YELLOW  + vo.getBoardNo() + Color.EXIT, vo.getTitle(), vo.getProduct(), vo.getPrice(), vo.getMemberNick(), vo.getEnrollDate(), vo.getHit());
+				} else {
+					System.out.printf("%-30s%-50s%-30s%-30s%-30s%-30s%-30s\n", vo.getBoardNo(), vo.getTitle(), vo.getProduct(), vo.getPrice(), vo.getMemberNick(), vo.getEnrollDate(), vo.getHit());
+				}
 			}
-			System.out.println("▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃​​​​​▃▃▃​​​​​▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​");
+			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			mainMenu();
 		} catch (Exception e) {
 			System.out.println("목록 조회 실패");
@@ -206,6 +229,7 @@ public class TradeController {
 				System.out.printf("제목 : ");
 				String title = sc.nextLine();
 				System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+				System.out.println("작성자 : " + Main.loginMember.getNick());
 				System.out.print("물품명 : " );
 				String product = sc.nextLine();
 				System.out.print("가격 : ");
@@ -226,20 +250,24 @@ public class TradeController {
 				
 				int result = ts.writePost(vo);
 				
-				if(result == 1) {
-					System.out.println("글 작성 완료");
-				} else {
+				if(result != 1) {
 					throw new Exception();
 				}
+				
+				System.out.println("게시글을 작성했습니다.");
+				
 			} catch(Exception e) {
+				
 				System.out.println(Color.RED + "게시글 작성 실패" + Color.EXIT);
 				String ex = e.getMessage();
+				
 				if(ex.contains("TITLE")) {System.out.println("제목을 입력해주세요");} 
 				else if(ex.contains("CONTENT")){System.out.println("내용을 입력해주세요");}
 				else if(ex.contains("PRODUCT")){System.out.println("물품명을 입력해주세요");}
 				else if(ex.contains("PRICE")){System.out.println("가격을 입력해주세요");}
 				else if(ex.contains("TRADE_AREAS")){System.out.println("거래장소를 입력해주세요");}
-				else if(ex.contains("ORA-01722")) {System.out.println("가격은 숫자로 입력해주세요");}				
+				else if(ex.contains("ORA-01722")) {System.out.println("가격은 숫자로 입력해주세요");}			
+				
 //				e.printStackTrace();
 			}
 		}
@@ -251,43 +279,50 @@ public class TradeController {
 			System.out.print("조회할 게시글 번호 : " + Color.CYAN);
 			String select = sc.nextLine();
 			System.out.print(Color.EXIT);
+			
 			TradeVo vo = ts.showContent(select);
-			if(vo != null) {
-				Util.clearConsole();
-				System.out.println("접속중인 회원 : " + Color.YELLOW + Main.loginMember.getNick() + Color.EXIT);
-				System.out.println("접속 지역 : " + Color.YELLOW + Main.loginMember.getAreasName() + Color.EXIT );
-				System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
-				System.out.println(vo.getTitle());
-				System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
-				System.out.println("물품명 : " + vo.getProduct());
-				System.out.println("가격 : " + vo.getPrice());
-				System.out.println("거래 장소 : " + vo.getTradeAreas());
-				System.out.println("접속 지역 : " + vo.getAreasName());
-				System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
-				String content = vo.getContent();
-				
-		        String[] contents = content.split("#");
-		       
-		        for (String con : contents) {
-		            System.out.println(con);
-		        }
-				
-				System.out.println(Color.YELLOW +"작성일자 : " +  vo.getEnrollDate() + Color.EXIT);
-				if(vo.getEditDate() != null) {
-					System.out.println(Color.YELLOW +"수정일자 : " + vo.getEditDate() + Color.EXIT);
-				}
-				System.out.println("▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​");
-				postMenu(vo.getBoardNo());
-				
-			} else {
-				throw new Exception();
+			
+			if(vo == null) {
+				throw new Exception("존재하지 않는 게시글입니다");
 			}
+			
+			Util.clearConsole();
+			System.out.println("접속중인 회원 : " + Color.YELLOW + Main.loginMember.getNick() + Color.EXIT);
+			System.out.println("접속 지역 : " + Color.YELLOW + Main.loginMember.getAreasName() + Color.EXIT );
+			System.out.println(Color.CYAN + "▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+			System.out.println(vo.getTitle());
+			System.out.println(Color.CYAN + "▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+			System.out.println("판매자 : " + vo.getMemberNick());
+			System.out.println("물품명 : " + vo.getProduct());
+			System.out.println("가격 : " + vo.getPrice());
+			System.out.println("거래 장소 : " + vo.getTradeAreas());
+			System.out.println("접속 지역 : " + vo.getAreasName());
+			System.out.println(Color.CYAN + "▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+			String content = vo.getContent();
+			
+	        String[] contents = content.split("#");
+	       
+	        for (String con : contents) {
+	            System.out.println(con);
+	        }
+	        
+			System.out.println(Color.YELLOW +"작성일자 : " +  vo.getEnrollDate() + Color.EXIT);
+			
+			if(vo.getEditDate() != null) {
+				System.out.println(Color.YELLOW +"수정일자 : " + vo.getEditDate() + Color.EXIT);
+			}
+			System.out.println(Color.YELLOW + "조회수 : " + vo.getHit() + Color.EXIT);
+			System.out.println(Color.CYAN + "▃▃▃​​​​​​​▃▃​​▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+			
+			postMenu(vo.getBoardNo());
+			
+			
 		} catch(Exception e) {
-			System.out.println("게시글 조회 실패");
+			System.out.println(Color.RED + "게시글 조회 실패" + Color.EXIT);
 			String ex = e.getMessage();
 			if(ex.contains("ORA-01722")) {System.out.println("숫자만 입력해주세요."); }
-			else if(ex.contains("null")) {System.out.println("존재하지 않는 게시글입니다.");}  // 미완성
-			// 삭제된 게시글 조회시도 하는 경우
+			
+//			System.out.println(ex);
 		}
 	}
 	
@@ -295,7 +330,7 @@ public class TradeController {
 		public void addWishList() {
 			try {
 				System.out.print("관심목록에 추가할 게시글 번호 : " + Color.CYAN);
-				String x = Main.SC.nextLine();
+				String x = sc.nextLine();
 				System.out.print(Color.EXIT);
 				int result = ts.addWishList(x);
 			

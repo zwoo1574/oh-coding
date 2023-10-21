@@ -31,6 +31,7 @@ public class TradeService {
 	public TradeVo showContent(String select) throws Exception {
 		
 		Connection conn = JDBCTemplate.getConnection();
+		
 		int result = dao.increaseHit(select, conn);
 		
 		TradeVo vo = dao.showContent(select, conn);
@@ -82,11 +83,11 @@ public class TradeService {
 	}
 
 	// 게시글 삭제
-	public int delPost(String del) throws Exception {
+	public int delPost(String boardNo) throws Exception {
 		
 		Connection conn = JDBCTemplate.getConnection();
 		
-		int result = dao.delPost(del, conn);
+		int result = dao.delPost(boardNo, conn);
 		
 		if(result == 1) {
 			JDBCTemplate.commit(conn);
