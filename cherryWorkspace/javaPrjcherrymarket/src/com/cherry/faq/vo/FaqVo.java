@@ -14,7 +14,6 @@ public class FaqVo {
 	//기본 생성자
 	public FaqVo() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	//생성자

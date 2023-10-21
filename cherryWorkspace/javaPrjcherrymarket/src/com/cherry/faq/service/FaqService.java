@@ -39,9 +39,52 @@ public class FaqService {
 		return result;
 	}
 	
+	//게시판 수정
+
+	public int edit(String no, String content) throws Exception {
 	
+		//conn
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//DAO
+		int result = dao.edit(conn, no, content);
+		
+		//tx
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.commit(conn);
+		}
+		
+		//close
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
 	
-	//게시판 검색(게시판번호)
+	//게시판 삭제
+	public int delete(String no) throws Exception{
+		
+		//conn
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//DAO
+		int result = dao.delete(conn, no);
+		
+		//tx
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		//close
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+	
+	//게시판 조회(게시판번호)
 	public static FaqVo boardPrintByNo(String num) throws Exception {
 		//conn
 		Connection conn = JDBCTemplate.getConnection();
@@ -71,31 +114,42 @@ public class FaqService {
 	}
 	
 	//게시판 상세 조회(게시판 번호)
-		public FaqVo boardDetailByNo(String no) throws Exception {
-			
-			//conn
-			Connection conn = JDBCTemplate.getConnection();
-			
-			//DAO
-			int result = dao.increaseHit(conn, no);
-			FaqVo vo = dao.boardDetailByNo(conn, no);
-			
-			//tx
-			if(result == 1) {
-				JDBCTemplate.commit(conn);
-			}else {
-				JDBCTemplate.rollback(conn);
-			}
+	public FaqVo boardDetailByNo(String no) throws Exception {
 		
-			//close
-			JDBCTemplate.close(conn);
-			
-			return vo;
-		}	
-	//게시판 수정
+		//conn
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//DAO
+		int result = dao.increaseHit(conn, no);
+		FaqVo vo = dao.boardDetailByNo(conn, no);
+		
+		//tx
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
 	
-	//게시판 삭제
-	
-	//게시판 조회
+		//close
+		JDBCTemplate.close(conn);
+		
+		return vo;
+	}
+
+	public FaqVo boardPrintByTitle(String boardTitle) throws Exception {
+		
+		//conn
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//DAO
+		FaqVo vo = dao.boardPrintByTitle(conn, boardTitle);
+		
+		
+		//close
+		JDBCTemplate.close(conn);
+		
+		return vo;
+	}	
+		
 	
 }
