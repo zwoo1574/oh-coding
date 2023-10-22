@@ -22,20 +22,20 @@ public class NoticeController {
 		System.out.println("===NOTICE===");
 
 		System.out.println("1. 공지글 작성");
-		System.out.println("2. 공지글 수정");
-		System.out.println("3. 최신순으로 공지글 조회");
-		System.out.println("4. 제목으로 공지글 검색");
-		System.out.println("5. 공지 번호로 검색해서 글 상세조회");
-		System.out.println("6. 공지글 공개여부");
+		System.out.println("2. 공지글 공개여부");
+		System.out.println("3. 공지글 수정");
+		System.out.println("4. 최신순으로 공지글 조회");
+		System.out.println("5. 제목으로 공지글 검색");
+		System.out.println("6. 공지 번호로 검색해서 글 상세조회");
 
 		String num = Main.SC.nextLine();
 		switch (num) {
 		case "1":write(); break;
-		case "2": modify(); break;
-		case "3":noticeList(); break;
-		case "4":searchNoticeByTitle(); break;		
-		case "5": noticeDetailByNo(); break;
-		case "6": secret(); break;
+		case "2": secret(); break;
+		case "3": modify(); break;
+		case "4":noticeList(); break;
+		case "5":searchNoticeByTitle(); break;		
+		case "6": noticeDetailByNo(); break;
 		default: System.out.println("잘 못 입력하셨습니다.");
 		}
 	}
@@ -73,7 +73,7 @@ public class NoticeController {
 			e.printStackTrace();
 		}
 
-	}
+	}//write() end
 
 	// 공지글 조회(최신순)
 	public void noticeList() {
@@ -109,14 +109,14 @@ public class NoticeController {
 			System.out.println("공지글 목록 조회를 실패하였습니다.");
 			e.printStackTrace();
 			}
-	}
+	}//noticeList() end
 		
 	//공지글 상세 조회(no기본키로)
 	public void noticeDetailByNo() {
 		try{
 			System.out.println("==공지글 상세 조회==");
 			//데이터
-			System.out.print("공지글 번호: ");
+			System.out.print("조회할 공지글 번호: ");
 			String num= Main.SC.nextLine();
 			
 			//서비스
@@ -124,7 +124,7 @@ public class NoticeController {
 			
 			//결과
 			if(vo==null) {
-				throw new Exception();
+				throw new Exception("비공개 공지글 입니다.");
 			}
 			System.out.println("------------------------------");
 			System.out.println("글번호: "+vo.getNo());
@@ -140,7 +140,7 @@ public class NoticeController {
 			e.printStackTrace();
 		}
 		
-	}
+	}//noticeDetailByNo() end
 	
 	//공지글 검색(제목)
 	public void searchNoticeByTitle() {
@@ -174,7 +174,8 @@ public class NoticeController {
 		}
 		
 		
-	}
+	}//searchNoticeByTitle() end
+	
 	//공지글 수정(관리자만,비공개 된 계시판만)
 	public void modify() {
 		
@@ -201,14 +202,15 @@ public class NoticeController {
 			int result=service.modify(vo);
 			//결과
 			if(result!=1) {
-				throw new Exception();
+				throw new Exception("비공개 공지글이 아닙니다.");
 			}
 			System.out.println("공지글 수정을 성공하셨습니다.");
 		}catch(Exception e) {
 			System.out.println("공지글 수정을 실패하셨습니다.");
 			e.printStackTrace();
 		}
-	}
+	}//modify() end
+	
 	//공지글 공개 여부(관리자만)
 	public void secret() {
 		
@@ -240,9 +242,9 @@ public class NoticeController {
 			System.out.println("공지글 공개 여부를 실패하셨습니다.");
 			e.printStackTrace();
 		}
-	}
+	}//secret() end
 		
 		
 		
-	}
+	}//class
 

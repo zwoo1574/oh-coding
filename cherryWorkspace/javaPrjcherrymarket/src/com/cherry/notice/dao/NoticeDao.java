@@ -31,10 +31,8 @@ public class NoticeDao {
 		//close
 		JDBCTemplate.close(pstmt);
 		return result;
-	
 		
-		
-	}
+	}//write(Connection conn, NoticeVo vo) end
 	
 	//공지글 조회(최신순)
 	public ArrayList<NoticeVo> noticeList(Connection conn) throws Exception {
@@ -66,7 +64,7 @@ public class NoticeDao {
 		JDBCTemplate.close(pstmt);
 		return voList;
 		
-	}
+	}//ArrayList<NoticeVo> noticeList(Connection conn) end
 	
 	//공지사항 상세 조회
 	public NoticeVo noticeDetailByNo(Connection conn, String num) throws Exception {
@@ -77,7 +75,7 @@ public class NoticeDao {
 		ResultSet rs=pstmt.executeQuery();
 		
 		//rs
-		NoticeVo vo= new NoticeVo();
+		NoticeVo vo= null;
 		if(rs.next()) {
 			String no=rs.getString("NOTICE_NO");
 			String title=rs.getString("TITLE");
@@ -100,7 +98,8 @@ public class NoticeDao {
 		JDBCTemplate.close(rs);
 		JDBCTemplate.close(pstmt);
 		return vo;
-	}
+	}//noticeDetailByNo(Connection conn, String num) end
+	
 	//조회수
 	public int Hit(Connection conn, String num) throws Exception {
 		//sql
@@ -114,9 +113,9 @@ public class NoticeDao {
 		//close
 		JDBCTemplate.close(pstmt);
 		return result;
-		
 				
-	}
+	}//Hit(Connection conn, String num) end
+	
 	//공지글 검색(제목)
 	public ArrayList<NoticeVo> searchNoticeByTitle(Connection conn, String search) throws Exception {
 		//sql
@@ -153,8 +152,9 @@ public class NoticeDao {
 		JDBCTemplate.close(pstmt);
 		return voList;
 		
-		
-	}
+
+	}//ArrayList<NoticeVo> searchNoticeByTitle(Connection conn, String search) end
+	
 	//공지글 감추기
 	public int secret(Connection conn, HashMap<String, String> map) throws Exception {
 		//sql
@@ -170,7 +170,7 @@ public class NoticeDao {
 		//close
 		JDBCTemplate.close(pstmt);
 		return result;
-	}
+	}//secret(Connection conn, HashMap<String, String> map) end
 	
 	//공지글 수정
 	public int modify(Connection conn, NoticeVo vo) throws Exception {
@@ -188,5 +188,6 @@ public class NoticeDao {
 		JDBCTemplate.close(pstmt);
 		return result;
 		
-	}	
-}
+	}//modify(Connection conn, NoticeVo vo) end	
+	
+}//class
