@@ -3,7 +3,6 @@ package com.cherry.trade.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,15 +10,14 @@ import com.cherry.jdbc.JDBCTemplate;
 import com.cherry.main.Main;
 import com.cherry.trade.vo.TradeVo;
 
-import oracle.jdbc.proxy.annotation.Pre;
 
 public class TradeDao {
 
 	// 게시글 목록 (중고거래 메인)
 	public List<TradeVo> printPost(Connection conn) throws Exception {
 //             "%-30s%-50s%-30s%-30s%-30s%-30s\n", "번호", "제목", "물품명", "가격", "판매자", "날짜"
-		String sql = "SELECT RPAD(T.BOARD_NO, 30, ' ') BOARD_NO ,RPAD(T.TITLE, 50, ' ') TITLE ,RPAD(T.PRODUCT, 30, ' ') PRODUCT ,RPAD(T.PRICE, 30, ' ') PRICE ,RPAD(M.NICK, 30, ' ') NICK ,RPAD(TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD'), 30, ' ') ENROLL_DATE ,T.PRODUCT ,T.PRICE, T.HIT, T.MEMBER_NO FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.DEL_YN = 'N' AND T.COMPLETE_YN = 'N' ORDER BY ENROLL_DATE DESC";
-//		String sql = "SELECT T.BOARD_NO ,T.TITLE ,T.PRODUCT ,T.PRICE ,M.NICK ,TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD') ENROLL_DATE ,T.PRODUCT ,T.PRICE FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE DEL_YN = 'N' ORDER BY ENROLL_DATE DESC";
+//		String sql = "SELECT RPAD(T.BOARD_NO, 30, ' ') BOARD_NO ,RPAD(T.TITLE, 50, ' ') TITLE ,RPAD(T.PRODUCT, 30, ' ') PRODUCT ,RPAD(T.PRICE, 30, ' ') PRICE ,RPAD(M.NICK, 30, ' ') NICK ,RPAD(TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD'), 30, ' ') ENROLL_DATE ,T.PRODUCT ,T.PRICE, T.HIT, T.MEMBER_NO FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.DEL_YN = 'N' AND T.COMPLETE_YN = 'N' ORDER BY ENROLL_DATE DESC";
+		String sql = "SELECT T.BOARD_NO, T.TITLE, T.PRODUCT, T.PRICE, M.NICK, TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD') ENROLL_DATE , T.HIT, T.MEMBER_NO FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.DEL_YN = 'N' AND T.COMPLETE_YN = 'N' ORDER BY ENROLL_DATE DESC";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
 		
@@ -53,7 +51,7 @@ public class TradeDao {
 		return voList;
 	}
 
-	// 게시글 조회   -- 조회수 추가해야함
+	// 게시글 조회
 	public TradeVo showContent(String select, Connection conn) throws Exception {
 		
 		String sql = "SELECT T.BOARD_NO, T.TITLE, T.CONTENT, T.TRADE_AREAS, T.PRODUCT, T.PRICE, T.ENROLL_DATE, T.EDIT_DATE, M.NICK, A.AREAS_NAME, T.HIT FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO JOIN AREAS A ON M.AREAS_CODE = A.AREAS_CODE WHERE T.BOARD_NO = ? AND T.COMPLETE_YN = 'N' AND T.DEL_YN = 'N'";
@@ -202,23 +200,40 @@ public class TradeDao {
 	}
 
 	// 관심목록 추가 
-	public int addWishList(String x, Connection conn) throws Exception {
+	public int addWishList(String boardNo, Connection conn) throws Exception {
+
+		// 본인 게시물인지 확인
+		String z = "SELECT MEMBER_NO FROM TRADE WHERE BOARD_NO = ?"; 
+		PreparedStatement ps = conn.prepareStatement(z);
+		ps.setString(1, boardNo);
+		ResultSet rs = ps.executeQuery();
+		String x = null;
+		if(rs.next()) {
+			x = rs.getString("MEMBER_NO");
+		}
 		
-		String sql = "INSERT INTO WISHLIST (WISHLIST_NO, BOARD_NO, MEMBER_NO) SELECT SEQ_WISHLIST_NO.NEXTVAL, ?, ? FROM WISHLIST WHERE NOT EXISTS ( SELECT 1 FROM WISHLIST WHERE BOARD_NO = ? AND MEMBER_NO = ? )";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, x);
-		pstmt.setString(2, Main.loginMember.getMemberNo());
-		pstmt.setString(3, x);
-		pstmt.setString(4, Main.loginMember.getMemberNo());
-		int result = pstmt.executeUpdate();
+		JDBCTemplate.close(ps);
+		JDBCTemplate.close(rs);
 		
+		int result = 0;
+		PreparedStatement pstmt = null;
 		
+		// 본인 게시글이 아니면 위시리스트에 추가
+		if(!x.equals(Main.loginMember.getMemberNo())) {
+			String sql = "INSERT INTO WISHLIST (WISHLIST_NO, BOARD_NO, MEMBER_NO) VALUES (SEQ_WISHLIST_NO.NEXTVAL, ?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, boardNo);
+			pstmt.setString(2, Main.loginMember.getMemberNo());
+			
+			result = pstmt.executeUpdate();
+			
+		}
 		
 		JDBCTemplate.close(pstmt);
-		
+
 		return result;
-		
-		
 	}
 
 	// 게시글 정보 조회
@@ -301,6 +316,84 @@ public class TradeDao {
 		JDBCTemplate.close(pstmt);
 		
 		return result;
+	}
+
+	public List<TradeVo> searchPostByTitle(String searchTitle, Connection conn) throws Exception {
+		
+//		String sql = "SELECT RPAD(T.BOARD_NO, 30, ' ') BOARD_NO ,RPAD(T.TITLE, 50, ' ') TITLE ,RPAD(T.PRODUCT, 30, ' ') PRODUCT ,RPAD(T.PRICE, 30, ' ') PRICE ,RPAD(M.NICK, 30, ' ') NICK ,RPAD(TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD'), 30, ' ') ENROLL_DATE ,T.PRODUCT ,T.PRICE, T.HIT, T.MEMBER_NO FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE TITLE LIKE ? AND T.DEL_YN = 'N' AND T.COMPLETE_YN = 'N' ORDER BY ENROLL_DATE DESC";
+		String sql = "SELECT T.BOARD_NO, T.TITLE, T.PRODUCT, T.PRICE, M.NICK, TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD') ENROLL_DATE , T.HIT, T.MEMBER_NO FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.TITLE LIKE ? AND T.DEL_YN = 'N' AND T.COMPLETE_YN = 'N' ORDER BY ENROLL_DATE DESC";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, "%" + searchTitle + "%");
+		
+		ResultSet rs = pstmt.executeQuery();
+	
+		List<TradeVo> voList = new ArrayList<TradeVo>();
+		while(rs.next()) {
+			String no = rs.getString("BOARD_NO");
+			String title = rs.getString("TITLE");
+			String product = rs.getString("PRODUCT");
+			String price = rs.getString("PRICE");
+			String nick = rs.getString("NICK");
+			String date = rs.getString("ENROLL_DATE");
+			String hit = rs.getString("HIT");
+			String memberNo = rs.getString("MEMBER_NO");
+			
+			TradeVo vo = new TradeVo();
+			vo.setBoardNo(no);
+			vo.setTitle(title);
+			vo.setProduct(product);
+			vo.setPrice(price);
+			vo.setMemberNick(nick);
+			vo.setEnrollDate(date);
+			vo.setHit(hit);
+			vo.setMemberNo(memberNo);
+			
+			voList.add(vo);
+		}
+		
+		JDBCTemplate.close(pstmt);
+		JDBCTemplate.close(rs);
+		
+		return voList;
+	}
+
+	public List<TradeVo> searchPostByProduct(String searchProduct, Connection conn) throws Exception {
+		
+//		String sql = "SELECT RPAD(T.BOARD_NO, 30, ' ') BOARD_NO ,RPAD(T.TITLE, 50, ' ') TITLE ,RPAD(T.PRODUCT, 30, ' ') PRODUCT ,RPAD(T.PRICE, 30, ' ') PRICE ,RPAD(M.NICK, 30, ' ') NICK ,RPAD(TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD'), 30, ' ') ENROLL_DATE ,T.PRODUCT ,T.PRICE, T.HIT, T.MEMBER_NO FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE PRODUCT LIKE ? AND T.DEL_YN = 'N' AND T.COMPLETE_YN = 'N' ORDER BY ENROLL_DATE DESC";
+		String sql = "SELECT T.BOARD_NO, T.TITLE, T.PRODUCT, T.PRICE, M.NICK, TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD') ENROLL_DATE , T.HIT, T.MEMBER_NO FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.PRODUCT LIKE ? AND T.DEL_YN = 'N' AND T.COMPLETE_YN = 'N' ORDER BY ENROLL_DATE DESC";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, "%" + searchProduct + "%");
+		
+		ResultSet rs = pstmt.executeQuery();
+	
+		List<TradeVo> voList = new ArrayList<TradeVo>();
+		while(rs.next()) {
+			String no = rs.getString("BOARD_NO");
+			String title = rs.getString("TITLE");
+			String product = rs.getString("PRODUCT");
+			String price = rs.getString("PRICE");
+			String nick = rs.getString("NICK");
+			String date = rs.getString("ENROLL_DATE");
+			String hit = rs.getString("HIT");
+			String memberNo = rs.getString("MEMBER_NO");
+			
+			TradeVo vo = new TradeVo();
+			vo.setBoardNo(no);
+			vo.setTitle(title);
+			vo.setProduct(product);
+			vo.setPrice(price);
+			vo.setMemberNick(nick);
+			vo.setEnrollDate(date);
+			vo.setHit(hit);
+			vo.setMemberNo(memberNo);
+			
+			voList.add(vo);
+		}
+		
+		JDBCTemplate.close(pstmt);
+		JDBCTemplate.close(rs);
+		
+		return voList;
 	}
 
 }
