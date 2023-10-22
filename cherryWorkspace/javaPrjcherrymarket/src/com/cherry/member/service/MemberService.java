@@ -6,6 +6,7 @@ import java.util.*;
 import com.cherry.jdbc.JDBCTemplate;
 import com.cherry.member.dao.MemberDao;
 import com.cherry.member.vo.MemberVo;
+import com.cherry.trade.vo.TradeVo;
 
 public class MemberService {
 	
@@ -110,6 +111,46 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		
 		return result;
+	}
+
+	public List<TradeVo> purchaseList(String no) throws Exception{
+		Connection conn = JDBCTemplate.getConnection();
+		List<TradeVo> voList = dao.purchaseList(conn,no);
+		
+		JDBCTemplate.close(conn);
+		
+		return voList;
+	}
+
+	public List<TradeVo> wishList(String no) throws Exception{
+		Connection conn = JDBCTemplate.getConnection();
+		List<TradeVo> voList = dao.wishList(conn,no);
+		
+		JDBCTemplate.close(conn);
+		
+		return voList;
+	}
+
+	public int wishDelete(String memberNo, String boardNo) throws Exception{
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.wishDelete(conn,memberNo,boardNo);
+		if(result == 1 ) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
+	public String score(String no) throws Exception{
+		Connection conn = JDBCTemplate.getConnection();
+		String score = dao.score(conn,no);
+		
+		JDBCTemplate.close(conn);
+		
+		return score;
 	}
 
 }
