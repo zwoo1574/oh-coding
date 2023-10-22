@@ -5,6 +5,7 @@ import java.util.*;
 
 import com.cherry.jdbc.JDBCTemplate;
 import com.cherry.member.vo.MemberVo;
+import com.cherry.trade.vo.TradeVo;
 
 public class MemberDao {
 
@@ -139,6 +140,81 @@ public class MemberDao {
 		JDBCTemplate.close(pstmt);
 		
 		return result;
+	}
+	//구매목록조회
+	public List<TradeVo> purchaseList(Connection conn, String no) throws Exception{
+		String sql ="SELECT H.PURCHASE_NO ,TO_CHAR(H.ENROLL_DATE,'YYYY-MM-DD') AS  ENROLL_DATE ,M.NICK ,T.TRADE_AREAS ,T.PRODUCT ,T.PRICE "
+				+ "FROM PURCHASE_HISTORY H JOIN MEMBER M ON H.BUYER_NO = M.MEMBER_NO JOIN TRADE T USING (BOARD_NO) WHERE M.MEMBER_NO = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, no);
+		ResultSet rs = pstmt.executeQuery();
+		List<TradeVo> voList = new ArrayList<TradeVo>();
+		while(rs.next()) {
+			TradeVo vo = new TradeVo();
+			vo.setPurchaseNo(rs.getString("PURCHASE_NO"));
+			vo.setEnrollDate(rs.getString("ENROLL_DATE"));
+			vo.setMemberNick(rs.getString("NICK"));
+			vo.setTradeAreas(rs.getString("TRADE_AREAS"));
+			vo.setProduct(rs.getString("PRODUCT"));
+			vo.setPrice(rs.getString("PRICE"));
+			voList.add(vo);
+		}
+		JDBCTemplate.close(rs);
+		JDBCTemplate.close(pstmt);
+		
+		return voList;
+	}
+	//관심 목록 
+	public List<TradeVo> wishList(Connection conn, String no) throws Exception{
+		String sql ="SELECT BOARD_NO, COMPLETE_YN, TITLE, PRODUCT, PRICE "
+				+ "FROM WISHLIST W JOIN MEMBER M ON M.MEMBER_NO = W.MEMBER_NO JOIN TRADE T USING (BOARD_NO) "
+				+ "WHERE M.MEMBER_NO = ? ORDER BY WISHLIST_NO";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, no);
+		ResultSet rs = pstmt.executeQuery();
+		List<TradeVo> voList = new ArrayList<TradeVo>();
+		while(rs.next()) {
+			TradeVo vo = new TradeVo();
+			vo.setBoardNo(rs.getString("BOARD_NO"));
+			vo.setCompleteYn(rs.getString("COMPLETE_YN"));
+			vo.setTitle(rs.getString("TITLE"));
+			vo.setProduct(rs.getString("PRODUCT"));
+			vo.setPrice(rs.getString("PRICE"));
+			voList.add(vo);
+			
+		}
+		JDBCTemplate.close(rs);
+		JDBCTemplate.close(pstmt);
+		
+		return voList;
+	}
+	//관심목록 지우기
+	public int wishDelete(Connection conn, String memberNo, String boardNo) throws Exception{
+		String sql = "DELETE FROM WISHLIST WHERE BOARD_NO = ? AND MEMBER_NO=?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1,boardNo);
+		pstmt.setString(2, memberNo);
+		int result = pstmt.executeUpdate();
+		
+		JDBCTemplate.close(pstmt);
+		
+		return result;
+	}
+	//매너온도 조회
+	public String score(Connection conn, String no) throws Exception{
+		String sql = "SELECT SUM(SCORE) AS SCORE FROM REVIEW R JOIN purchase_history H USING (purchase_no) "
+				+ "JOIN TRADE T ON T.BOARD_NO = H.BOARD_NO WHERE T.MEMBER_NO = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, no);
+		ResultSet rs = pstmt.executeQuery();
+		String score = null;
+		if(rs.next()) {
+			score = rs.getString("SCORE");
+		}
+		JDBCTemplate.close(rs);
+		JDBCTemplate.close(pstmt);
+		
+		return score;
 	}
 
 }
