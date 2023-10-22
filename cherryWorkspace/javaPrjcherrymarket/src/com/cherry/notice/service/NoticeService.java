@@ -35,7 +35,7 @@ public class NoticeService {
 		//close
 		JDBCTemplate.close(conn);
 		return result;
-	}
+	}//write(NoticeVo vo) end
 	
 	//공지글 조회(최신순)
 	public ArrayList<NoticeVo> noticeList() throws Exception  {
@@ -50,7 +50,7 @@ public class NoticeService {
 		JDBCTemplate.close(conn);
 		return voList;
 				
-	}
+	}//ArrayList<NoticeVo> noticeList() end
 	
 	//공지사항 상세 조회
 	public NoticeVo noticeDetailByNo(String num) throws Exception {
@@ -71,7 +71,7 @@ public class NoticeService {
 		//close
 		JDBCTemplate.close(conn);
 		return vo;
-	}
+	}//NoticeVo noticeDetailByNo(String num) end
 	
 	//공지글 검색(제목)
 	public ArrayList<NoticeVo> searchNoticeByTitle(String search) throws Exception {
@@ -85,7 +85,8 @@ public class NoticeService {
 		//close
 		JDBCTemplate.close(conn);
 		return voList;
-	}
+	}//ArrayList<NoticeVo> searchNoticeByTitle(String search) end
+	
 	//공지글 감추기
 	public int secret(HashMap<String, String> map) throws Exception {
 		//conn
@@ -102,10 +103,8 @@ public class NoticeService {
 		//close
 		JDBCTemplate.close(conn);
 		return result;
-			
-
 	
-	}
+	}//secret(HashMap<String, String> map) end
 	
 	//공지글 수정
 	public int modify(NoticeVo vo) throws Exception {
@@ -124,7 +123,7 @@ public class NoticeService {
 		JDBCTemplate.close(conn);
 		return result;
 				
-	}
+	}//modify(NoticeVo vo) end
 	
 
-}
+}//class
