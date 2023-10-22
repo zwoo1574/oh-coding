@@ -152,6 +152,8 @@ public class QnaController {
 			System.out.println("조회수: " + vo.getHit());
 			System.out.println("작성일자: " + vo.getMemberEnrollDate());
 			System.out.println("내용: " + vo.getContent());
+			System.out.println();
+			System.out.println("[관리자 답변] " + vo.getAnswer());
 			System.out.println("---------------------------------------");
 
 		} catch (Exception e) {
@@ -227,9 +229,9 @@ public class QnaController {
 			System.out.println("------- 문의글 목록 (관리자용) -------");
 			
 			// 관리자 체크
-			if(Main.loginManager == null) {
-				throw new Exception("관리자만 사용할 수 있습니다.");
-			}
+//			if(Main.loginManager == null) {
+//				throw new Exception("관리자만 사용할 수 있습니다.");
+//			}
 			
 			// 데이터
 			
@@ -277,9 +279,9 @@ public class QnaController {
 			System.out.println("------- 관리자 답변작성 -------");
 			
 			// 관리자 체크
-			if(Main.loginManager == null) {
-				throw new Exception("관리자만 사용할 수 있습니다.");
-			}
+//			if(Main.loginManager == null) {
+//				throw new Exception("관리자만 사용할 수 있습니다.");
+//			}
 
 			// 데이터
 			System.out.print("답글을 작성할 글 번호: ");
@@ -315,9 +317,9 @@ public class QnaController {
 			System.out.println("------- 관리자 답변 수정 -------");
 			
 			// 관리자 체크
-			if(Main.loginManager == null) {
-				throw new Exception("관리자만 사용할 수 있습니다.");
-			}
+//			if(Main.loginManager == null) {
+//				throw new Exception("관리자만 사용할 수 있습니다.");
+//			}
 			
 			// 데이터
 			System.out.print("수정할 글 번호: ");
