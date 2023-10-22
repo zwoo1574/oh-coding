@@ -101,11 +101,11 @@ public class TradeService {
 	}
 
 	// 관심목록 추가
-	public int addWishList(String x) throws Exception {
+	public int addWishList(String boardNo) throws Exception {
 		
 		Connection conn = JDBCTemplate.getConnection();
 		
-		int result = dao.addWishList(x, conn);
+		int result = dao.addWishList(boardNo, conn);
 		
 		if(result == 1) {
 			JDBCTemplate.commit(conn);
@@ -162,6 +162,28 @@ public class TradeService {
 		JDBCTemplate.close(conn);
 		
 		return result;
+	}
+
+	public List<TradeVo> searchPostByTitle(String searchTitle) throws Exception {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		List<TradeVo> voList = dao.searchPostByTitle(searchTitle, conn);
+		
+		JDBCTemplate.close(conn);
+		
+		return voList;
+	}
+
+	public List<TradeVo> searchPostByProduct(String searchProduct) throws Exception {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		List<TradeVo> voList = dao.searchPostByProduct(searchProduct, conn);
+		
+		JDBCTemplate.close(conn);
+		
+		return voList;
 	}
 
 }
