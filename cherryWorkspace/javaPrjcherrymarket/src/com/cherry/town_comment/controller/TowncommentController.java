@@ -32,35 +32,6 @@ public class TowncommentController {
 		}
 	}
 
-	//  ---------------------댓글삭제---------------------------------------
-//	private void commentdelete() {
-//		try {
-//			System.out.println("------댓글삭제-----");
-//			
-//			if(Main.loginMember == null) {
-//				throw new Exception("로그인 해주세요");
-//			}
-//			
-//			System.out.println("댓글번호 : ");
-//			String num = Main.SC.nextLine();
-//			String memberNo = Main.loginMember.getMemberNo();
-//			
-//			HashMap<String, String> map = new HashMap<String,String>();
-//			map.put("commentNo", memberNo);
-//			map.put("loginMemberNo", memberNo);
-//			int result = service.delete(map);
-//			
-//			if(result != 1) {
-//				throw new Exception();
-//			}
-//			System.out.println("댓글이 삭제되었습니다.");
-//			
-//		}catch(Exception e) {
-//			System.out.println("댓글삭제 실패");
-//			e.printStackTrace();
-//		}
-//	}
-
 //  ---------------------댓글작성---------------------------------------
 	public void commentwrite() {
 		try {
@@ -73,6 +44,10 @@ public class TowncommentController {
 			vo.setContent(content);
 			
 			int result = service.commentwrite(vo);
+			
+			if(result != 1) {
+				throw new Exception();
+			}
 			
 		}catch(Exception e) {
 			System.out.println("댓글작성실패");
