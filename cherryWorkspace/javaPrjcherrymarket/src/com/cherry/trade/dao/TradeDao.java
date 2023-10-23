@@ -15,14 +15,14 @@ public class TradeDao {
 
 	// 게시글 목록 (중고거래 메인)
 	public List<TradeVo> printPost(Connection conn) throws Exception {
-//             "%-30s%-50s%-30s%-30s%-30s%-30s\n", "번호", "제목", "물품명", "가격", "판매자", "날짜"
-//		String sql = "SELECT RPAD(T.BOARD_NO, 30, ' ') BOARD_NO ,RPAD(T.TITLE, 50, ' ') TITLE ,RPAD(T.PRODUCT, 30, ' ') PRODUCT ,RPAD(T.PRICE, 30, ' ') PRICE ,RPAD(M.NICK, 30, ' ') NICK ,RPAD(TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD'), 30, ' ') ENROLL_DATE ,T.PRODUCT ,T.PRICE, T.HIT, T.MEMBER_NO FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.DEL_YN = 'N' AND T.COMPLETE_YN = 'N' ORDER BY ENROLL_DATE DESC";
 		String sql = "SELECT T.BOARD_NO, T.TITLE, T.PRODUCT, T.PRICE, M.NICK, TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD') ENROLL_DATE , T.HIT, T.MEMBER_NO FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.DEL_YN = 'N' AND T.COMPLETE_YN = 'N' ORDER BY ENROLL_DATE DESC";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
 		
 		List<TradeVo> voList = new ArrayList<TradeVo>();
+		
 		while(rs.next()) {
+			
 			String no = rs.getString("BOARD_NO");
 			String title = rs.getString("TITLE");
 			String product = rs.getString("PRODUCT");
