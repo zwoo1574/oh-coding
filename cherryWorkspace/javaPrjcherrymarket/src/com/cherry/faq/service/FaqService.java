@@ -84,7 +84,7 @@ public class FaqService {
 		return result;
 	}
 	
-	//게시판 조회(게시판번호)
+	//게시판 검색(번호)
 	public static FaqVo boardPrintByNo(String num) throws Exception {
 		//conn
 		Connection conn = JDBCTemplate.getConnection();
@@ -97,7 +97,39 @@ public class FaqService {
 		
 		return vo;
 	}
+	
+	//게시판 검색(제목)
+	public FaqVo boardPrintByTitle(String boardTitle) throws Exception {
+		
+		//conn
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//DAO
+		FaqVo vo = dao.boardPrintByTitle(conn, boardTitle);
+		
+		
+		//close
+		JDBCTemplate.close(conn);
+		
+		return vo;
+	}
 
+	//게시판 검색(관리자 번호)
+	public List<FaqVo> boardPrintByMno(String mNo) throws Exception {
+		
+		//conn
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//DAO
+		List<FaqVo> voList = dao.boardPrintByMno(conn, mNo);
+		
+		//close
+		JDBCTemplate.close(conn);
+		
+		return voList;
+		
+		
+	}
 	//게시판 전체 조회
 	public List<FaqVo> boardList() throws Exception {
 		
@@ -135,21 +167,5 @@ public class FaqService {
 		
 		return vo;
 	}
-
-	public FaqVo boardPrintByTitle(String boardTitle) throws Exception {
-		
-		//conn
-		Connection conn = JDBCTemplate.getConnection();
-		
-		//DAO
-		FaqVo vo = dao.boardPrintByTitle(conn, boardTitle);
-		
-		
-		//close
-		JDBCTemplate.close(conn);
-		
-		return vo;
-	}	
-		
 	
-}
+}//class
