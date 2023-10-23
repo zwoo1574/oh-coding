@@ -2,20 +2,36 @@ package com.cherry.member.controller;
 
 import java.util.*;
 
+import com.cherry.faq.controller.FaqController;
 import com.cherry.main.Main;
 import com.cherry.member.service.MemberService;
 import com.cherry.member.vo.MemberVo;
+import com.cherry.notice.controller.NoticeController;
+import com.cherry.qna.controller.QnaController;
+import com.cherry.town.controller.TownController;
+import com.cherry.trade.controller.TradeController;
 import com.cherry.trade.vo.TradeVo;
 
 	
 public class MemberController {
 	
 	private final MemberService service;
+	private final TradeController trade;
+	private final TownController town;
+	private final NoticeController notice;
+	private final FaqController faq;
+	private final QnaController qna;
 	
 	public MemberController() {
 		service = new MemberService();
+		trade = new TradeController();
+		town = new TownController();
+		notice = new NoticeController();
+		faq = new FaqController();
+		qna = new QnaController();
+		
 	}
- 	
+	// 로그인 창
 	public void memberMenu() {
 		System.out.println("===== 메뉴선택 =====");
 		
@@ -34,9 +50,9 @@ public class MemberController {
 		default : System.out.println("잘못 입력하였습니다.");
 		}
 	}
-
-	public void loginMenu() {
-		System.out.println("===== 로그인 메뉴 선택 =====");
+	//마이 페이지
+	public void myPage() {
+		System.out.println("===== 마이페이지 선택 =====");
 		
 		System.out.print(" 1: 내 정보 보기");	//+닉네임,비밀번호,전화번호,주소 변경 + 회원탈퇴[Dath 구조]
 		System.out.print(" 2: 로그아웃");
@@ -52,12 +68,35 @@ public class MemberController {
 		case "3" :purchaseList(); break;
 		case "4" :wishList(); break;
 		case "5" :score(); break;
+		}
+	}
+	//로그인 메뉴 선택
+	public void loginMenu() {
+		System.out.println("===== 로그인 메뉴 선택 =====");
+		
+		System.out.print(" 1: 거래게시판");
+		System.out.print(" 2: 동네생활");
+		System.out.print(" 3: 공지사항");
+		System.out.print(" 4: FAQ");
+		System.out.print(" 5: QnA");
+		System.out.print(" 6: 마이페이지");
+		System.out.println(" 9: 로그아웃");
+		
+		String num = Main.SC.nextLine();
+		
+		switch(num) {
+		case "1" :trade.tradeMain(); break;
+//		case "2" :town.selectMenu(); break; // 지우님꺼 try catch 문 안 되어 있어서 일단 주석처리함 
+		case "3" :notice.selectMenu(); break;
+		case "4" :faq.selectMenu(); break;
+		case "5" :qna.selectMenu(); break;
+		case "6" :myPage(); break;
+		case "9" :logout(); break;
 		default : System.out.println("잘못 입력하였습니다.");
 		}
 	}
 
-
-	// 내정보 보기 (마이페이지)
+	// 내정보 보기
 	private void Info() {
 		System.out.println("===== 마이페이지 ======");
 		try {
@@ -86,7 +125,7 @@ public class MemberController {
 			case "3" : changeAddress(); break;
 			case "4" : changePhone(); break;
 			case "5" : quit(); break;
-			case "9" : loginMenu(); break;
+			case "9" : myPage(); break;
 			default : System.out.println("잘못 입력하였습니다.");
 			}
 			
@@ -182,6 +221,7 @@ public class MemberController {
 		Main.loginMember = null;
 		System.out.println("로그아웃 되었습니다.");
 	}
+	
 	//회원탈퇴
 	public void quit() {
 		System.out.println("===== 회원탈퇴 ======");
@@ -331,7 +371,7 @@ public class MemberController {
 			
 			System.out.println("====================\n\n");
 			
-			loginMenu();
+			myPage();
 			
 		}catch(Exception e) {
 			System.out.println("구매 내역 조회 실패");
@@ -363,7 +403,7 @@ public class MemberController {
 			
 			switch(num) {
 			case "1" : wishDelete(); break;
-			case "9" : loginMenu(); break; 
+			case "9" : myPage(); break; 
 			default : System.out.println("잘못 입력하였습니다.");
 			}
 			
@@ -410,7 +450,7 @@ public class MemberController {
 			}
 			
 			System.out.println("매너 온도 : "+score+"점");
-			loginMenu();
+			myPage();
 		}catch(Exception e) {
 			System.out.println("매너 온도 확인 실패");
 			e.printStackTrace();
