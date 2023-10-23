@@ -7,6 +7,8 @@ import com.cherry.jdbc.JDBCTemplate;
 import com.cherry.member.vo.MemberVo;
 import com.cherry.trade.vo.TradeVo;
 
+import oracle.jdbc.proxy.annotation.Pre;
+
 public class MemberDao {
 
 
@@ -71,6 +73,7 @@ public class MemberDao {
 			userVo.setJoinDate(rs.getString("JOIN_DATE"));
 			userVo.setEditDate(rs.getString("EDIT_DATE"));
 		}
+		JDBCTemplate.close(rs);
 		JDBCTemplate.close(pstmt);
 		
 		return userVo;
@@ -215,6 +218,68 @@ public class MemberDao {
 		JDBCTemplate.close(pstmt);
 		
 		return score;
+	}
+	//아이디찾기
+	public String findId(Connection conn, MemberVo vo) throws Exception{
+		String sql = "SELECT ID FROM MEMBER WHERE NAME = ? AND EMAIL = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, vo.getName());
+		pstmt.setString(2, vo.getEmail());
+		ResultSet rs = pstmt.executeQuery();
+		String userId = null;
+		if(rs.next()) {
+			userId = rs.getString("ID");
+		}
+		JDBCTemplate.close(rs);
+		JDBCTemplate.close(pstmt);
+		
+		return userId;
+	}
+	//비밀번호 찾기
+	public MemberVo findPwd(Connection conn, MemberVo vo) throws Exception{
+		String sql = "SELECT MEMBER_NO,PWD FROM MEMBER WHERE NAME = ? AND ID = UPPER(?) AND PHONE = ?";
+		PreparedStatement pstmt =conn.prepareStatement(sql);
+		pstmt.setString(1, vo.getName());
+		pstmt.setString(2, vo.getId());
+		pstmt.setString(3, vo.getPhone());
+		ResultSet rs =pstmt.executeQuery();
+		MemberVo userVo =null;
+		if(rs.next()) {
+			userVo = new MemberVo();
+			userVo.setMemberNo(rs.getString("MEMBER_NO"));
+			userVo.setPwd(rs.getString("PWD"));
+		}
+		JDBCTemplate.close(rs);
+		JDBCTemplate.close(pstmt);
+		
+		return userVo;
+	}
+	// findPwd() -> pwdReset()
+	public int pwdReset(Connection conn, MemberVo userVo) throws Exception {
+		String sql="UPDATE MEMBER SET PWD = '1Q2W3E4R' WHERE MEMBER_NO = ? AND PWD = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, userVo.getMemberNo());
+		pstmt.setString(2, userVo.getPwd());
+		int result = pstmt.executeUpdate();
+		
+		JDBCTemplate.close(pstmt);
+		
+		return result;
+	}
+	//findPwd() -> pwdReset() -> newPwd()
+	public String newPwd(Connection conn, MemberVo userVo) throws Exception{
+		String sql="SELECT PWD FROM MEMBER WHERE MEMBER_NO = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, userVo.getMemberNo());
+		ResultSet rs = pstmt.executeQuery();
+		String newPwd = null;
+		if(rs.next()) {
+			newPwd = rs.getString("PWD");
+		}
+		JDBCTemplate.close(rs);
+		JDBCTemplate.close(pstmt);
+		
+		return newPwd;
 	}
 
 }

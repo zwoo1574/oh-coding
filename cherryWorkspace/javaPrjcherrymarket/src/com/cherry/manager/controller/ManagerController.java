@@ -1,26 +1,179 @@
 package com.cherry.manager.controller;
 
+import java.util.*;
+
 import com.cherry.main.Main;
+import com.cherry.manager.service.ManagerService;
+import com.cherry.manager.vo.ManagerVo;
+import com.cherry.member.vo.MemberVo;
+import com.cherry.trade.controller.TradeController;
+import com.cherry.trade.vo.TradeVo;
 
 public class ManagerController {
 	
+	private final ManagerService service;
+	private final TradeController trade;
+	
+	public ManagerController() {
+		service = new ManagerService();
+		trade = new TradeController();
+	}
+	//관리자 메뉴 선택
 	public void managerMenu() {
-		System.out.println("===== 메뉴선택 =====");
+		System.out.println("===== 관리자 메뉴 선택 =====");
 		
 		/* 관리자 기능 */
-		System.out.println("1: 관리자 회원전체 조회");
-		System.out.println("2: 관리자 회원 상세 조회(번호/아이디/닉네임)");
-		System.out.println("3: 관리자 회원 강제 탈퇴");
-		System.out.println("4: 관리자 회원 비번 초기화");
+		System.out.print("1: 관리자 로그인");
+		System.out.print(" 2: 관리자 로그아웃");
+		System.out.print(" 3: 관리자 회원전체 조회");
+		System.out.print(" 4: 관리자 회원 상세 조회(번호/아이디/닉네임)");
+		System.out.println(" 5: 관리자 회원 강제 탈퇴");
 
 		String num = Main.SC.nextLine();
 		
 		switch(num) {
-//		case "1" :userList(); break;
-//		case "2" :userDetile(); break;
-//		case "3" :userkick(); break;
-//		case "4" :userPwdReset(); break;
+		case "1" :loginManager(); break;
+		case "2" :logoutManager(); break;
+		case "3" :userList(); break;
+		case "4" :userDetile(); break;
+		case "5" :userKick(); break;
+		default : System.out.println("잘못 입력하였습니다.");
 		}
+	}
+
+	//로그인 메뉴 선택
+	public void loginMenu() {
+		System.out.println("===== 로그인 메뉴 선택 =====");
+		
+		System.out.print(" 1: 거래 게시판");
+//		System.out.print(" 2: ");
+//		System.out.print(" 3: ");		
+//		System.out.print(" 4: "); 
+//		System.out.println(" 5: ");
+		
+		
+		String num = Main.SC.nextLine();
+		
+		switch(num) {
+		case "1" :trade.tradeMain(); break;
+//		case "2" :logout(); break;
+//		case "3" :purchaseList(); break;
+//		case "4" :wishList(); break;
+//		case "5" :score(); break;
+		default : System.out.println("잘못 입력하였습니다.");
+		}
+	}
+	//관리자 로그인
+	private void loginManager() {
+		System.out.println("===== 관리자 로그인 ======");
+		try {
+			if(Main.loginManager != null) {
+				System.out.println("이미 로그인 상태입니다.");
+				return;
+			}
+			
+			System.out.println("ID : ");
+			String id = Main.SC.nextLine();
+			System.out.println("PWD : ");
+			String pwd = Main.SC.nextLine();
+			
+			ManagerVo vo = new ManagerVo();
+			vo.setManagerId(id);
+			vo.setPwd(pwd);
+			
+			Main.loginManager = service.loginManager(vo); 
+			
+			if(Main.loginManager == null) {
+				throw new Exception();
+			}
+			System.out.println("관리자 로그인 성공");
+			System.out.println(Main.loginManager.getName()+" 님 환영합니다.");
+			
+//			loginMenu();
+		}catch(Exception e) {
+			System.out.println("관리자 로그인 실패");
+			e.printStackTrace();
+		}
+		
+	}
+	//관리자 로그아웃
+	private void logoutManager() {
+		System.out.println("===== 관리자 로그아웃 ======");
+		if(Main.loginManager == null) {
+			System.out.println("관리자 로그인 상태가 아닙니다");
+			return;
+		}
+		Main.loginManager = null;
+		System.out.println("관리자 로그아웃 되었습니다.");
+		
+	}
+
+	//사용자 회원 전체 조회
+	private void userList() {
+		System.out.println("=================================== 회원 전체 조회 ===================================");
+		try {
+			//로그인 검사
+			if(Main.loginManager == null) {
+				throw new Exception("관리자 로그인부터 진행해주세요");
+			}
+			List<MemberVo> userList = service.userList();
+			
+			System.out.println("사용자번호 | 동네번호 | 사용자명 | 아이디 | 닉네임 | 이메일 | 전화번호 | 주소 | 가입일자 | 마지막수정일자 | 탈퇴여부");
+			for(MemberVo vo : userList) {
+				System.out.println(vo.getMemberNo()+" | "+vo.getAreasName()+" | "+vo.getName()+" | "+vo.getId()+" | "+vo.getNick()+" | "+vo.getEmail()
+				+" | "+vo.getPhone()+" | "+vo.getAddress()+" | "+vo.getJoinDate()+" | "+vo.getEditDate()+" | "+vo.getQuitYn());
+			}			System.out.println("========================================================================================================================\n");			
+			
+		}catch(Exception e) {
+			System.out.println("회원 조회 실패");
+			e.printStackTrace();
+		}
+	}
+
+	//사용자 회원 상세 조회
+	private void userDetile() {
+		System.out.println("=================================== 회원 상세 조회 ===================================");
+		try {
+			//로그인 검사
+			if(Main.loginManager == null) {
+				throw new Exception("관리자 로그인부터 진행해주세요");
+			}
+			System.out.print("조회할 회원의 회원번호를 입력해주세요 : ");
+			String userNo = Main.SC.nextLine();
+			MemberVo vo = service.userDetile(userNo);
+			
+			System.out.println("사용자번호 | 동네번호 | 사용자명 | 아이디 | 닉네임 | 이메일 | 전화번호 | 주소 | 가입일자 | 마지막수정일자 | 탈퇴여부");
+			System.out.println(vo.getMemberNo()+" | "+vo.getAreasName()+" | "+vo.getName()+" | "+vo.getId()+" | "+vo.getNick()+" | "+vo.getEmail()
+				+" | "+vo.getPhone()+" | "+vo.getAddress()+" | "+vo.getJoinDate()+" | "+vo.getEditDate()+" | "+vo.getQuitYn());
+			System.out.println("========================================================================================================================\n");			
+			
+		}catch(Exception e) {
+			System.out.println("회원 조회 실패");
+			e.printStackTrace();
+		}
+	}
+
+	//사용자 회원 강제 탈퇴
+	private void userKick() {
+		System.out.println("=================================== 회원 강제 탈퇴 ===================================");
+		try {
+			//로그인 검사
+			if(Main.loginManager == null) {
+				throw new Exception("관리자 로그인부터 진행해주세요");
+			}
+			System.out.print("탈퇴할 회원의 회원번호를 입력해주세요 : ");
+			String userNo = Main.SC.nextLine();
+			int result = service.userKick(userNo);
+			
+			if(result != 1) {
+				throw new Exception();
+			}
+			System.out.println("회원 강제 탈퇴를 성공했습니다.");
+			
+		}catch(Exception e) {
+			System.out.println("회원 강제 탈퇴 실패");
+			e.printStackTrace();
+		}		
 	}
 
 }
