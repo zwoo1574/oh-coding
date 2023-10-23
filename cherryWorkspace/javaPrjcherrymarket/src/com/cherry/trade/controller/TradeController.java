@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 
 import com.cherry.main.Main;
+import com.cherry.member.controller.MemberController;
 import com.cherry.trade.service.TradeService;
 import com.cherry.trade.vo.TradeVo;
 import com.cherry.util.Color;
@@ -14,6 +15,7 @@ public class TradeController {
 
 	private final Scanner sc;
 	private final TradeService ts;
+	MemberController mc = new MemberController();
 	
 	public TradeController() {
 		sc = new Scanner(System.in);
@@ -38,7 +40,7 @@ public class TradeController {
 				
 					case "1" : editPost(boardNo); break;
 					case "2" : delPost(boardNo); break;
-					case "3" : return;
+					case "3" : tradeMain(); break;
 					default : System.out.println("잘못 입력하셨습니다");
 				} 					
 			
@@ -52,7 +54,7 @@ public class TradeController {
 				
 				switch(select) {
 					case "1" : purchaseRequest(vo); break;
-					case "2" : return;
+					case "2" : tradeMain(); break;
 					default : System.out.println("잘못 입력하셨습니다.");
 					
 				}
@@ -67,7 +69,7 @@ public class TradeController {
 				switch(select) {				
 					case "1" : editPost(boardNo); break;
 					case "2" : delPost(boardNo); break;
-					case "3" : return;
+					case "3" : tradeMain(); break;
 					default : System.out.println("잘못 입력하셨습니다");
 			} 					
 		
@@ -227,10 +229,9 @@ public class TradeController {
 				String color = "";
 				String resetColor = Color.EXIT;
 
-				if (vo.getMemberNo().equals(Main.loginMember.getMemberNo())) {
+				if (vo.getMemberNo().equals(Main.loginMember.getMemberNo()) && vo.getMemberNo() != null) {
 				    color = Color.YELLOW;
 				}
-
 				
 				String boardNo = vo.getBoardNo();
 				String title = vo.getTitle();
@@ -267,7 +268,7 @@ public class TradeController {
 			switch(select) {
 				case "1" : showContent(); break;
 				case "2" : searchPost(); break;
-				case "0" : return;
+				case "0" : mc.loginMenu(); break;
 				default : System.out.println("잘못 입력하셨습니다.");
 			}
 			
@@ -283,7 +284,7 @@ public class TradeController {
 				case "2" : showContent(); break;
 				case "3" : addWishList(); break;
 				case "4" : searchPost(); break;
-				case "0" : return;
+				case "0" : mc.loginMenu(); break;
 				default : System.out.println("잘못 입력하셨습니다.");
 			}
 		}
