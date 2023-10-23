@@ -2,10 +2,14 @@ package com.cherry.manager.controller;
 
 import java.util.*;
 
+import com.cherry.faq.controller.FaqController;
 import com.cherry.main.Main;
 import com.cherry.manager.service.ManagerService;
 import com.cherry.manager.vo.ManagerVo;
 import com.cherry.member.vo.MemberVo;
+import com.cherry.notice.controller.NoticeController;
+import com.cherry.qna.controller.QnaController;
+import com.cherry.town.controller.TownController;
 import com.cherry.trade.controller.TradeController;
 import com.cherry.trade.vo.TradeVo;
 
@@ -13,10 +17,18 @@ public class ManagerController {
 	
 	private final ManagerService service;
 	private final TradeController trade;
+	private final TownController town;
+	private final NoticeController notice;
+	private final FaqController faq;
+	private final QnaController qna;
 	
 	public ManagerController() {
 		service = new ManagerService();
 		trade = new TradeController();
+		town = new TownController();
+		notice = new NoticeController();
+		faq = new FaqController();
+		qna = new QnaController();
 	}
 	//관리자 메뉴 선택
 	public void managerMenu() {
@@ -24,45 +36,61 @@ public class ManagerController {
 		
 		/* 관리자 기능 */
 		System.out.print("1: 관리자 로그인");
-		System.out.print(" 2: 관리자 로그아웃");
-		System.out.print(" 3: 관리자 회원전체 조회");
-		System.out.print(" 4: 관리자 회원 상세 조회(번호/아이디/닉네임)");
-		System.out.println(" 5: 관리자 회원 강제 탈퇴");
 
 		String num = Main.SC.nextLine();
 		
 		switch(num) {
 		case "1" :loginManager(); break;
-		case "2" :logoutManager(); break;
-		case "3" :userList(); break;
-		case "4" :userDetile(); break;
-		case "5" :userKick(); break;
+
 		default : System.out.println("잘못 입력하였습니다.");
 		}
 	}
+	//관리자 페이지 메뉴 선택
+	public void adminPage() {
+		System.out.println("===== 관리자 페이지 메뉴 선택 =====");
+		
+		System.out.print(" 1: 관리자 로그아웃");
+		System.out.print(" 2: 관리자 회원전체 조회");
+		System.out.print(" 3: 관리자 회원 상세 조회(번호/아이디/닉네임)");
+		System.out.println(" 4: 관리자 회원 강제 탈퇴");
+		
+		String num = Main.SC.nextLine();
+		
+		switch(num) {
+		case "1" :logoutManager(); break;
+		case "2" :userList(); break;
+		case "3" :userDetile(); break;
+		case "4" :userKick(); break;
+		default : System.out.println("잘못 입력하였습니다.");
+		}
+	}	
 
-	//로그인 메뉴 선택
+	//관리자 로그인 메뉴 선택
 	public void loginMenu() {
-		System.out.println("===== 로그인 메뉴 선택 =====");
+		System.out.println("===== 관리자 로그인 메뉴 선택 =====");
 		
-		System.out.print(" 1: 거래 게시판");
-//		System.out.print(" 2: ");
-//		System.out.print(" 3: ");		
-//		System.out.print(" 4: "); 
-//		System.out.println(" 5: ");
-		
+		System.out.print(" 1: 거래게시판");
+		System.out.print(" 2: 동네생활");
+		System.out.print(" 3: 공지사항");
+		System.out.print(" 4: FAQ");
+		System.out.print(" 5: QnA");
+		System.out.print(" 6: 관리자페이지");
+		System.out.println(" 9: 로그아웃");
 		
 		String num = Main.SC.nextLine();
 		
 		switch(num) {
 		case "1" :trade.tradeMain(); break;
-//		case "2" :logout(); break;
-//		case "3" :purchaseList(); break;
-//		case "4" :wishList(); break;
-//		case "5" :score(); break;
+//		case "2" :town.selectMenu(); break;
+		case "3" :notice.selectMenu(); break; 
+		case "4" :faq.selectMenu(); break; 
+		case "5" :qna.selectMenu(); break;
+		case "6" :adminPage(); break;
+		case "9" :logoutManager(); break;
 		default : System.out.println("잘못 입력하였습니다.");
 		}
 	}
+	
 	//관리자 로그인
 	private void loginManager() {
 		System.out.println("===== 관리자 로그인 ======");
@@ -89,7 +117,7 @@ public class ManagerController {
 			System.out.println("관리자 로그인 성공");
 			System.out.println(Main.loginManager.getName()+" 님 환영합니다.");
 			
-//			loginMenu();
+			loginMenu();
 		}catch(Exception e) {
 			System.out.println("관리자 로그인 실패");
 			e.printStackTrace();
