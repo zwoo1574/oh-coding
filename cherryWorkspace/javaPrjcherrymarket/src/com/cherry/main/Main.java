@@ -3,8 +3,8 @@ package com.cherry.main;
 import java.util.Scanner;
 
 import com.cherry.faq.controller.FaqController;
+import com.cherry.manager.vo.ManagerVo;
 import com.cherry.member.vo.MemberVo;
-import com.cherry.member.vo.ManagerVo;
 
 public class Main {
 
@@ -17,5 +17,5 @@ public class Main {
 		FaqController fc = new FaqController();
 		fc.selectMenu();
 	}
-	
+
 }
