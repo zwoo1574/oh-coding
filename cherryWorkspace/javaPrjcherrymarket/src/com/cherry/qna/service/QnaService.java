@@ -110,7 +110,25 @@ public class QnaService {
 		
 	}//qnaMyList end
 	
-	// 6. 문의글 목록 (관리자용)
+	// 6. 내가 작성한 문의글 상세보기
+	public List<QnaVo> qnaMyDetail(String loginMember) throws Exception {
+
+		// conn
+		Connection conn = JDBCTemplate.getConnection();
+
+		// dao
+		List<QnaVo> voList = dao.qnaMyDetail(conn, loginMember);
+
+		// close
+		JDBCTemplate.close(conn);
+		return voList;
+
+	}// qnaMyDetail end
+	
+	
+	
+	
+	// . 문의글 목록 (관리자용)
 	public List<QnaVo> qnaListManager() throws Exception {
 		
 		//conn

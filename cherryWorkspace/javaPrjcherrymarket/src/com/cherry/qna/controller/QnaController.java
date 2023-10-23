@@ -18,32 +18,113 @@ public class QnaController {
 
 	// 메뉴선택
 	public void selectMenu() {
-		System.out.println("======= QnA Menu =======");
-
-		System.out.println("1. 문의글 작성");
-		System.out.println("2. 문의글 목록 (최신순)");
-		System.out.println("3. 문의글 상세조회 (번호)");
-		System.out.println("4. 문의글 제목 검색");
-		System.out.println("5. 내가 작성한 문의글");
-		System.out.println("6. 문의글 목록 (관리자용)");
-		System.out.println("7. 관리자 답변작성");
-		System.out.println("8. 관리자 답변수정");
-
-		String num = Main.SC.nextLine();
-		switch (num) {
-		case "1":write();break;
-		case "2": qnaList();break;
-		case "3":qnaDetailByNo();break;
-		case "4":searchQnaByTitle();break;
-		case "5":qnaMyList();break;
-		case "6":qnaListManager();break;
-		case "7" : answer();break;
-		case "8" : answerEdit();break;
+		
+		if(Main.loginManager == null) {
+			System.out.println("======= QnA Menu =======");
+			
+			System.out.println("1. 문의글 목록 (최신순)");
+			System.out.println("2. 문의글 작성");
+			System.out.println("3. 문의글 상세조회 (번호)");
+			System.out.println("4. 문의글 제목 검색");
+			System.out.println("5. 내가 작성한 문의글");
+			System.out.println("6. 내가 작성한 문의글 상세보기"); //구현하기!!!!  //// 유저용
+			
+			String num = Main.SC.nextLine();
+			switch(num) {
+			case "1": qnaList();break;
+			case "2": write();break;
+			case "3":qnaDetailByNo();break;
+			case "4":searchQnaByTitle();break;
+			case "5":qnaMyList();break;
+			case "6":qnaMyDetail();break;
+			case "7":return;
+			}
+			
+		}else if(Main.loginManager != null){
+			System.out.println("======= QnA Menu (관리자용)=======");
+			
+			System.out.println("7. 문의글 목록 (관리자용)");
+			System.out.println("8. 문의글 상세조회 (관리자용)"); //구현하기!!!
+			System.out.println("9. 관리자 답변작성");
+			System.out.println("10. 관리자 답변수정");
+			
 		}
+		
+		
+//		System.out.println("======= QnA Menu =======");
+//
+//		System.out.println("1. 문의글 작성");
+//		System.out.println("2. 문의글 목록 (최신순)");
+//		System.out.println("3. 문의글 상세조회 (번호)");
+//		System.out.println("4. 문의글 제목 검색");
+//		System.out.println("5. 내가 작성한 문의글");
+//		System.out.println("5. 내가 작성한 문의글(상세보기)"); //구현하기!!!!
+//		System.out.println("6. 문의글 목록 (관리자용)");
+//		System.out.println("6. 문의글 상세조회 (관리자용)"); //구현하기!!!
+//		System.out.println("7. 관리자 답변작성");
+//		System.out.println("8. 관리자 답변수정");
+//
+//		String num = Main.SC.nextLine();
+//		switch (num) {
+//		case "1":write();break;
+//		case "2": qnaList();break;
+//		case "3":qnaDetailByNo();break;
+//		case "4":searchQnaByTitle();break;
+//		case "5":qnaMyList();break;
+//		case "6":qnaListManager();break;
+//		case "7" : answer();break;
+//		case "8" : answerEdit();break;
+//		}
 
 	}// selectMenu end
 
-	// 1.문의글 작성
+	// 1.문의글 목록 (최신순)
+	public void qnaList() {
+		
+		try {
+			System.out.println("------- 문의글 목록 -------");
+			
+			// 데이터
+			
+			// 서비스
+			List<QnaVo> voList = service.qnaList();
+			
+			// 결과
+			if(voList.size() == 0) {
+				System.out.println("게시글이 없습니다.");
+			}
+			System.out.print("번호");
+			System.out.print(" / ");
+			System.out.print("제목");
+			System.out.print(" / ");
+			System.out.print("닉네임");
+			System.out.print(" / ");
+			System.out.print("조회수");
+			System.out.print(" / ");
+			System.out.print("작성일자");
+			System.out.println();
+			
+			for (QnaVo vo : voList) {
+				System.out.print(vo.getQnaNo());
+				System.out.print(" / ");
+				System.out.print(vo.getTitle());
+				System.out.print(" / ");
+				System.out.print(vo.getWriterNick());
+				System.out.print(" / ");
+				System.out.print(vo.getHit());
+				System.out.print(" / ");
+				System.out.print(vo.getMemberEnrollDate());
+				System.out.println();
+			}
+			
+		} catch (Exception e) {
+			System.out.println("문의글 목록 조회 실패 ...");
+			e.printStackTrace();
+		}
+		
+	}// qnaList end
+	
+	// 2.문의글 작성
 	public void write() {
 
 		try {
@@ -82,51 +163,6 @@ public class QnaController {
 
 	}// write end
 
-	// 2.문의글 목록 (최신순)
-	public void qnaList() {
-
-		try {
-			System.out.println("------- 문의글 목록 -------");
-
-			// 데이터
-
-			// 서비스
-			List<QnaVo> voList = service.qnaList();
-
-			// 결과
-			if(voList.size() == 0) {
-				System.out.println("게시글이 없습니다.");
-			}
-			System.out.print("번호");
-			System.out.print(" / ");
-			System.out.print("제목");
-			System.out.print(" / ");
-			System.out.print("닉네임");
-			System.out.print(" / ");
-			System.out.print("조회수");
-			System.out.print(" / ");
-			System.out.print("작성일자");
-			System.out.println();
-			
-			for (QnaVo vo : voList) {
-				System.out.print(vo.getQnaNo());
-				System.out.print(" / ");
-				System.out.print(vo.getTitle());
-				System.out.print(" / ");
-				System.out.print(vo.getWriterNick());
-				System.out.print(" / ");
-				System.out.print(vo.getHit());
-				System.out.print(" / ");
-				System.out.print(vo.getMemberEnrollDate());
-				System.out.println();
-			}
-
-		} catch (Exception e) {
-			System.out.println("문의글 목록 조회 실패 ...");
-			e.printStackTrace();
-		}
-
-	}// qnaList end
 
 	// 3.문의글 상세조회 (번호)
 	public void qnaDetailByNo() {
@@ -224,7 +260,43 @@ public class QnaController {
 
 	} // qnaMyList
 
-	// 6. 문의글 목록 (관리자용)
+	// 6. 내가 작성한 문의글 상세보기
+	public void qnaMyDetail() {
+		try {
+			System.out.println("------- 나의 문의글 상세 조회 -------");
+
+			// 데이터
+			String loginMember = Main.loginMember.getMemberNo();
+			
+			// 서비스
+			List<QnaVo> voList = service.qnaMyDetail(loginMember);
+
+			// 결과
+			if (voList.size() == 0) {
+				System.out.println("해당글이 존재하지 않습니다.");
+			}
+			for(QnaVo vo : voList) {
+				System.out.println("---------------------------------------");
+				System.out.println("글번호: " + vo.getQnaNo());
+				System.out.println("제목: " + vo.getTitle());
+				System.out.println("작성자: " + vo.getWriterNick());
+				System.out.println("조회수: " + vo.getHit());
+				System.out.println("작성일자: " + vo.getMemberEnrollDate());
+				System.out.println("내용: " + vo.getContent());
+				System.out.println();
+				System.out.println("[관리자 답변] " + vo.getAnswer());
+				System.out.println("답변 작성일자: " + vo.getManagerEnrollDate());
+				System.out.println("---------------------------------------");
+			}
+
+		} catch (Exception e) {
+			System.out.println("나의 문의글 상세 조회 실패 ...");
+			e.printStackTrace();
+		}
+		
+	}// qnaMyDetail end
+	
+	// . 문의글 목록 (관리자용)
 	public void qnaListManager() {
 		try {
 			System.out.println("------- 문의글 목록 (관리자용) -------");

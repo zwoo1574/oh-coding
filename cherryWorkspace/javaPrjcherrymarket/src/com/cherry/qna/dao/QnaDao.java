@@ -211,7 +211,43 @@ public class QnaDao {
 		
 	}//qnaMyList end
 	
-	// 6. 문의글 목록 (관리자용)
+	
+	// 6. 내가 작성한 문의글 상세보기   // 다시 작성하기!!!!!!
+	public List<QnaVo> qnaMyDetail(Connection conn, String loginMember) throws Exception {
+		// sql
+		String sql = "SELECT Q.QNA_NO , Q.TITLE , M.NICK AS WRITER_NICK , Q.HIT , TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO WHERE Q.TITLE LIKE '%'||?||'%' AND Q.SECRET_YN = 'N' ORDER BY Q.QNA_NO DESC";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, loginMember);
+		ResultSet rs = pstmt.executeQuery();
+
+		// rs
+		List<QnaVo> voList = new ArrayList<QnaVo>();
+		while (rs.next()) {
+			String no = rs.getString("QNA_NO");
+			String title = rs.getString("TITLE");
+			String writerNick = rs.getString("WRITER_NICK");
+			String hit = rs.getString("HIT");
+			String enrollDate = rs.getString("ENROLL_DATE");
+
+			QnaVo vo = new QnaVo();
+			vo.setQnaNo(no);
+			vo.setTitle(title);
+			vo.setWriterNick(writerNick);
+			vo.setHit(hit);
+			vo.setMemberEnrollDate(enrollDate);
+
+			voList.add(vo);
+
+		}
+
+		// close
+		JDBCTemplate.close(pstmt);
+		JDBCTemplate.close(rs);
+		return voList;
+	}
+	
+	
+	// . 문의글 목록 (관리자용)
 	public List<QnaVo> qnaListManager(Connection conn) throws Exception {
 		
 		//sql
