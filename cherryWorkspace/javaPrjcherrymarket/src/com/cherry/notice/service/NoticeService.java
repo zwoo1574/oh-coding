@@ -124,6 +124,35 @@ public class NoticeService {
 		return result;
 				
 	}//modify(NoticeVo vo) end
+
+	public ArrayList<NoticeVo> noticeList2() throws Exception {
+		//conn
+		Connection conn=JDBCTemplate.getConnection();
+				
+		//dao
+		ArrayList<NoticeVo> voList=dao.noticeList2(conn);
+		
+		//tx
+		
+		//close
+		JDBCTemplate.close(conn);
+		return voList;
+	}//ArrayList<NoticeVo> noticeList2() end
+	
+	//공지글 검색(내용)
+	public ArrayList<NoticeVo> searchNoticeByContent(String content) throws Exception {
+		//conn
+		Connection conn=JDBCTemplate.getConnection();
+				
+		//dao
+		ArrayList<NoticeVo> voList=dao.searchNoticeByContent(conn, content);
+		
+		//tx
+		
+		//close
+		JDBCTemplate.close(conn);
+		return voList;
+	}
 	
 
 }//class
