@@ -37,7 +37,7 @@ public class NoticeDao {
 	//공지글 조회(최신순)
 	public ArrayList<NoticeVo> noticeList(Connection conn) throws Exception {
 		//sql
-		String sql="SELECT NOTICE_NO,TITLE,HIT,TO_CHAR(ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE FROM NOTICE WHERE SECRET_YN='N' ORDER BY NOTICE_NO DESC";
+		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\\\"년\\\"MM\\\"월\\\"DD\\\"일\\\"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE  SECRET_YN='N' ORDER BY N.NOTICE_NO DESC";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		ResultSet rs= pstmt.executeQuery();
 		
@@ -46,6 +46,7 @@ public class NoticeDao {
 		while(rs.next()) {
 			String noticeNo=rs.getString("NOTICE_NO");
 			String title=rs.getString("TITLE");
+			String managerName=rs.getString("MANAGER_NAME");
 			String hit=rs.getString("HIT");
 			String enrollDate=rs.getString("ENROLL_DATE");
 			
@@ -119,7 +120,7 @@ public class NoticeDao {
 	//공지글 검색(제목)
 	public ArrayList<NoticeVo> searchNoticeByTitle(Connection conn, String search) throws Exception {
 		//sql
-		String sql="SELECT N.NOTICE_NO,N.TITLE,N.CONTENT,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE,N.EDIT_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.TITLE LIKE '%'||?||'%' AND SECRET_YN='N' ORDER BY N.NOTICE_NO DESC";
+		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE,N.EDIT_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.TITLE LIKE '%'||?||'%' AND SECRET_YN='N' ORDER BY N.NOTICE_NO DESC";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		pstmt.setString(1, search);
 		ResultSet rs=pstmt.executeQuery();
@@ -129,7 +130,6 @@ public class NoticeDao {
 		while(rs.next()) {
 			String no=rs.getString("NOTICE_NO");
 			String title=rs.getString("TITLE");
-			String content=rs.getString("CONTENT");
 			String managerName=rs.getString("MANAGER_NAME");
 			String hit=rs.getString("HIT");
 			String enrollDate=rs.getString("ENROLL_DATE");
@@ -138,7 +138,6 @@ public class NoticeDao {
 			NoticeVo vo=new NoticeVo();
 			vo.setNo(no);
 			vo.setTitle(title);
-			vo.setContent(content);
 			vo.setManagerName(managerName);
 			vo.setHit(hit);
 			vo.setEnrolldate(enrollDate);
@@ -189,5 +188,69 @@ public class NoticeDao {
 		return result;
 		
 	}//modify(Connection conn, NoticeVo vo) end	
+	
+	
+	//공지사항(조회수순)
+	public ArrayList<NoticeVo> noticeList2(Connection conn) throws Exception {
+		//sql
+		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\\\"년\\\"MM\\\"월\\\"DD\\\"일\\\"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE  SECRET_YN='N' ORDER BY N.HIT DESC";
+		PreparedStatement pstmt=conn.prepareStatement(sql);
+		ResultSet rs=pstmt.executeQuery();
+		//rs
+		ArrayList<NoticeVo> voList=new ArrayList<NoticeVo>();
+		while(rs.next()) {
+			String no=rs.getString("NOTICE_NO");
+			String title=rs.getString("TITLE");
+			String managerName=rs.getString("MANAGER_NAME");
+			String hit=rs.getString("HIT");
+			String enrollDate=rs.getString("ENROLL_DATE");
+			
+			NoticeVo vo=new NoticeVo();
+			vo.setNo(no);
+			vo.setTitle(title);
+			vo.setManagerName(managerName);
+			vo.setHit(hit);
+			vo.setEnrolldate(enrollDate);
+			
+			voList.add(vo);
+		}
+		//close
+		JDBCTemplate.close(pstmt);
+		JDBCTemplate.close(rs);
+		return voList;
+		
+	}
+
+	public ArrayList<NoticeVo> searchNoticeByContent(Connection conn, String content) throws Exception {
+		//sql
+		String sql="SELECT N.NOTICE_NO,N.TITLE, M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.CONTENT LIKE '%'||?||'%' AND SECRET_YN='N' ORDER BY N.NOTICE_NO DESC";
+		PreparedStatement pstmt=conn.prepareStatement(sql);
+		pstmt.setString(1, content);
+		ResultSet rs=pstmt.executeQuery();
+		
+		//rs
+		ArrayList<NoticeVo> voList=new ArrayList<NoticeVo>();
+		while(rs.next()) {
+			String no=rs.getString("Notice_NO");
+			String title=rs.getString("TITLE");
+			String managerName=rs.getString("MANAGER_NAME");
+			String hit=rs.getString("HIT");
+			String enrollDate=rs.getString("ENROLL_DATE");
+			
+			NoticeVo vo=new NoticeVo();
+			vo.setNo(no);
+			vo.setTitle(title);
+			vo.setManagerName(managerName);
+			vo.setHit(hit);
+			vo.setEnrolldate(enrollDate);
+			
+			voList.add(vo);
+			
+		}
+		//close
+		JDBCTemplate.close(rs);
+		JDBCTemplate.close(pstmt);
+		return voList;
+	}
 	
 }//class

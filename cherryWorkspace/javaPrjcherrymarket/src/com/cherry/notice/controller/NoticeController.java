@@ -8,6 +8,8 @@ import com.cherry.main.Main;
 import com.cherry.notice.service.NoticeService;
 import com.cherry.notice.vo.NoticeVo;
 
+import oracle.sql.ARRAY;
+
 public class NoticeController {
 	// 필드
 	private final NoticeService service;
@@ -20,13 +22,15 @@ public class NoticeController {
 	// 메뉴선택
 	public void selectMenu() {
 		System.out.println("===NOTICE===");
-
+//		Main.loginManager.setManagerNo("1");
 		System.out.println("1. 공지글 작성");
 		System.out.println("2. 공지글 공개여부");
 		System.out.println("3. 공지글 수정");
 		System.out.println("4. 최신순으로 공지글 조회");
-		System.out.println("5. 제목으로 공지글 검색");
-		System.out.println("6. 공지 번호로 검색해서 글 상세조회");
+		System.out.println("5. 조회순으로 공지글 조회");
+		System.out.println("6. 제목으로 공지글 검색");
+		System.out.println("7. 내용으로 공지글 검색");
+		System.out.println("8. 공지 번호로 검색해서 글 상세조회");
 
 		String num = Main.SC.nextLine();
 		switch (num) {
@@ -34,8 +38,10 @@ public class NoticeController {
 		case "2": secret(); break;
 		case "3": modify(); break;
 		case "4":noticeList(); break;
-		case "5":searchNoticeByTitle(); break;		
-		case "6": noticeDetailByNo(); break;
+		case "5":noticeList2(); break;
+		case "6":searchNoticeByTitle(); break;		
+		case "7":searchNoticeByContent(); break;		
+		case "8": noticeDetailByNo(); break;
 		default: System.out.println("잘 못 입력하셨습니다.");
 		}
 	}
@@ -106,7 +112,7 @@ public class NoticeController {
 				}
 			
 		}catch(Exception e) {
-			System.out.println("공지글 목록 조회를 실패하였습니다.");
+			System.out.println("공지글 조회를 실패하였습니다.");
 			e.printStackTrace();
 			}
 	}//noticeList() end
@@ -145,7 +151,7 @@ public class NoticeController {
 	//공지글 검색(제목)
 	public void searchNoticeByTitle() {
 		try{
-			System.out.println("==공지글 검색==");
+			System.out.println("==제목으로 공지글 검색==");
 			//데이터
 			System.out.print("제목 검색: ");
 			String search=Main.SC.nextLine();
@@ -162,7 +168,6 @@ public class NoticeController {
 				System.out.println("------------------------------");
 				System.out.println("글번호: "+vo.getNo());
 				System.out.println("제목: "+vo.getTitle());
-				System.out.println("내용: "+vo.getContent());
 				System.out.println("닉네임: "+vo.getManagerName());
 				System.out.println("조회수: "+vo.getHit());
 				System.out.println("작성일시: "+vo.getEnrolldate());
@@ -243,7 +248,74 @@ public class NoticeController {
 			e.printStackTrace();
 		}
 	}//secret() end
+	
+	//공지글 조회(조회수순) 
+	public void noticeList2() {
+		//데이터
 		
+		try {
+			System.out.println("==공지글 목록 조회==");
+			//서비스
+			ArrayList<NoticeVo> voList =service.noticeList2();
+			
+			//결과
+			System.out.print("번호");
+			System.out.print(" / ");
+			System.out.print("제목");
+			System.out.print(" / ");
+			System.out.print("닉네임");
+			System.out.print(" / ");
+			System.out.print("조회수");
+			System.out.print(" / ");
+			System.out.println("작성일자");
+			
+			for(NoticeVo vo: voList) {
+				System.out.print(vo.getNo());
+				System.out.print(" / ");
+				System.out.print(vo.getTitle());
+				System.out.print(" / ");
+				System.out.print(vo.getManagerName());
+				System.out.print(" / ");
+				System.out.print(vo.getHit());
+				System.out.print(" / ");
+				System.out.println(vo.getEnrolldate());
+				}
+		}catch(Exception e) {
+			System.out.println("공지글 조회를 실패하였습니다.");
+			e.printStackTrace();
+		}
+	}//noticeList2 end
+	
+	public void searchNoticeByContent() {
+		
+		try {
+			System.out.println("==내용으로 공지글 검색==");
+			//데이터
+			System.out.print("내용 검색: ");
+			String content=Main.SC.nextLine();
+			
+			//서비스
+			ArrayList<NoticeVo> voList= service.searchNoticeByContent(content);
+			
+			System.out.println();
+			
+			//결과
+			for(NoticeVo vo: voList) {
+				System.out.println("------------------------------");
+				System.out.println("글번호: "+vo.getNo());
+				System.out.println("제목: "+vo.getTitle());
+				System.out.println("닉네임: "+vo.getManagerName());
+				System.out.println("조회수: "+vo.getHit());
+				System.out.println("작성일시: "+vo.getEnrolldate());
+				System.out.println("------------------------------");
+			}
+		}catch (Exception e) {
+			System.out.println("검색에 실패 하셨습니다.");
+			e.printStackTrace();
+		}
+	
+		
+	}
 		
 		
 	}//class
