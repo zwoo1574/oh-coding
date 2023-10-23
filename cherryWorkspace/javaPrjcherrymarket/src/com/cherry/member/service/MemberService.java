@@ -153,4 +153,35 @@ public class MemberService {
 		return score;
 	}
 
+	public String findId(MemberVo vo) throws Exception{
+		Connection conn = JDBCTemplate.getConnection();
+		String userId = dao.findId(conn,vo);
+		
+		JDBCTemplate.close(conn);
+		
+		return userId;
+	}
+
+	public String findPwd(MemberVo vo) throws Exception{
+		Connection conn = JDBCTemplate.getConnection();
+		MemberVo userVo = dao.findPwd(conn,vo);
+		if(userVo == null) {
+			throw new Exception("값을 잘못 입력하셨습니다. 다시 시도해주세요");
+		}
+		
+		int result = dao.pwdReset(conn,userVo);
+		String newPwd = null;
+		
+		if(result == 1) {
+			newPwd = dao.newPwd(conn,userVo);
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return newPwd;
+	}
+
 }
