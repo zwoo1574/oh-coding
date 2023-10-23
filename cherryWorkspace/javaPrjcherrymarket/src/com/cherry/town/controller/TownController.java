@@ -178,5 +178,6 @@ public class TownController {
 			e.printStackTrace();
 		}
 		System.out.println("댓글달기");
+		TowncommentController tcom = new TowncommentController();
 	}
 }

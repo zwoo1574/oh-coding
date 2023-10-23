@@ -9,6 +9,7 @@ import com.cherry.town_comment.vo.TowncommentVo;
 
 public class TowncommentController {
 
+	
 	private TowncommentService service;
 	TownController tc = new TownController();
 	//
@@ -19,7 +20,7 @@ public class TowncommentController {
 	public void towncommentselect() {
 		
 	
-		System.out.println("----TOWN---");
+		System.out.println("--------------");
 		
 		System.out.println("1. 댓글작성");
 		System.out.println("2. 게시판 보기");
@@ -48,13 +49,10 @@ public class TowncommentController {
 			if(result != 1) {
 				throw new Exception();
 			}
-			
 		}catch(Exception e) {
 			System.out.println("댓글작성실패");
 			e.printStackTrace();
-		}
-		
-
+		}		
 	}
 	
 }
