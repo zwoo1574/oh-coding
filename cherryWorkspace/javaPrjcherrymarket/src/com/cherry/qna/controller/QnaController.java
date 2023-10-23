@@ -154,6 +154,7 @@ public class QnaController {
 			System.out.println("내용: " + vo.getContent());
 			System.out.println();
 			System.out.println("[관리자 답변] " + vo.getAnswer());
+			System.out.println("답변 작성일자: " + vo.getManagerEnrollDate());
 			System.out.println("---------------------------------------");
 
 		} catch (Exception e) {
@@ -295,12 +296,14 @@ public class QnaController {
 			
 			// 서비스
 			int result = service.answer(vo);
+			List<QnaVo> voList = service.answerPrint(no);
 			
 			// 결과
 			if(result != 1) {
 				throw new Exception();
 			}
 			System.out.println("답변 작성 성공 !!!");
+			System.out.println("글번호: "  );
 			
 		}catch(Exception e) {
 			System.out.println("답변 작성 실패 ...");

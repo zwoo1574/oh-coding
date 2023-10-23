@@ -149,6 +149,23 @@ public class QnaService {
 		
 	}//answer end
 	
+	// 7-2. 관리자 답변완료 후 출력
+	public List<QnaVo> answerPrint(String no)throws Exception{
+		
+		// conn
+		Connection conn = JDBCTemplate.getConnection();
+		
+		// dao
+		List<QnaVo> voList = dao.answerPrint(conn, no);
+		
+		// tx
+		
+		// close
+		JDBCTemplate.close(conn);
+		return voList;
+		
+	}//answerPrint end
+	
 	// 8. 관리자 답변수정
 	public int answerEdit(QnaVo vo) throws Exception {
 		
