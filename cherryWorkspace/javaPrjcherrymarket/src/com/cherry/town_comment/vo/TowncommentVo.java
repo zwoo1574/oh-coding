@@ -51,6 +51,7 @@ public class TowncommentVo {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
 	private String townNo;
 	private String memberNo;
 	private String commentNo;
