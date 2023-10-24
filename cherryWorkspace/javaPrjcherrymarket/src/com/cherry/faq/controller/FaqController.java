@@ -19,7 +19,7 @@ public class FaqController {
 	//메뉴 선택
 	public void selectMenu() {
 		
-		if(Main.loginManager != null) {
+		if(Main.loginManager != null) { //관리자일 때
 			System.out.println("======메뉴 선택=====");
 			System.out.println("1.게시판 등록");
 			System.out.println("2.게시판 수정");
@@ -45,7 +45,7 @@ public class FaqController {
 			case "9" : return; 
 			default : System.out.println("올바른 번호를 입력하세요");
 			}
-		}else {
+		}else {  //회원일 때
 			System.out.println("======메뉴 선택=====");
 			System.out.println("1.게시판 조회(번호)");
 			System.out.println("2.게시판 조회(제목)");
@@ -72,9 +72,6 @@ public class FaqController {
 	//게시판 등록
 	public void write() {
 		try {
-//			if(Main.loginMember  == null) {
-//				throw new Exception("관리자만 게시글 작성이 가능합니다.");
-//			}
 			System.out.println("-----게시판 등록-----");
 			//데이터
 			System.out.print("게시판 제목: ");
@@ -103,15 +100,13 @@ public class FaqController {
 			e.printStackTrace();
 		}
 		
+		selectMenu();
 	}
 	
 	//게시판 수정(번호)
 	public void edit() {
 		
 		try {
-//			if(Main.loginManager  == null) {
-//				throw new Exception("관리자만 게시글 수정이 가능합니다.");
-//			}
 			System.out.println("-----게시판 수정(제목)-----");
 			//데이터
 			System.out.print("게시판 번호: ");
@@ -133,16 +128,15 @@ public class FaqController {
 			System.out.println("게시판 수정 실패");
 			e.printStackTrace();
 		}
+		
+		selectMenu();
 	}
 	
 	
-	//게시판 삭제(update del_yn)
+	//게시판 삭제
 	public void delete() {
 		
 		try {
-//			if(Main.loginManager  == null) {
-//			throw new Exception("관리자만 게시글 삭제가 가능합니다.");
-//			}
 			System.out.println("-----게시판 삭제(번호)-----");
 			//데이터
 			System.out.println("삭제할 게시판 번호: ");
@@ -163,14 +157,13 @@ public class FaqController {
 			System.out.println("게시판 삭제 실패...");
 			e.printStackTrace();
 		}
+		
+		selectMenu();
 	}
 	
-	//게시판 검색(게시판번호)
+	//게시판 검색(게시판 번호)
 	public void boardPrintByNo() {
 		try {
-//			if(Main.loginMember == null && Main.loginManager == null) {
-//				throw new Exception("로그인을 먼저 진행해주세요..");
-//			}
 			//데이터
 			System.out.println("-----게시판 검색-----");
 			System.out.print("게시판 번호: ");
@@ -192,14 +185,14 @@ public class FaqController {
 			System.out.println("게시판 검색 실패..");
 			e.printStackTrace();
 		}
+		
+		selectMenu();
 	}
 	
 	//게시판 검색(제목)
 	public void boardPrintByTitle() {
 		try {
-//			if(Main.loginMember == null && Main.loginManager == null) {
-//			throw new Exception("로그인을 먼저 진행해주세요..");
-//			}
+
 			System.out.println("-----게시판 검색(제목)-----");
 			
 			//데이터
@@ -217,33 +210,29 @@ public class FaqController {
 			System.out.println("게시판 검색 성공!");
 			System.out.println(vo);
 			
-			System.out.println("게시글 작업 메뉴로 돌아가시겠습니까?");
-			String back = Main.SC.nextLine();
-			if(back == "y") {
-				selectMenu();
-			}
+			selectMenu();
+			
 		}catch(Exception e) {
 			System.out.println("게시판 검색 실패..");
 			e.printStackTrace();
 		}
+		
+		selectMenu();
 	}
 	
 	
-	//게시판 검색(관리자번호 -> 추후에 관리자 네임으로 수정할 예정)
+	//게시판 검색(관리자 이름)
 	public void boardPrintByMno() {
 		
 		try {
-//			if(Main.loginMember == null && Main.loginManager == null) {
-//			throw new Exception("로그인을 먼저 진행해주세요..");
-//			}
 			System.out.println("-----게시판 검색-----");
 			
 			//데이터
-			System.out.print("작성자 번호: ");
-			String mNo = Main.SC.nextLine();
+			System.out.print("작성자 이름: ");
+			String mName = Main.SC.nextLine();
 			
 			//서비스
-			List<FaqVo> voList = fs.boardPrintByMno(mNo);
+			List<FaqVo> voList = fs.boardPrintByMno(mName);
 			
 			//결과 처리
 			if(voList.size() == 0) {
@@ -261,14 +250,13 @@ public class FaqController {
 			e.printStackTrace();
 		}
 		
-		
+		selectMenu();
 	}
 	
-	//게시판 전체 조회(관리자만)
+	//게시판 전체 조회
 	public void boardList() {
 		try {
-//			if(Main.loginManager == null) {
-//			throw new Exception("관리자만 전체 조회가 가능합니다.");
+
 			System.out.println("-----전체 게시판 조회-----");
 			//서비스
 			List<FaqVo> voList = fs.boardList();
@@ -287,13 +275,13 @@ public class FaqController {
 			System.out.println("전체 게시판 조회 실패...");
 			e.printStackTrace();
 		}
+		
+		selectMenu();
 	}
 	
 	//게시판 상세 조회(게시판 번호)
 	public void boardDetailByNo() {
 		try {
-//			if(Main.loginMember == null and Main.loginManager == null) {
-//			throw new Exception("로그인을 먼저 진행해주세요..");
 			System.out.println("-----게시판 상세 조회-----");
 			//데이터
 			System.out.print("게시판 번호: ");
@@ -322,6 +310,8 @@ public class FaqController {
 			System.out.println("게시판 상세 조회 실패..");
 			e.printStackTrace();
 		}
+		
+		selectMenu();
 	}
 	
 }//class

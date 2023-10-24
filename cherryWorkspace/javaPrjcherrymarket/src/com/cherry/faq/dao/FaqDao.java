@@ -113,7 +113,12 @@ public class FaqDao {
 	public FaqVo boardPrintByTitle(Connection conn, String boardTitle) throws Exception {
 		
 		//SQL
-		String sql = "SELECT * FROM FAQ WHERE TITLE = ?";
+		String sql;
+		if(Main.loginMember != null) {  //회원일 때
+			sql = "SELECT * FROM FAQ WHERE TITLE LIKE '%' || ? || '%' AND SECRET_YN = 'N'";
+		}else { //관리자일 때
+			sql = "SELECT * FROM FAQ WHERE TITLE LIKE '%' || ? || '%'";
+		}
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, boardTitle);
 		
@@ -151,13 +156,21 @@ public class FaqDao {
 		return vo;
 	}
 	
-	//게시판 검색(관리자 번호)
-	public List<FaqVo> boardPrintByMno(Connection conn, String mNo) throws Exception {
+	//게시판 검색(관리자 이름)
+	public List<FaqVo> boardPrintByMno(Connection conn, String mName) throws Exception {
+		
 		
 		//SQL
-		String sql = "SELECT * FROM FAQ WHERE MANAGER_NO = ?";
+		String sql;
+		if(Main.loginMember != null) {  //회원일 때
+			sql = "SELECT * FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE  M.NAME LIKE '%' || ? || '%' AND SECRET_YN = 'N'";
+		}else {  //관리자일 때
+			sql = "SELECT * FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE M.NAME LIKE '%' || ? || '%'";
+		}
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, mNo);
+		pstmt.setString(1, mName);
+		
+
 		
 		ResultSet rs = pstmt.executeQuery();
 		
