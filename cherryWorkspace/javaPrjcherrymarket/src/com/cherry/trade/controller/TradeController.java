@@ -15,7 +15,7 @@ public class TradeController {
 
 	private final Scanner sc;
 	private final TradeService ts;
-	MemberController mc = new MemberController();
+//	MemberController mc = new MemberController();
 	
 	public TradeController() {
 		sc = new Scanner(System.in);
@@ -268,7 +268,7 @@ public class TradeController {
 			switch(select) {
 				case "1" : showContent(); break;
 				case "2" : searchPost(); break;
-				case "0" : mc.loginMenu(); break;
+//				case "0" : mc.loginMenu(); break;
 				default : System.out.println("잘못 입력하셨습니다.");
 			}
 			
@@ -284,7 +284,7 @@ public class TradeController {
 				case "2" : showContent(); break;
 				case "3" : addWishList(); break;
 				case "4" : searchPost(); break;
-				case "0" : mc.loginMenu(); break;
+//				case "0" : mc.loginMenu(); break;
 				default : System.out.println("잘못 입력하셨습니다.");
 			}
 		}
