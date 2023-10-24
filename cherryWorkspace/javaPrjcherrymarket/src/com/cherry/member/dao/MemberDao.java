@@ -122,10 +122,11 @@ public class MemberDao {
 	}
 	//주소 변경
 	public int changeAddress(Connection conn, MemberVo vo) throws Exception{
-		String sql ="UPDATE MEMBER SET ADDRESS = ? WHERE MEMBER_NO = ?";
+		String sql ="UPDATE MEMBER SET ADDRESS = ?, AREAS_CODE = ? WHERE MEMBER_NO = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, vo.getAddress());
-		pstmt.setString(2, vo.getMemberNo());
+		pstmt.setString(2, vo.getAreasCode());
+		pstmt.setString(3, vo.getMemberNo());
 		int result = pstmt.executeUpdate();
 		
 		JDBCTemplate.close(pstmt);
