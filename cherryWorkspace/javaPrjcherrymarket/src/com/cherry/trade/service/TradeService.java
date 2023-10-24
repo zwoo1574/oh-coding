@@ -131,27 +131,29 @@ public class TradeService {
 	}
 	
 	// 구매 확정 - 히스토리 남기기
-	public void confirmPurchase(TradeVo vo) throws Exception {
+	public int confirmPurchase(TradeVo vo) throws Exception {
 		
 		Connection conn = JDBCTemplate.getConnection();
 		
-		int result = dao.confirmPurchase(vo, conn);
+		int purchaseNo  = dao.confirmPurchase(vo, conn);
 		
-		if(result == 1) {
+		if(purchaseNo != -1) {
 			JDBCTemplate.commit(conn);
 		} else {
 			JDBCTemplate.rollback(conn);
 		}
 		
 		JDBCTemplate.close(conn);
+		
+		return purchaseNo;
 	}
 	
 	// 구매 후기 작성 (매너온도 포함)
-	public int writeReview(String content, TradeVo vo) throws Exception {
+	public int writeReview(String content, TradeVo vo, int purchaseNo, String manner) throws Exception {
 		
 		Connection conn = JDBCTemplate.getConnection();
 		
-		int result = dao.writeReview(content, conn);
+		int result = dao.writeReview(content, conn, purchaseNo, manner);
 		
 		if(result == 1) {
 			JDBCTemplate.commit(conn);
