@@ -68,7 +68,7 @@ public class MainController {
 			
 			switch(num) {
 			case "1" :trade.tradeMain(); break;
-//			case "2" :town.selectMenu(); break; // 지우님꺼 try catch 문 안 되어 있어서 일단 주석처리함 
+			case "2" :town.selectMenu(); break; 
 			case "3" :notice.selectMenu(); break;
 			case "4" :faq.selectMenu(); break;
 			case "5" :qna.selectMenu(); break;
@@ -119,7 +119,7 @@ public class MainController {
 			
 			switch(num) {
 			case "1" :trade.tradeMain(); break;
-//		case "2" :town.selectMenu(); break;
+			case "2" :town.selectMenu(); break;
 			case "3" :notice.selectMenu(); break; 
 			case "4" :faq.selectMenu(); break; 
 			case "5" :qna.selectMenu(); break;

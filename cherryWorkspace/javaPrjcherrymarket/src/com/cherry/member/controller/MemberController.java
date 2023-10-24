@@ -82,7 +82,7 @@ public class MemberController {
 //		
 //		switch(num) {
 //		case "1" :controller.trade.tradeMain(); break;
-//		case "2" :controller.town.selectMenu(); break; // 지우님꺼 try catch 문 안 되어 있어서 일단 주석처리함 
+//		case "2" :controller.town.selectMenu(); break;
 //		case "3" :controller.notice.selectMenu(); break;
 //		case "4" :controller.faq.selectMenu(); break;
 //		case "5" :controller.qna.selectMenu(); break;
