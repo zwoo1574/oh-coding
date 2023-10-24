@@ -179,7 +179,7 @@ public class QnaDao {
 	public List<QnaVo> qnaMyList(Connection conn, String loginMember) throws Exception {
 		
 		// sql
-		String sql = "SELECT Q.QNA_NO , Q.TITLE , M.NICK AS WRITER_NICK , Q.HIT , TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO WHERE M.MEMBER_NO LIKE ? ORDER BY Q.QNA_NO DESC";
+		String sql = "SELECT Q.QNA_NO , Q.TITLE , M.NICK AS WRITER_NICK , Q.HIT , TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE, Q.SECRET_YN FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO WHERE M.MEMBER_NO = ? ORDER BY Q.QNA_NO DESC";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, loginMember);
 		ResultSet rs = pstmt.executeQuery();
@@ -192,6 +192,7 @@ public class QnaDao {
 			String nick = rs.getString("WRITER_NICK");
 			String hit = rs.getString("HIT");
 			String enrollDate = rs.getString("ENROLL_DATE");
+			String secret = rs.getString("SECRET_YN");
 			
 			QnaVo vo = new QnaVo();
 			vo.setQnaNo(no);
@@ -199,6 +200,7 @@ public class QnaDao {
 			vo.setWriterNick(nick);
 			vo.setHit(hit);
 			vo.setMemberEnrollDate(enrollDate);
+			vo.setSecretYn(secret);
 			
 			voList.add(vo);
 			
@@ -212,10 +214,11 @@ public class QnaDao {
 	}//qnaMyList end
 	
 	
-	// 6. 내가 작성한 문의글 상세보기   // 다시 작성하기!!!!!!
+	// 6. 내가 작성한 문의글 상세보기   
 	public List<QnaVo> qnaMyDetail(Connection conn, String loginMember) throws Exception {
+		
 		// sql
-		String sql = "SELECT Q.QNA_NO , Q.TITLE , M.NICK AS WRITER_NICK , Q.HIT , TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO WHERE Q.TITLE LIKE '%'||?||'%' AND Q.SECRET_YN = 'N' ORDER BY Q.QNA_NO DESC";
+		String sql = "SELECT Q.QNA_NO , Q.TITLE , M.NICK AS WRITER_NICK , Q.HIT , TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS MEMBER_ENROLL_DATE , Q.CONTENT, Q.SECRET_YN , Q.ANSWER , TO_CHAR(Q.MANAGER_ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS MANAGER_ENROLL_DATE , TO_CHAR(Q.MANAGER_EDIT_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS MANAGER_EDIT_DATE FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO WHERE M.MEMBER_NO = ? ORDER BY Q.QNA_NO DESC";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, loginMember);
 		ResultSet rs = pstmt.executeQuery();
@@ -227,7 +230,12 @@ public class QnaDao {
 			String title = rs.getString("TITLE");
 			String writerNick = rs.getString("WRITER_NICK");
 			String hit = rs.getString("HIT");
-			String enrollDate = rs.getString("ENROLL_DATE");
+			String enrollDate = rs.getString("MEMBER_ENROLL_DATE");
+			String content = rs.getString("CONTENT");
+			String secret = rs.getString("SECRET_YN");
+			String answer = rs.getString("ANSWER");
+			String managerEnrollDate = rs.getString("MANAGER_ENROLL_DATE");
+			String managerEditDate = rs.getString("MANAGER_EDIT_DATE");
 
 			QnaVo vo = new QnaVo();
 			vo.setQnaNo(no);
@@ -235,6 +243,11 @@ public class QnaDao {
 			vo.setWriterNick(writerNick);
 			vo.setHit(hit);
 			vo.setMemberEnrollDate(enrollDate);
+			vo.setContent(content);
+			vo.setAnswer(answer);
+			vo.setManagerEnrollDate(managerEnrollDate);
+			vo.setManagerEditDate(managerEditDate);
+			vo.setSecretYn(secret);
 
 			voList.add(vo);
 
@@ -244,10 +257,13 @@ public class QnaDao {
 		JDBCTemplate.close(pstmt);
 		JDBCTemplate.close(rs);
 		return voList;
-	}
+	}//qnaMyDetail end
 	
 	
-	// . 문의글 목록 (관리자용)
+/////////////////////////////////////// 관리자용  /////////////////////////////////////////// 
+	
+	
+	// 1. 문의글 목록 (관리자용)
 	public List<QnaVo> qnaListManager(Connection conn) throws Exception {
 		
 		//sql
@@ -281,7 +297,52 @@ public class QnaDao {
 		
 	}//qnaListManager end
 	
-	// 7. 관리자 답변작성
+	
+	// 2. 문의글 상세조회 (번호)
+	public QnaVo qnaDetailByNoManager(Connection conn, String num) throws Exception {
+
+		// sql
+		String sql = "SELECT Q.QNA_NO , Q.TITLE , M.NICK AS WRITER_NICK , Q.HIT , TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS MEMBER_ENROLL_DATE , Q.CONTENT, Q.SECRET_YN , Q.ANSWER , TO_CHAR(Q.MANAGER_ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS MANAGER_ENROLL_DATE , TO_CHAR(Q.MANAGER_EDIT_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS MANAGER_EDIT_DATE FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO WHERE Q.QNA_NO = ? ";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, num);
+		ResultSet rs = pstmt.executeQuery();
+
+		// rs
+		QnaVo vo = null;
+		if (rs.next()) {
+			String qnaNo = rs.getString("QNA_NO");
+			String title = rs.getString("TITLE");
+			String writerNick = rs.getString("WRITER_NICK");
+			String hit = rs.getString("HIT");
+			String enrollDate = rs.getString("MEMBER_ENROLL_DATE");
+			String content = rs.getString("CONTENT");
+			String secret = rs.getString("SECRET_YN");
+			String answer = rs.getString("ANSWER");
+			String managerEnrollDate = rs.getString("MANAGER_ENROLL_DATE");
+			String managerEditDate = rs.getString("MANAGER_EDIT_DATE");
+
+			vo = new QnaVo();
+			vo.setQnaNo(qnaNo);
+			vo.setTitle(title);
+			vo.setWriterNick(writerNick);
+			vo.setHit(hit);
+			vo.setMemberEnrollDate(enrollDate);
+			vo.setContent(content);
+			vo.setSecretYn(secret);
+			vo.setAnswer(answer);
+			vo.setManagerEnrollDate(managerEnrollDate);
+			vo.setManagerEditDate(managerEditDate);
+
+		}
+
+		// close
+		JDBCTemplate.close(pstmt);
+		JDBCTemplate.close(rs);
+		return vo;
+
+	}
+
+	// 3. 관리자 답변작성
 	public int answer(Connection conn, QnaVo vo) throws Exception {
 		
 		//sql
@@ -299,17 +360,17 @@ public class QnaDao {
 		
 	}//answer end
 	
-	// 7-2. 관리자 답변완료 후 출력
-	public List<QnaVo> answerPrint(Connection conn, String no) throws Exception {
+	// 3-2. 관리자 답변완료 후 출력
+	public QnaVo answerPrint(Connection conn, String no) throws Exception {
 		
 		// sql
-		String sql = "SELECT Q.QNA_NO , Q.TITLE , Q.CONTENT , M.NICK AS WRITER_NICK , Q.HIT , TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS MEMBER_ENROLL_DATE , Q.ANSWER , TO_CHAR(Q.MANAGER_ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS MANAGER_ENROLL_DATE FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO WHERE QNA_NO = ?";
+		String sql = "SELECT Q.QNA_NO , Q.TITLE , Q.CONTENT , M.NICK AS WRITER_NICK , Q.HIT , TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS MEMBER_ENROLL_DATE , Q.ANSWER , TO_CHAR(Q.MANAGER_ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS MANAGER_ENROLL_DATE, TO_CHAR(Q.MANAGER_EDIT_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS MANAGER_EDIT_DATE FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO WHERE QNA_NO = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, no);
 		ResultSet rs = pstmt.executeQuery();
 		
 		// rs
-		List<QnaVo> voList = new ArrayList<QnaVo>();
+		QnaVo Vo = null;
 		while(rs.next()) {
 			String qnaNo = rs.getString("QNA_NO");
 			String title = rs.getString("TITLE");
@@ -318,26 +379,27 @@ public class QnaDao {
 			String memberEnrollDate = rs.getString("MEMBER_ENROLL_DATE");
 			String answer = rs.getString("ANSWER");
 			String answerEnrollDate = rs.getString("MANAGER_ENROLL_DATE");
+			String answerEditDate = rs.getString("MANAGER_EDIT_DATE");
 			
-			QnaVo vo = new QnaVo();
-			vo.setQnaNo(qnaNo);
-			vo.setTitle(title);
-			vo.setContent(content);
-			vo.setWriterNick(writerNick);
-			vo.setMemberEnrollDate(memberEnrollDate);
-			vo.setAnswer(answer);
-			vo.setManagerEnrollDate(answerEnrollDate);
-			voList.add(vo);
+			Vo = new QnaVo();
+			Vo.setQnaNo(qnaNo);
+			Vo.setTitle(title);
+			Vo.setContent(content);
+			Vo.setWriterNick(writerNick);
+			Vo.setMemberEnrollDate(memberEnrollDate);
+			Vo.setAnswer(answer);
+			Vo.setManagerEnrollDate(answerEnrollDate);
+			Vo.setManagerEditDate(answerEditDate);
 		}
 		
 		// close
 		JDBCTemplate.close(pstmt);
 		JDBCTemplate.close(rs);
-		return voList;
+		return Vo;
 		
 	} //answerPrint end
 	
-	// 8. 관리자 답변수정
+	// 4. 관리자 답변수정
 	public int answerEdit(Connection conn, QnaVo vo) throws Exception {
 		
 		//sql
