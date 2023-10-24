@@ -281,18 +281,28 @@ public class TradeDao {
 	// 구매 확정 - 히스토리 남기기
 	public int confirmPurchase(TradeVo vo, Connection conn) throws Exception {
 		
+		int purchaseNo = 0;
+		String[] getKey = {"PURCHASE_NO"};
+		
 		String sql = "INSERT INTO PURCHASE_HISTORY(PURCHASE_NO, BUYER_NO, BOARD_NO) VALUES (SEQ_PURCHASE_NO.NEXTVAL, ?, ?)";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
+		PreparedStatement pstmt = conn.prepareStatement(sql, getKey);
 		pstmt.setString(1, Main.loginMember.getMemberNo());
 		pstmt.setString(2, vo.getBoardNo());
 		
 		int result = pstmt.executeUpdate();
+		ResultSet rs = pstmt.getGeneratedKeys();
+		
+		if(rs.next()){
+           purchaseNo = rs.getInt(1); 
+        }
 		
 		if(result == 1) {
-			String sql2 = "UPDATE TRADE SET COMPLETE_YN = ? WHERE BOARD_NO = ?";
+			
+			String sql2 = "UPDATE TRADE SET COMPLETE_YN = 'Y' WHERE BOARD_NO = ?";
+			
 			PreparedStatement pstmt2= conn.prepareStatement(sql2);
-			pstmt2.setString(1, "Y");
-			pstmt2.setString(2, vo.getBoardNo());
+
+			pstmt2.setString(1, vo.getBoardNo());
 			
 			pstmt2.executeUpdate();
 			
@@ -301,15 +311,22 @@ public class TradeDao {
 		
 		JDBCTemplate.close(pstmt);
 		
-		return result;
+		return purchaseNo;
 	}
 	
 	
 	// 구매 후기 작성  (매너온도 포함)  -- 미완성
-	public int writeReview(String content, Connection conn) throws Exception {
-		String sql = "INSERT INTO REVIEW(REVIEW_NO, CONTENT) VALUES (SEQ_REVIEW_NO.NEXTVAL, ?)";
+	public int writeReview(String content, Connection conn, int purchaseNo, String manner) throws Exception {
+		String sql = "INSERT INTO REVIEW (REVIEW_NO, PURCHASE_NO, SCORE, CONTENT) VALUES (SEQ_REVIEW_NO.NEXTVAL, ? , ?, ?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, content);
+		pstmt.setInt(1, purchaseNo);
+		switch(manner) {
+			case "1" : pstmt.setString(2, "1"); break;
+			case "2" : pstmt.setString(2, "0"); break;
+			case "3" : pstmt.setString(2, "-1"); break;
+		}
+		pstmt.setString(3, content);
+		
 		
 		int result = pstmt.executeUpdate();
 		
