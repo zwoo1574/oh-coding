@@ -2,54 +2,47 @@ package com.cherry.member.controller;
 
 import java.util.*;
 
-import com.cherry.faq.controller.FaqController;
+
+
 import com.cherry.main.Main;
+import com.cherry.main.controller.MainController;
 import com.cherry.member.service.MemberService;
 import com.cherry.member.vo.MemberVo;
-import com.cherry.notice.controller.NoticeController;
-import com.cherry.qna.controller.QnaController;
-import com.cherry.town.controller.TownController;
-import com.cherry.trade.controller.TradeController;
 import com.cherry.trade.vo.TradeVo;
 
 	
 public class MemberController {
 	
 	private final MemberService service;
-	private final TradeController trade;
-	private final TownController town;
-	private final NoticeController notice;
-	private final FaqController faq;
-	private final QnaController qna;
 	
 	public MemberController() {
 		service = new MemberService();
-		trade = new TradeController();
-		town = new TownController();
-		notice = new NoticeController();
-		faq = new FaqController();
-		qna = new QnaController();
 		
 	}
-	// 로그인 창
-	public void memberMenu() {
-		System.out.println("===== 메뉴선택 =====");
-		
-		System.out.print(" 1: 회원가입");
-		System.out.print(" 2: 로그인");	
-		System.out.print(" 3: 아이디 찾기");
-		System.out.println(" 4: 비밀번호 찾기");
-		
-		String num = Main.SC.nextLine();
-		
-		switch(num) {
-		case "1" :join(); break;
-		case "2" :login(); break;
-		case "3" :findId(); break;
-		case "4" :findPwd(); break;
-		default : System.out.println("잘못 입력하였습니다.");
-		}
-	}
+//	// 로그인 창
+//	public void loginMenu() {
+//		if(Main.loginMember != null || Main.loginManager != null) {
+//			memberMenu();
+//		}
+//		System.out.println("===== 메뉴선택 =====");
+//		
+//		System.out.print(" 1: 회원가입");
+//		System.out.print(" 2: 로그인");	
+//		System.out.print(" 3: 아이디 찾기");
+//		System.out.println(" 4: 비밀번호 찾기");
+//		
+//		System.out.print("입력창 :");
+//		String num = Main.SC.nextLine();
+//		
+//		switch(num) {
+//		case "1" :join(); break;
+//		case "2" :login(); break;
+//		case "3" :findId(); break;
+//		case "4" :findPwd(); break;
+//		default : System.out.println("잘못 입력하였습니다.");
+//		}
+//	}
+	
 	//마이 페이지
 	public void myPage() {
 		System.out.println("===== 마이페이지 선택 =====");
@@ -60,6 +53,7 @@ public class MemberController {
 		System.out.print(" 4: 관심 목록 조회"); //+관심 목록 제거
 		System.out.println(" 5: 매너온도");
 		
+		System.out.print("입력창 :");
 		String num = Main.SC.nextLine();
 		
 		switch(num) {
@@ -70,34 +64,36 @@ public class MemberController {
 		case "5" :score(); break;
 		}
 	}
-	//로그인 메뉴 선택
-	public void loginMenu() {
-		System.out.println("===== 로그인 메뉴 선택 =====");
-		
-		System.out.print(" 1: 거래게시판");
-		System.out.print(" 2: 동네생활");
-		System.out.print(" 3: 공지사항");
-		System.out.print(" 4: FAQ");
-		System.out.print(" 5: QnA");
-		System.out.print(" 6: 마이페이지");
-		System.out.println(" 9: 로그아웃");
-		
-		String num = Main.SC.nextLine();
-		
-		switch(num) {
-		case "1" :trade.tradeMain(); break;
-//		case "2" :town.selectMenu(); break; // 지우님꺼 try catch 문 안 되어 있어서 일단 주석처리함 
-		case "3" :notice.selectMenu(); break;
-		case "4" :faq.selectMenu(); break;
-		case "5" :qna.selectMenu(); break;
-		case "6" :myPage(); break;
-		case "9" :logout(); break;
-		default : System.out.println("잘못 입력하였습니다.");
-		}
-	}
+	
+//	//로그인 메뉴 선택
+//	public void memberMenu() {
+//		System.out.println("===== 로그인 메뉴 선택 =====");
+//		
+//		System.out.print(" 1: 거래게시판");
+//		System.out.print(" 2: 동네생활");
+//		System.out.print(" 3: 공지사항");
+//		System.out.print(" 4: FAQ");
+//		System.out.print(" 5: QnA");
+//		System.out.print(" 6: 마이페이지");
+//		System.out.println(" 9: 로그아웃");
+//		
+//		System.out.print("입력창 :");
+//		String num = Main.SC.nextLine();
+//		
+//		switch(num) {
+//		case "1" :controller.trade.tradeMain(); break;
+//		case "2" :controller.town.selectMenu(); break; // 지우님꺼 try catch 문 안 되어 있어서 일단 주석처리함 
+//		case "3" :controller.notice.selectMenu(); break;
+//		case "4" :controller.faq.selectMenu(); break;
+//		case "5" :controller.qna.selectMenu(); break;
+//		case "6" :controller.myPage(); break;
+//		case "9" :logout(); break;
+//		default : System.out.println("잘못 입력하였습니다.");
+//		}
+//	}
 
 	// 내정보 보기
-	private void Info() {
+	public void Info() {
 		System.out.println("===== 마이페이지 ======");
 		try {
 			//로그인 검사
@@ -117,6 +113,7 @@ public class MemberController {
 			
 			//정보변경
 			System.out.println("1. 비밀번호 변경 2: 닉네임 변경 3: 주소 변경 4:전화번호 변경 5: 회원 탈퇴 9:이전으로 돌아가기");
+			System.out.print("입력창 :");
 			String num = Main.SC.nextLine();
 			
 			switch(num) {
@@ -141,20 +138,20 @@ public class MemberController {
 	public void join() {
 		System.out.println("===== 회원가입 ======");
 		try {
-			System.out.println("ID : ");
+			System.out.print("ID : ");
 			String id = Main.SC.nextLine();
-			System.out.println("PWD : ");
+			System.out.print("PWD : ");
 			String pwd = Main.SC.nextLine();
-			System.out.println("NICK : ");
+			System.out.print("NICK : ");
 			String nick = Main.SC.nextLine();
-			System.out.println("NAME : ");
+			System.out.print("NAME : ");
 			String name = Main.SC.nextLine();
-			System.out.println("EMAIL : ");
+			System.out.print("EMAIL : ");
 			String email = Main.SC.nextLine();
-			System.out.println("PHONE : ");
+			System.out.print("PHONE : ");
 			String match = "[^0-9]";	// 0~9까지 숫자만
 			String phone = Main.SC.nextLine().replaceAll(match,"");
-			System.out.println("ADRESS : ");
+			System.out.print("ADRESS : ");
 			String adress = Main.SC.nextLine().replace(" ","");
 			
 			MemberVo vo = new MemberVo();
@@ -187,9 +184,9 @@ public class MemberController {
 				return;
 			}
 			
-			System.out.println("ID : ");
+			System.out.print("ID : ");
 			String id = Main.SC.nextLine();
-			System.out.println("PWD : ");
+			System.out.print("PWD : ");
 			String pwd = Main.SC.nextLine();
 			
 			MemberVo vo = new MemberVo();
@@ -204,7 +201,7 @@ public class MemberController {
 			System.out.println("로그인 성공");
 			System.out.println(Main.loginMember.getName()+" 님 환영합니다.");
 			
-			loginMenu();
+//			memberMenu();
 
 		}catch(Exception e) {
 			System.out.println("로그인 실패");
@@ -218,8 +215,8 @@ public class MemberController {
 			System.out.println("로그인 상태가 아닙니다");
 			return;
 		}
-		Main.loginMember = null;
 		System.out.println("로그아웃 되었습니다.");
+		Main.loginMember = null;
 	}
 	
 	//회원탈퇴
@@ -244,11 +241,11 @@ public class MemberController {
 	}
 
 	//비밀번호 변경
-	private void changePwd() {
+	public void changePwd() {
 		System.out.println("===== 비밀번호 변경 ======");
 		try {
 			
-			System.out.println("현재 비밀번호 입력 : ");
+			System.out.print("현재 비밀번호 입력 : ");
 			String oldPwd = Main.SC.nextLine();
 			
 			System.out.print("새로운 비밀번호를 입력하세요 : ");
@@ -274,7 +271,7 @@ public class MemberController {
 	}
 
 	//닉네임 변경
-	private void changeNick() {
+	public void changeNick() {
 		System.out.println("===== 닉네임 변경 ======");
 		try {
 			
@@ -299,7 +296,7 @@ public class MemberController {
 		}	
 	}
 	//주소 변경
-	private void changeAddress() {
+	public void changeAddress() {
 		System.out.println("===== 주소 변경 ======");
 		try {
 			
@@ -325,7 +322,7 @@ public class MemberController {
 		
 	}
 	//전화번호 변경
-	private void changePhone() {
+	public void changePhone() {
 		System.out.println("===== 전화번호 변경 ======");
 		try {
 			
@@ -352,7 +349,7 @@ public class MemberController {
 	}
 	
 	//구매 내역 리스트
-	private void purchaseList() {
+	public void purchaseList() {
 		System.out.println("===== 구매 내역 목록 ======");
 		try {
 			//로그인 검사
@@ -371,7 +368,7 @@ public class MemberController {
 			
 			System.out.println("====================\n\n");
 			
-			myPage();
+//			myPage();
 			
 		}catch(Exception e) {
 			System.out.println("구매 내역 조회 실패");
@@ -379,7 +376,7 @@ public class MemberController {
 		}
 	}
 	//관심목록 리스트
-	private void wishList() {
+	public void wishList() {
 		System.out.println("===== 관심 목록 리스트======");
 		try {
 			//로그인 검사
@@ -403,7 +400,7 @@ public class MemberController {
 			
 			switch(num) {
 			case "1" : wishDelete(); break;
-			case "9" : myPage(); break; 
+//			case "9" : myPage(); break; 
 			default : System.out.println("잘못 입력하였습니다.");
 			}
 			
@@ -413,7 +410,7 @@ public class MemberController {
 		}
 	}
 	//관심목록 제거
-	private void wishDelete() {
+	public void wishDelete() {
 		System.out.println("===== 관심 목록 삭제======");
 		try {
 			
@@ -434,7 +431,7 @@ public class MemberController {
 		}
 	}
 	//매너온도 (추천수) 확인
-	private void score() {
+	public void score() {
 		System.out.println("===== 매너 온도 ======");
 		try {
 			//로그인 검사
@@ -450,7 +447,7 @@ public class MemberController {
 			}
 			
 			System.out.println("매너 온도 : "+score+"점");
-			myPage();
+//			myPage();
 		}catch(Exception e) {
 			System.out.println("매너 온도 확인 실패");
 			e.printStackTrace();
@@ -458,7 +455,7 @@ public class MemberController {
 		
 	}
 	//아이디 찾기
-	private void findId() {
+	public void findId() {
 		System.out.println("===== 아이디 찾기 ======");
 		try {
 			System.out.print("사용자 이름 : ");
