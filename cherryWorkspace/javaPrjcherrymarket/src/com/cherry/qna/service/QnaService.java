@@ -127,8 +127,10 @@ public class QnaService {
 	
 	
 	
+/////////////////////////////////////// 관리자용  /////////////////////////////////////////// 
 	
-	// . 문의글 목록 (관리자용)
+	
+	// 1. 문의글 목록 (관리자용)
 	public List<QnaVo> qnaListManager() throws Exception {
 		
 		//conn
@@ -145,7 +147,23 @@ public class QnaService {
 		
 	}// qnaListManager end
 	
-	// 7. 관리자 답변작성
+	// 2. 문의글 상세조회 (번호)
+	public QnaVo qnaDetailByNoManager(String num) throws Exception {
+
+		// conn
+		Connection conn = JDBCTemplate.getConnection();
+
+		// dao
+		QnaVo vo = dao.qnaDetailByNoManager(conn, num);
+
+		// close
+		JDBCTemplate.close(conn);
+		return vo;
+
+	}//qnaDetailByNoManager end
+	
+	
+	// 3. 관리자 답변작성
 	public int answer(QnaVo vo) throws Exception {
 		
 		//conn
@@ -167,24 +185,24 @@ public class QnaService {
 		
 	}//answer end
 	
-	// 7-2. 관리자 답변완료 후 출력
-	public List<QnaVo> answerPrint(String no)throws Exception{
+	// 3-2. 관리자 답변완료 후 출력
+	public QnaVo answerPrint(String no)throws Exception{
 		
 		// conn
 		Connection conn = JDBCTemplate.getConnection();
 		
 		// dao
-		List<QnaVo> voList = dao.answerPrint(conn, no);
+		QnaVo Vo = dao.answerPrint(conn, no);
 		
 		// tx
 		
 		// close
 		JDBCTemplate.close(conn);
-		return voList;
+		return Vo;
 		
 	}//answerPrint end
 	
-	// 8. 관리자 답변수정
+	// 4. 관리자 답변수정
 	public int answerEdit(QnaVo vo) throws Exception {
 		
 		//conn
