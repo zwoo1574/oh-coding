@@ -37,6 +37,7 @@ public class FaqService {
 		JDBCTemplate.close(conn);
 		
 		return result;
+		
 	}
 	
 	//게시판 수정
@@ -115,13 +116,13 @@ public class FaqService {
 	}
 
 	//게시판 검색(관리자 번호)
-	public List<FaqVo> boardPrintByMno(String mNo) throws Exception {
+	public List<FaqVo> boardPrintByMno(String mName) throws Exception {
 		
 		//conn
 		Connection conn = JDBCTemplate.getConnection();
 		
 		//DAO
-		List<FaqVo> voList = dao.boardPrintByMno(conn, mNo);
+		List<FaqVo> voList = dao.boardPrintByMno(conn, mName);
 		
 		//close
 		JDBCTemplate.close(conn);

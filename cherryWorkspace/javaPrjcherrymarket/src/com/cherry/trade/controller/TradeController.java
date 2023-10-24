@@ -308,6 +308,7 @@ public class TradeController {
 				case "3" : addWishList(); break;
 				case "4" : searchPost(); break;
 				case "0" : return true;
+
 				default : System.out.println("잘못 입력하셨습니다.");
 			}
 		}
