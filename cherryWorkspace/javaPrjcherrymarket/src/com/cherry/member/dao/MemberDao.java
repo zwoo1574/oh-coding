@@ -54,7 +54,7 @@ public class MemberDao {
 	//로그인
 	public MemberVo login(Connection conn, MemberVo vo) throws Exception{
 		String sql = "SELECT MEMBER_NO ,AREAS_CODE ,AREAS_NAME ,ID ,PWD ,NICK ,NAME ,EMAIL ,PHONE ,ADDRESS ,TO_CHAR(JOIN_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS JOIN_DATE ,TO_CHAR(EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS EDIT_DATE "
-				+ "FROM MEMBER JOIN AREAS USING(AREAS_CODE) WHERE ID = UPPER(?) AND PWD = ?";
+				+ "FROM MEMBER JOIN AREAS USING(AREAS_CODE) WHERE ID = UPPER(?) AND PWD = ? AND QUIT_YN = 'N'";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1,vo.getId());
 		pstmt.setString(2, vo.getPwd());
@@ -208,7 +208,7 @@ public class MemberDao {
 	}
 	//매너온도 조회
 	public String score(Connection conn, String no) throws Exception{
-		String sql = "SELECT SUM(SCORE) AS SCORE FROM REVIEW R JOIN purchase_history H USING (purchase_no) "
+		String sql = "SELECT SUM(SCORE)+36 AS SCORE FROM REVIEW R JOIN purchase_history H USING (purchase_no) "
 				+ "JOIN TRADE T ON T.BOARD_NO = H.BOARD_NO WHERE T.MEMBER_NO = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, no);

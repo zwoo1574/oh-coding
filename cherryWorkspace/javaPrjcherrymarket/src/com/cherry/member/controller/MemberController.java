@@ -49,7 +49,6 @@ public class MemberController {
 		boolean x = false;
 		while(!x) {
 			if(Main.loginMember == null) return;
-			try {Util.clearConsole();}catch(Exception e) {}
 			System.out.println("============================================== 마이페이지 선택 ==============================================");
 			
 			System.out.print(" 1.내 정보 보기");	//+닉네임,비밀번호,전화번호,주소 변경 + 회원탈퇴[Dath 구조]
@@ -106,7 +105,6 @@ public class MemberController {
 	public boolean Info() {
 		boolean x = true;
 		try {
-			Util.clearConsole();
 			//로그인 검사
 			if(Main.loginMember == null) {
 				throw new Exception("로그인부터 진행해주세요");
@@ -162,7 +160,7 @@ public class MemberController {
 			System.out.print("PHONE : ");
 			String match = "[^0-9]";	// 0~9까지 숫자만
 			String phone = Main.SC.nextLine().replaceAll(match,"");
-			System.out.print("ADRESS : ");
+			System.out.print("ADRESS[시,구,동 순으로 입력해주세요] : ");
 			String adress = Main.SC.nextLine().replace(" ","");
 			
 			MemberVo vo = new MemberVo();
@@ -315,7 +313,7 @@ public class MemberController {
 		System.out.println("============================================== 주소 변경 ==============================================");
 		try {
 			
-			System.out.print("새로운 주소를 입력하세요 : ");
+			System.out.print("새로운 주소를 입력하세요 [시,구,동 순으로 입력해주세요] : ");
 			String newAddress = Main.SC.nextLine().replace(" ","");
 			MemberVo vo = new MemberVo();
 			vo.setId(Main.loginMember.getId());
@@ -373,38 +371,36 @@ public class MemberController {
 		boolean x = true;
 		
 		try {
-			
-				Util.clearConsole();
-				//로그인 검사
-				if(Main.loginMember == null) {
-					throw new Exception("로그인부터 진행해주세요");
+			//로그인 검사
+			if(Main.loginMember == null) {
+				throw new Exception("로그인부터 진행해주세요");
+			}
+			String no = Main.loginMember.getMemberNo();
+			List<TradeVo> voList = service.purchaseList(no);
+			System.out.println("============================================ 구매 내역 목록 ============================================");
+			if(voList.isEmpty()){
+				System.out.println("조회된 내용이 없습니다.");
+			}else {
+				System.out.println("====================================================================================================");
+				System.out.println(" 구매번호 || 구매일시  |  판매자닉네임  |  거래 장소  |  상품명  |  가격  "); // 구매후기 작성 여부 추가해야함
+				
+				for(TradeVo vo : voList) {
+					System.out.println(vo.getPurchaseNo() + " | " + vo.getEnrollDate()+" | "+vo.getMemberNick()+" | "+vo.getTradeAreas()+" | "+vo.getProduct()+" | "+vo.getPrice());
 				}
-				String no = Main.loginMember.getMemberNo();
-				List<TradeVo> voList = service.purchaseList(no);
-				System.out.println("============================================ 구매 내역 목록 ============================================");
-				if(voList.isEmpty()){
-					System.out.println("조회된 내용이 없습니다.");
-				}else {
-					System.out.println("====================================================================================================");
-					System.out.println(" 구매번호 || 구매일시  |  판매자닉네임  |  거래 장소  |  상품명  |  가격  "); // 구매후기 작성 여부 추가해야함
-					
-					for(TradeVo vo : voList) {
-						System.out.println(vo.getPurchaseNo() + " | " + vo.getEnrollDate()+" | "+vo.getMemberNick()+" | "+vo.getTradeAreas()+" | "+vo.getProduct()+" | "+vo.getPrice());
-					}
-					
-					System.out.println("====================================================================================================\n\n");
-					System.out.println("<메뉴> 1.구매후기작성 9.뒤로가기(미구현)");
-					System.out.print("선택 : ");
-					String select = Main.SC.nextLine();
-					
-					switch(select) {
-						case "1" : 
-							System.out.print("구매후기 남길 내역 번호 : ");
-							String purchaseNo = Main.SC.nextLine();
-							writeReview(purchaseNo); break; // 리뷰 작성
-						case "9" : break;
-						default : System.out.println("잘못입력하셨습니다."); break;
-					}
+				
+				System.out.println("====================================================================================================\n\n");
+				System.out.println("<메뉴> 1.구매후기작성 9.뒤로가기");
+				System.out.print("선택 : ");
+				String select = Main.SC.nextLine();
+				
+				switch(select) {
+					case "1" : 
+						System.out.print("구매후기 남길 내역 번호 : ");
+						String purchaseNo = Main.SC.nextLine();
+						writeReview(purchaseNo); break; // 리뷰 작성
+					case "9" : break;
+					default : System.out.println("잘못입력하셨습니다."); break;
+				}
 				
 			}
 			 x =false;
@@ -467,44 +463,42 @@ public class MemberController {
 	//관심목록 리스트
 	public boolean wishList() {
 		boolean x = true;
-		System.out.println("============================================ 관심 목록 리스트 ============================================");
-		
-		try {
-			//로그인 검사
-			if(Main.loginMember == null) {
-				throw new Exception("로그인부터 진행해주세요");
-			}
-			String no = Main.loginMember.getMemberNo();
-			List<TradeVo> voList = service.wishList(no);
-			if(voList.isEmpty()) {
-				System.out.println("조회된 내용이 없습니다.");
-				x= false;
-			}else {
-				System.out.println("=====================================================================================================\n\n");
-				System.out.println("  글번호  |  거래상태  |  게시글명  |  상품  |  가격 ");
-				
-				for(TradeVo vo : voList) {
-					System.out.println(vo.getBoardNo()+" | "+vo.getCompleteYn()+" | "+vo.getTitle()+" | "+vo.getProduct()+" | "+vo.getPrice());
+			System.out.println("============================================ 관심 목록 리스트 ============================================");
+			try {
+				//로그인 검사
+				if(Main.loginMember == null) {
+					throw new Exception("로그인부터 진행해주세요");
 				}
-				System.out.println("=====================================================================================================\n\n");
-				//관심목록 있을 때 표기 (정보 변경)
-				System.out.print(" 1:관심목록 삭제");
-				System.out.println(" 9:이전으로 돌아가기");
-				System.out.print("번호를 입력해주세요: ");
-				String num = Main.SC.nextLine();
-				
-				switch(num) {
-				case "1" : wishDelete(); wishList(); break;
-				case "9" : return true;  
-				default : System.out.println("잘못 입력하였습니다.");
+				String no = Main.loginMember.getMemberNo();
+				List<TradeVo> voList = service.wishList(no);
+				if(voList.isEmpty()) {
+					System.out.println("조회된 내용이 없습니다.");
+					myPage();
+				}else {
+					System.out.println("=====================================================================================================\n\n");
+					System.out.println("  글번호  |  거래상태  |  게시글명  |  상품  |  가격 ");
+					
+					for(TradeVo vo : voList) {
+						System.out.println(vo.getBoardNo()+" | "+vo.getCompleteYn()+" | "+vo.getTitle()+" | "+vo.getProduct()+" | "+vo.getPrice());
+					}
+					System.out.println("=====================================================================================================\n\n");
+					//관심목록 있을 때 표기 (정보 변경)
+					System.out.print(" 1:관심목록 삭제");
+					System.out.println(" 9:이전으로 돌아가기");
+					System.out.print("번호를 입력해주세요: ");
+					String num = Main.SC.nextLine();
+					
+					switch(num) {
+					case "1" : wishDelete(); wishList(); break;
+					case "9" : myPage();  break;
+					default : System.out.println("잘못 입력하였습니다.");
+					}
 				}
+				
+			}catch(Exception e) {
+				System.out.println("관심 목록 조회 실패");
+				e.printStackTrace();
 			}
-			
-			
-		}catch(Exception e) {
-			System.out.println("관심 목록 조회 실패");
-			e.printStackTrace();
-		}
 		return x;
 		
 	}
@@ -543,7 +537,7 @@ public class MemberController {
 			String score = service.score(no);
 			
 			if(score == null) {
-				score ="0";
+				score ="36";
 //				throw new Exception();
 			}
 			
@@ -588,7 +582,8 @@ public class MemberController {
 			System.out.print("사용자 ID : ");
 			String id = Main.SC.nextLine();
 			System.out.print("사용자 전화번호 : ");
-			String phone = Main.SC.nextLine();
+			String match = "[^0-9]";	// 0~9까지 숫자만
+			String phone = Main.SC.nextLine().replaceAll(match,"");
 			MemberVo vo = new MemberVo();
 			vo.setName(name);
 			vo.setId(id);

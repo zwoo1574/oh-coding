@@ -52,7 +52,6 @@ public class MainController {
 
 	//로그인 메뉴 선택
 	public void memberMenu() {
-		try {Util.clearConsole();}catch(Exception e) {}
 		while(Main.loginMember != null) {
 			System.out.println("============================================ 로그인 메뉴 선택 ============================================");
 			
@@ -103,7 +102,6 @@ public class MainController {
 
 	//관리자 로그인 메뉴 선택
 	public void managerLoginMenu() {
-		try {Util.clearConsole();}catch(Exception e) {}
 		while(Main.loginManager != null) {
 			
 			System.out.println("=========================================== 관리자 로그인 메뉴 선택 ===========================================");
