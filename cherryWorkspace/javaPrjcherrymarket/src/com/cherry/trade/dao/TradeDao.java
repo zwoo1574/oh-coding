@@ -15,7 +15,7 @@ public class TradeDao {
 
 	// 게시글 목록 (중고거래 메인)
 	public List<TradeVo> printPost(Connection conn) throws Exception {
-		String sql = "SELECT T.BOARD_NO, T.TITLE, T.PRODUCT, T.PRICE, M.NICK, TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD') ENROLL_DATE , T.HIT, T.MEMBER_NO FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.DEL_YN = 'N' AND T.COMPLETE_YN = 'N' ORDER BY ENROLL_DATE DESC";
+		String sql = "SELECT T.BOARD_NO, T.TITLE, T.PRODUCT, T.PRICE, M.NICK, TO_CHAR(T.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') ENROLL_DATE , T.HIT, T.MEMBER_NO FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.DEL_YN = 'N' AND T.COMPLETE_YN = 'N' ORDER BY ENROLL_DATE DESC";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
 		
@@ -54,8 +54,7 @@ public class TradeDao {
 	// 게시글 조회
 	public TradeVo showContent(String select, Connection conn) throws Exception {
 		
-		String sql = "SELECT T.BOARD_NO, T.TITLE, T.CONTENT, T.TRADE_AREAS, T.PRODUCT, T.PRICE, T.ENROLL_DATE, T.EDIT_DATE, M.NICK, A.AREAS_NAME, T.HIT FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO JOIN AREAS A ON M.AREAS_CODE = A.AREAS_CODE WHERE T.BOARD_NO = ? AND T.COMPLETE_YN = 'N' AND T.DEL_YN = 'N'";
-		
+		String sql = "SELECT T.BOARD_NO ,T.TITLE ,T.CONTENT ,T.TRADE_AREAS ,T.PRODUCT ,T.PRICE ,TO_CHAR(T.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\" HH24:MM') ENROLL_DATE ,TO_CHAR(T.EDIT_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\" HH24:MM') EDIT_DATE, M.NICK, A.AREAS_NAME, T.HIT FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO JOIN AREAS A ON M.AREAS_CODE = A.AREAS_CODE WHERE T.BOARD_NO = ? AND T.COMPLETE_YN = 'N' AND T.DEL_YN = 'N'";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, select);
 		
@@ -133,7 +132,7 @@ public class TradeDao {
 		for(int i = 0; i < content.length(); i++) {
 			char ch = content.charAt(i);
 			sb.append(ch);
-			if((i+1) % 20 == 0 && i != 0) {
+			if((i+1) % 30 == 0 && i != 0) {
 				sb.append("#");
 			}
 		}
@@ -169,7 +168,7 @@ public class TradeDao {
             char ch = content.charAt(i);
             sb.append(ch);
 
-            if ((i + 1) % 20 == 0 && i != 0) {
+            if ((i + 1) % 30 == 0 && i != 0) {
                 sb.append("#");
             }
         }
@@ -315,25 +314,25 @@ public class TradeDao {
 	}
 	
 	
-	// 구매 후기 작성  (매너온도 포함)  -- 미완성
-	public int writeReview(String content, Connection conn, int purchaseNo, String manner) throws Exception {
-		String sql = "INSERT INTO REVIEW (REVIEW_NO, PURCHASE_NO, SCORE, CONTENT) VALUES (SEQ_REVIEW_NO.NEXTVAL, ? , ?, ?)";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, purchaseNo);
-		switch(manner) {
-			case "1" : pstmt.setString(2, "1"); break;
-			case "2" : pstmt.setString(2, "0"); break;
-			case "3" : pstmt.setString(2, "-1"); break;
-		}
-		pstmt.setString(3, content);
-		
-		
-		int result = pstmt.executeUpdate();
-		
-		JDBCTemplate.close(pstmt);
-		
-		return result;
-	}
+//	// 구매 후기 작성  (매너온도 포함)  -- 미완성
+//	public int writeReview(String content, Connection conn, int purchaseNo, String manner) throws Exception {
+//		String sql = "INSERT INTO REVIEW (REVIEW_NO, PURCHASE_NO, SCORE, CONTENT) VALUES (SEQ_REVIEW_NO.NEXTVAL, ? , ?, ?)";
+//		PreparedStatement pstmt = conn.prepareStatement(sql);
+//		pstmt.setInt(1, purchaseNo);
+//		switch(manner) {
+//			case "1" : pstmt.setString(2, "1"); break;
+//			case "2" : pstmt.setString(2, "0"); break;
+//			case "3" : pstmt.setString(2, "-1"); break;
+//		}
+//		pstmt.setString(3, content);
+//		
+//		
+//		int result = pstmt.executeUpdate();
+//		
+//		JDBCTemplate.close(pstmt);
+//		
+//		return result;
+//	}
 
 	public List<TradeVo> searchPostByTitle(String searchTitle, Connection conn) throws Exception {
 		

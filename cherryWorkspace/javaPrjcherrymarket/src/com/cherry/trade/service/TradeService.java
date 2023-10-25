@@ -148,23 +148,23 @@ public class TradeService {
 		return purchaseNo;
 	}
 	
-	// 구매 후기 작성 (매너온도 포함)
-	public int writeReview(String content, TradeVo vo, int purchaseNo, String manner) throws Exception {
-		
-		Connection conn = JDBCTemplate.getConnection();
-		
-		int result = dao.writeReview(content, conn, purchaseNo, manner);
-		
-		if(result == 1) {
-			JDBCTemplate.commit(conn);
-		} else {
-			JDBCTemplate.rollback(conn);
-		}
-		
-		JDBCTemplate.close(conn);
-		
-		return result;
-	}
+//	// 구매 후기 작성 (매너온도 포함)
+//	public int writeReview(String content, TradeVo vo, int purchaseNo, String manner) throws Exception {
+//		
+//		Connection conn = JDBCTemplate.getConnection();
+//		
+//		int result = dao.writeReview(content, conn, purchaseNo, manner);
+//		
+//		if(result == 1) {
+//			JDBCTemplate.commit(conn);
+//		} else {
+//			JDBCTemplate.rollback(conn);
+//		}
+//		
+//		JDBCTemplate.close(conn);
+//		
+//		return result;
+//	}
 
 	public List<TradeVo> searchPostByTitle(String searchTitle) throws Exception {
 		
