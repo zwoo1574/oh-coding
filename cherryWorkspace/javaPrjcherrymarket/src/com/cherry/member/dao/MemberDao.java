@@ -52,7 +52,8 @@ public class MemberDao {
 	}
 	//로그인
 	public MemberVo login(Connection conn, MemberVo vo) throws Exception{
-		String sql = "SELECT * FROM MEMBER JOIN AREAS USING(AREAS_CODE) WHERE ID = UPPER(?) AND PWD = ?";
+		String sql = "SELECT MEMBER_NO ,AREAS_CODE ,AREAS_NAME ,ID ,PWD ,NICK ,NAME ,EMAIL ,PHONE ,ADDRESS ,TO_CHAR(JOIN_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS JOIN_DATE ,TO_CHAR(EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS EDIT_DATE "
+				+ "FROM MEMBER JOIN AREAS USING(AREAS_CODE) WHERE ID = UPPER(?) AND PWD = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1,vo.getId());
 		pstmt.setString(2, vo.getPwd());
@@ -122,10 +123,11 @@ public class MemberDao {
 	}
 	//주소 변경
 	public int changeAddress(Connection conn, MemberVo vo) throws Exception{
-		String sql ="UPDATE MEMBER SET ADDRESS = ? WHERE MEMBER_NO = ?";
+		String sql ="UPDATE MEMBER SET ADDRESS = ?, AREAS_CODE = ? WHERE MEMBER_NO = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, vo.getAddress());
-		pstmt.setString(2, vo.getMemberNo());
+		pstmt.setString(2, vo.getAreasCode());
+		pstmt.setString(3, vo.getMemberNo());
 		int result = pstmt.executeUpdate();
 		
 		JDBCTemplate.close(pstmt);

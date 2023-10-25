@@ -35,7 +35,7 @@ public class ManagerDao {
 	}
 
 	public List<MemberVo> userList(Connection conn) throws Exception{
-		String sql = "SELECT MEMBER_NO ,AREAS_NAME ,ID ,PWD ,NICK ,NAME ,EMAIL ,PHONE ,ADDRESS ,TO_CHAR(JOIN_DATE,'YYYY-MM-DD') AS JOIN_DATE ,TO_CHAR(EDIT_DATE,'YYYY-MM-DD') AS EDIT_DATE ,QUIT_YN FROM MEMBER JOIN AREAS USING (AREAS_CODE) ORDER BY MEMBER_NO";
+		String sql = "SELECT MEMBER_NO ,AREAS_NAME ,ID ,PWD ,NICK ,NAME ,EMAIL ,PHONE ,ADDRESS ,TO_CHAR(JOIN_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS JOIN_DATE ,TO_CHAR(EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE ,QUIT_YN FROM MEMBER JOIN AREAS USING (AREAS_CODE) ORDER BY MEMBER_NO";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
 		
@@ -64,7 +64,7 @@ public class ManagerDao {
 	}
 
 	public MemberVo userDetile(Connection conn, String userNo) throws Exception{
-		String sql ="SELECT MEMBER_NO ,AREAS_NAME ,ID ,PWD ,NICK ,NAME ,EMAIL ,PHONE ,ADDRESS ,TO_CHAR(JOIN_DATE,'YYYY-MM-DD') AS JOIN_DATE ,TO_CHAR(EDIT_DATE,'YYYY-MM-DD') AS EDIT_DATE ,QUIT_YN FROM MEMBER JOIN AREAS USING (AREAS_CODE) WHERE MEMBER_NO = ? ORDER BY MEMBER_NO";
+		String sql ="SELECT MEMBER_NO ,AREAS_NAME ,ID ,PWD ,NICK ,NAME ,EMAIL ,PHONE ,ADDRESS ,TO_CHAR(JOIN_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS JOIN_DATE ,TO_CHAR(EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS EDIT_DATE ,QUIT_YN FROM MEMBER JOIN AREAS USING (AREAS_CODE) WHERE MEMBER_NO = ? ORDER BY MEMBER_NO";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1,userNo);
 		

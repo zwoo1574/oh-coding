@@ -13,6 +13,7 @@ import com.cherry.qna.controller.QnaController;
 import com.cherry.town.controller.TownController;
 import com.cherry.trade.controller.TradeController;
 import com.cherry.trade.vo.TradeVo;
+import com.cherry.util.Util;
 
 public class ManagerController {
 	
@@ -41,24 +42,27 @@ public class ManagerController {
 	
 	//관리자 페이지 메뉴 선택
 	public void adminPage() {
-		System.out.println("===== 관리자 페이지 메뉴 선택 =====");
-		
-		System.out.print(" 1: 관리자 로그아웃");
-		System.out.print(" 2: 관리자 회원전체 조회");
-		System.out.print(" 3: 관리자 회원 상세 조회(번호/아이디/닉네임)");
-		System.out.println(" 4: 관리자 회원 강제 탈퇴");
-		
-		System.out.print("입력창 :");
-		String num = Main.SC.nextLine();
-		
-		switch(num) {
-		case "1" :logoutManager(); break;
-		case "2" :userList(); break;
-		case "3" :userDetile(); break;
-		case "4" :userKick(); break;
-		default : System.out.println("잘못 입력하였습니다.");
+		try {Util.clearConsole();}catch(Exception e) {}
+		Boolean x = false;
+		while(!x) {
+			System.out.println("============================================= 관리자 페이지 메뉴 선택 =============================================");
+			System.out.print(" 1.관리자 회원전체 조회");
+			System.out.print(" 2.관리자 회원 상세 조회(번호/아이디/닉네임)");
+			System.out.println(" 3.관리자 회원 강제 탈퇴");
+			System.out.println(" 9.뒤로 가기");
+			
+			System.out.print("번호를 입력해주세요: ");
+			String num = Main.SC.nextLine();
+			
+			switch(num) {
+			case "1" :x=userList(); break;
+			case "2" :x=userDetile(); break;
+			case "3" :x=userKick(); break;
+			case "9" :return;
+			default : System.out.println("잘못 입력하였습니다.");
+			}
 		}
-	}	/* loginMenu -> managerLoginMenu */
+	}	
 
 //	//관리자 로그인 메뉴 선택
 //	public void loginMenu() {
@@ -89,8 +93,8 @@ public class ManagerController {
 	
 	//관리자 로그인
 	public void loginManager() {
-		System.out.println("===== 관리자 로그인 ======");
 		try {
+			System.out.println("=============================================== 관리자 로그인 ===============================================");
 			if(Main.loginManager != null) {
 				System.out.println("이미 로그인 상태입니다.");
 				return;
@@ -110,8 +114,8 @@ public class ManagerController {
 			if(Main.loginManager == null) {
 				throw new Exception();
 			}
-			System.out.println("관리자 로그인 성공");
-			System.out.println(Main.loginManager.getName()+" 님 환영합니다.");
+			System.out.println("============================================= 관리자 로그인 성공 =============================================");
+			System.out.println("                                            "+Main.loginManager.getName()+" 님 환영합니다                                            \n");
 			
 //			managerLoginMenu();
 		}catch(Exception e) {
@@ -133,9 +137,11 @@ public class ManagerController {
 	}
 
 	//사용자 회원 전체 조회
-	public void userList() {
-		System.out.println("=================================== 회원 전체 조회 ===================================");
+	public boolean userList() {
+		boolean x = true;
 		try {
+			Util.clearConsole();
+			System.out.println("=============================================== 회원 전체 조회 ===============================================");
 			//로그인 검사
 			if(Main.loginManager == null) {
 				throw new Exception("관리자 로그인부터 진행해주세요");
@@ -146,18 +152,21 @@ public class ManagerController {
 			for(MemberVo vo : userList) {
 				System.out.println(vo.getMemberNo()+" | "+vo.getAreasName()+" | "+vo.getName()+" | "+vo.getId()+" | "+vo.getNick()+" | "+vo.getEmail()
 				+" | "+vo.getPhone()+" | "+vo.getAddress()+" | "+vo.getJoinDate()+" | "+vo.getEditDate()+" | "+vo.getQuitYn());
-			}			System.out.println("========================================================================================================================\n");			
-			
+			}			System.out.println("============================================================================================================\n");			
+			x = false;
 		}catch(Exception e) {
 			System.out.println("회원 조회 실패");
 			e.printStackTrace();
 		}
+		return x;
 	}
 
 	//사용자 회원 상세 조회
-	public void userDetile() {
-		System.out.println("=================================== 회원 상세 조회 ===================================");
+	public boolean userDetile() {
+		boolean x = true;
 		try {
+			Util.clearConsole();
+			System.out.println("=============================================== 회원 상세 조회 ===============================================");
 			//로그인 검사
 			if(Main.loginManager == null) {
 				throw new Exception("관리자 로그인부터 진행해주세요");
@@ -169,18 +178,22 @@ public class ManagerController {
 			System.out.println("사용자번호 | 동네번호 | 사용자명 | 아이디 | 닉네임 | 이메일 | 전화번호 | 주소 | 가입일자 | 마지막수정일자 | 탈퇴여부");
 			System.out.println(vo.getMemberNo()+" | "+vo.getAreasName()+" | "+vo.getName()+" | "+vo.getId()+" | "+vo.getNick()+" | "+vo.getEmail()
 				+" | "+vo.getPhone()+" | "+vo.getAddress()+" | "+vo.getJoinDate()+" | "+vo.getEditDate()+" | "+vo.getQuitYn());
-			System.out.println("========================================================================================================================\n");			
-			
+			System.out.println("============================================================================================================\n");			
+			x = false;
 		}catch(Exception e) {
 			System.out.println("회원 조회 실패");
 			e.printStackTrace();
 		}
+		return x;
 	}
+	//상세 조회 추가 (아이디/닉네임)
 
 	//사용자 회원 강제 탈퇴
-	public void userKick() {
-		System.out.println("=================================== 회원 강제 탈퇴 ===================================");
+	public boolean userKick() {
+		boolean x = true;
 		try {
+			Util.clearConsole();
+			System.out.println("=================================== 회원 강제 탈퇴 ===================================");
 			//로그인 검사
 			if(Main.loginManager == null) {
 				throw new Exception("관리자 로그인부터 진행해주세요");
@@ -193,11 +206,12 @@ public class ManagerController {
 				throw new Exception();
 			}
 			System.out.println("회원 강제 탈퇴를 성공했습니다.");
-			
+			x = false;
 		}catch(Exception e) {
 			System.out.println("회원 강제 탈퇴 실패");
 			e.printStackTrace();
-		}		
+		}
+		return x;
 	}
 
 }
