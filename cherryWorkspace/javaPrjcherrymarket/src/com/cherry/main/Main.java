@@ -20,18 +20,20 @@ public class Main {
 			System.out.println(""
 					+ ""
 					+ "\r\n"
-					+ Color.RED +" █████████╗ "+Color.EXIT+Color.GREEN+"██╗     ██╗"+Color.BLUE+" ████████╗ ████████╗  ████████╗ ██╗     ██╗ "+Color.RED+"  ███╗      ███╗"+Color.YELLOW+"   █████╗   ████████╗  ██╗    ██╗ ████████╗ ██████████╗\r\n"
-					+ Color.RED +"██╔═══════╝ "+Color.EXIT+Color.GREEN+"██║     ██║ "+Color.BLUE+"██╔═════╝ ██╔════██╗ ██╔════██╗╚██    ██╔╝ "+Color.RED+"  ████╗    ████║"+Color.YELLOW+" ██╔════██╗ ██╔════██╗ ██║   ██╔╝ ██╔═════╝ ╚═══██╔═══╝\r\n"
-					+ Color.RED +"██║         "+Color.EXIT+Color.GREEN+"██████████║ "+Color.BLUE+"████████╗ ████████╔╝ ████████╔╝  ╚████╔═╝  "+Color.RED+"  ██╔══████╔═██║"+Color.YELLOW+" █████████║ ████████╔╝ ██████╔╝   ███████═╗     ██║   \r\n"
-					+ Color.RED +"██║         "+Color.EXIT+Color.GREEN+"██ ╔════██║ "+Color.BLUE+"██╔═════╝ ██╔════██╗ ██╔════██╗   ╚██╔╝    "+Color.RED+"  ██║  ╚██╔╝ ██║"+Color.YELLOW+" ██╔════██║ ██╔════██╗ ██╔═══██╗  ██╔═════╝     ██║   \r\n"
-					+ Color.RED +"╚██████████╗"+Color.EXIT+Color.GREEN+"██ ║    ██║ "+Color.BLUE+"████████╗ ██║    ██║ ██║    ██║    ██║     "+Color.RED+"  ██║   ╚═╝  ██║"+Color.YELLOW+" ██║    ██║ ██║    ██║ ██║    ██╗ ████████╗     ██║   \r\n"
-					+ Color.RED +" ╚═════════╝"+Color.EXIT+Color.GREEN+"╚══╝    ╚═╝ "+Color.BLUE+"╚═══════╝ ╚═╝    ╚═╝ ╚═╝    ╚═╝    ╚═╝     "+Color.RED+"  ╚═╝        ╚═╝"+Color.YELLOW+" ╚═╝    ╚═╝ ╚═╝    ╚═╝ ╚═╝    ╚═╝ ╚═══════╝     ╚═╝"+Color.RED+"🍒 "+Color.EXIT+"  \r\n"
+					+ Color.RED +" █████████╗ "+Color.EXIT+Color.GREEN+"██╗     ██╗"+Color.BLUE+" ████████╗ ████████╗  ████████╗ ██╗     ██╗ "+Color.RED+"  ███╗      ███╗"+Color.YELLOW+"   █████╗   ████████╗  ██╗    ██╗ ████████╗██████████╗\r\n"
+					+ Color.RED +"██╔═══════╝ "+Color.EXIT+Color.GREEN+"██║     ██║ "+Color.BLUE+"██╔═════╝ ██╔════██╗ ██╔════██╗╚██    ██╔╝ "+Color.RED+"  ████╗    ████║"+Color.YELLOW+" ██╔════██╗ ██╔════██╗ ██║   ██╔╝ ██╔═════╝╚═══██╔═══╝\r\n"
+					+ Color.RED +"██║         "+Color.EXIT+Color.GREEN+"██████████║ "+Color.BLUE+"████████╗ ████████╔╝ ████████╔╝  ╚████╔═╝  "+Color.RED+"  ██╔══████╔═██║"+Color.YELLOW+" █████████║ ████████╔╝ ██████╔╝   ███████═╗    ██║   \r\n"
+					+ Color.RED +"██║         "+Color.EXIT+Color.GREEN+"██ ╔════██║ "+Color.BLUE+"██╔═════╝ ██╔════██╗ ██╔════██╗   ╚██╔╝    "+Color.RED+"  ██║  ╚██╔╝ ██║"+Color.YELLOW+" ██╔════██║ ██╔════██╗ ██╔═══██╗  ██╔═════╝    ██║   \r\n"
+					+ Color.RED +"╚██████████╗"+Color.EXIT+Color.GREEN+"██ ║    ██║ "+Color.BLUE+"████████╗ ██║    ██║ ██║    ██║    ██║     "+Color.RED+"  ██║   ╚═╝  ██║"+Color.YELLOW+" ██║    ██║ ██║    ██║ ██║    ██╗ ████████╗    ██║   \r\n"
+					+ Color.RED +" ╚═════════╝"+Color.EXIT+Color.GREEN+"╚══╝    ╚═╝ "+Color.BLUE+"╚═══════╝ ╚═╝    ╚═╝ ╚═╝    ╚═╝    ╚═╝     "+Color.RED+"  ╚═╝        ╚═╝"+Color.YELLOW+" ╚═╝    ╚═╝ ╚═╝    ╚═╝ ╚═╝    ╚═╝ ╚═══════╝    ╚═╝"+Color.RED+"🍒 "+Color.EXIT+"  \r\n"
 					+ "                                                                                                         \r\n"
 					+ "" );
 	      
 			 System.out.println("                                             "+Color.RED +"▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃"+Color.EXIT + "​​​​​                                           ");
-	         System.out.println("                                                       " +Color.YELLOW +"➊" + Color.EXIT + "유저   "+  Color.RED +"➋" + Color.EXIT + "관리자");
-	         System.out.print("                                                      번호를 입력해주세요: " + Color.CYAN);
+			 System.out.println();
+	         System.out.println("                                                         " +Color.YELLOW +"➊" + Color.EXIT + "유저   "+  Color.RED +"➋" + Color.EXIT + "관리자");
+	         System.out.println("                                                        번호를 입력해주세요 " + Color.CYAN);
+	         System.out.print("                                                                "); 
 	         String num = Main.SC.nextLine();
 	         System.out.println(Color.EXIT);
 	         System.out.println("                                             "+Color.RED +"▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃"+Color.EXIT + "​​​​​                                           ");

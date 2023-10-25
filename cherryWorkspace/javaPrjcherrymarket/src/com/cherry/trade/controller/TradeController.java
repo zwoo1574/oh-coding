@@ -95,8 +95,8 @@ public class TradeController {
 	// 구매 신청 
 	private void purchaseRequest(TradeVo vo) {
 		try {
-			System.out.println("구매신청");
-			System.out.println(vo);
+			
+			System.out.println(Color.CYAN + vo.getProduct() + Color.EXIT + " 거래를 완료하셨나요?");
 			System.out.print("거래완료 (y/n) : " + Color.CYAN);
 			String x = sc.nextLine();
 			System.out.print(Color.EXIT);
@@ -255,9 +255,10 @@ public class TradeController {
 					System.out.println("접속 지역 : " + Color.YELLOW + Main.loginMember.getAreasName() + Color.EXIT);
 				}
 				
-				System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
-				System.out.printf("%-10s%-20s%-10s%-10s%-10s%-10s%-10s\n", "번호", "제목", "물품명", "가격", "판매자", "작성일", "조회수");
-				System.out.println(Color.CYAN + "▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+				System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃​​​​​▃▃▃▃▃​​​​​" + Color.EXIT);
+				System.out.println("번호        제목                         물품명         가격           판매자           작성일         조회수   ");
+				System.out.println(Color.CYAN + "▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+				
 				
 				List<TradeVo> voList = ts.printPost();
 				
@@ -269,7 +270,7 @@ public class TradeController {
 					if(Main.loginMember != null) {
 						if(vo.getMemberNo().equals(Main.loginMember.getMemberNo())) {
 							color = Color.YELLOW;
-						}
+						} 
 					}
 					
 					String boardNo = vo.getBoardNo();
@@ -280,12 +281,13 @@ public class TradeController {
 					String enrollDate = vo.getEnrollDate();
 					String hit = vo.getHit();
 					
-					System.out.printf("%s%-10s%s%-20s%-10s%-10s%-10s%-15s%-10s\n",
-					    color, boardNo, resetColor, title, product, price, memberNick, enrollDate, hit);
+
+					System.out.println(color + boardNo + resetColor + title + product + price + memberNick + enrollDate + hit);
 					
+						
 				}
 				
-				System.out.println(Color.CYAN + "▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+				System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 				x = mainMenu();
 			}
 		} catch (Exception e) {
@@ -413,7 +415,7 @@ public class TradeController {
 			TradeVo vo = ts.showContent(select);
 			
 			if(vo == null) {
-				throw new Exception("존재하지 않는 게시글입니다");
+				throw new Exception("존재하지 않는 게시글");
 			}
 			
 			Util.clearConsole();
@@ -457,6 +459,7 @@ public class TradeController {
 			System.out.println(Color.RED + "게시글 조회 실패" + Color.EXIT);
 			String ex = e.getMessage();
 //			e.printStackTrace();
+			if(ex.contains("존재하지")) {System.out.println("존재하지 않는 게시글입니다.");}
 			if(ex.contains("ORA-01722")) {System.out.println("숫자만 입력해주세요."); }
 			
 		}
@@ -495,7 +498,7 @@ public class TradeController {
 	
 	// 게시글 목록(메인) -> 4. 게시글 검색
 	public void searchPost() {
-		System.out.println(Color.YELLOW +"➊" + Color.EXIT + "제목으로 검색" 
+		System.out.println(Color.YELLOW +"➊" + Color.EXIT + "제목으로 검색  " 
 							+ Color.YELLOW +"➋" + Color.EXIT + "제품명으로 검색");
 
 		System.out.print("선택 : " + Color.CYAN);
@@ -529,9 +532,10 @@ public class TradeController {
 			System.out.println("접속중인 회원 : " + Color.YELLOW + Main.loginMember.getNick() + Color.EXIT);
 			System.out.println("접속 지역 : " + Color.YELLOW + Main.loginMember.getAreasName() + Color.EXIT);
 		}
-		System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
-		System.out.printf("%-10s%-20s%-10s%-10s%-10s%-10s%-10s\n", "번호", "제목", "물품명", "가격", "판매자", "작성일", "조회수");
-		System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+		
+		System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃​​​​​▃▃▃▃▃​​​​​" + Color.EXIT);
+		System.out.println("번호        제목                         물품명         가격           판매자           작성일         조회수   ");
+		System.out.println(Color.CYAN + "▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 
 		List<TradeVo> voList = ts.searchPostByTitle(searchTitle);
 
@@ -559,12 +563,10 @@ public class TradeController {
 			String enrollDate = vo.getEnrollDate();
 			String hit = vo.getHit();
 			
-			System.out.printf("%s%-10s%s%-20s%-10s%-10s%-10s%-15s%-10s\n",
-			    color, boardNo, resetColor, title, product, price, memberNick, enrollDate, hit);
-
+			System.out.println(color + boardNo + resetColor + title + product + price + memberNick + enrollDate + hit);
 		}
 		
-		System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+		System.out.println(Color.CYAN + "▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 	
 		mainMenu();
 		
@@ -594,9 +596,9 @@ public class TradeController {
 				System.out.println("접속 지역 : " + Color.YELLOW + Main.loginMember.getAreasName() + Color.EXIT);
 			}
 			
-			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
-			System.out.printf("%-10s%-20s%-10s%-10s%-10s%-10s%-10s\n", "번호", "제목", "물품명", "가격", "판매자", "작성일", "조회수");
-			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+			System.out.println(Color.CYAN + "▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+			System.out.println("번호        제목                         물품명         가격           판매자           작성일         조회수   ");
+			System.out.println(Color.CYAN + "▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 
 			if(voList.size() == 0) {
 				System.out.println(Color.CYAN + searchProduct + Color.EXIT + Color.YELLOW + "으로 검색 된 게시글이 없습니다." +Color.EXIT);
@@ -621,12 +623,11 @@ public class TradeController {
 				String enrollDate = vo.getEnrollDate();
 				String hit = vo.getHit();
 				
-				System.out.printf("%s%-10s%s%-20s%-10s%-10s%-10s%-15s%-10s\n",
-				    color, boardNo, resetColor, title, product, price, memberNick, enrollDate, hit);
+				System.out.println(color + boardNo + resetColor + title + product + price + memberNick + enrollDate + hit);
 
 			}
 			
-			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
+			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			
 			mainMenu();
 			
