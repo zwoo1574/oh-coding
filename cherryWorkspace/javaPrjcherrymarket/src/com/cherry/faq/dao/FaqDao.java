@@ -16,10 +16,12 @@ public class FaqDao {
 	public int write(Connection conn, FaqVo vo) throws Exception{
 		
 		//sql
-		String sql = "INSERT INTO FAQ(FAQ_NO, MANAGER_NO, TITLE, CONTENT) VALUES(SEQ_FAQ_NO.NEXTVAL, ?, ?)";
+		String sql = "INSERT INTO FAQ(FAQ_NO, MANAGER_NO, TITLE, CONTENT) VALUES(SEQ_FAQ_NO.NEXTVAL, ?, ?, ?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, vo.getManagerNo());
+		pstmt.setString(1, Main.loginManager.getManagerNo());
 		pstmt.setString(2, vo.getTitle());
+		pstmt.setString(3, vo.getContent());
+		
 		int result = pstmt.executeUpdate();
 		
 		
@@ -32,7 +34,7 @@ public class FaqDao {
 	//게시글 수정
 	public int edit(Connection conn, String no, String content) throws Exception {
 		//SQL
-		String sql = "UPDATE FAQ SET CONTENT = ? WHERE FAQ_NO = ?";
+		String sql = "UPDATE FAQ SET CONTENT = ? ,EDIT_DATE = SYSDATE WHERE FAQ_NO = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, content);
 		pstmt.setString(2, no);
@@ -274,9 +276,9 @@ public class FaqDao {
 		//SQL
 		String sql;
 		if(Main.loginMember != null) { //회원일 때
-			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE SECRET_YN = 'N' AND FAQ_NO = ?";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE SECRET_YN = 'N' AND FAQ_NO = ?";
 		}else { //관리자일 때
-			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE FAQ_NO = ?";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE FAQ_NO = ?";
 		}
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, no);
