@@ -59,6 +59,7 @@ public class FaqController {
 				System.out.println("5.게시판 상세 조회(번호)");
 				System.out.println("9.뒤로가기");
 				System.out.println("===================");
+				System.out.print("번호를 입력해주세요 : ");
 				String num = Main.SC.nextLine();
 				
 				switch(num) {
@@ -191,7 +192,7 @@ public class FaqController {
 			System.out.println("-----게시판 검색(제목)-----");
 			
 			//데이터
-			System.out.println("게시판 제목 : ");
+			System.out.print("게시판 제목 : ");
 			String boardTitle = Main.SC.nextLine();
 			
 			//서비스
@@ -257,10 +258,16 @@ public class FaqController {
 			if(voList.size() == 0) {
 				throw new Exception();
 			}
-			
-			for(FaqVo vo : voList) {
-				System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
-				+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate());
+			if(Main.loginManager != null)
+				for(FaqVo vo : voList) {
+					System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
+					+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate() + "| 조회 수 : " + vo.getHit()
+					+ "| 비공개: " + vo.getSecretYn());
+			}else {
+				for(FaqVo vo : voList) {
+					System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
+					+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate() + "| 조회 수 : " + vo.getHit());
+				}
 			}
 		}catch(Exception e) {
 			System.out.println("전체 게시판 조회 실패...");

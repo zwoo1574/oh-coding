@@ -6,6 +6,7 @@ import java.util.List;
 import com.cherry.faq.dao.FaqDao;
 import com.cherry.faq.vo.FaqVo;
 import com.cherry.jdbc.JDBCTemplate;
+import com.cherry.main.Main;
 
 public class FaqService {
 
@@ -153,7 +154,10 @@ public class FaqService {
 		Connection conn = JDBCTemplate.getConnection();
 		
 		//DAO
-		int result = dao.increaseHit(conn, no);
+		int result = 0;
+		if(Main.loginManager == null) {
+			result = dao.increaseHit(conn, no);
+		}
 		FaqVo vo = dao.boardDetailByNo(conn, no);
 		
 		//tx
