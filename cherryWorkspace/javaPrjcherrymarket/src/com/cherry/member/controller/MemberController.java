@@ -138,7 +138,7 @@ public class MemberController {
 			
 		}catch(Exception e) {
 			System.out.println("마이페이지 조회 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return x;
 	}
@@ -181,7 +181,7 @@ public class MemberController {
 			
 		}catch(Exception e) {
 			System.out.println("회원가입 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 	//로그인
@@ -215,7 +215,7 @@ public class MemberController {
 
 		}catch(Exception e) {
 			System.out.println("로그인 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 	//로그아웃
@@ -248,7 +248,7 @@ public class MemberController {
 			
 		}catch(Exception e) {
 			System.out.println("회원탈퇴 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 
@@ -278,7 +278,7 @@ public class MemberController {
 			logout();
 		}catch(Exception e) {
 			System.out.println("비밀번호 변경 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 
@@ -305,7 +305,7 @@ public class MemberController {
 			Info();
 		}catch(Exception e) {
 			System.out.println("닉네임 변경 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}	
 	}
 	//주소 변경
@@ -333,7 +333,7 @@ public class MemberController {
 			Info();
 		}catch(Exception e) {
 			System.out.println("주소 변경 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}	
 		
 	}
@@ -362,7 +362,7 @@ public class MemberController {
 			Info();
 		}catch(Exception e) {
 			System.out.println("전화번호 변경 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}	
 	}
 	
@@ -406,7 +406,7 @@ public class MemberController {
 			 x =false;
 		}catch(Exception e) {
 			System.out.println("구매 내역 조회 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return x;
 	}
@@ -497,7 +497,7 @@ public class MemberController {
 				
 			}catch(Exception e) {
 				System.out.println("관심 목록 조회 실패");
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 		return x;
 		
@@ -520,7 +520,7 @@ public class MemberController {
 			
 		}catch(Exception e) {
 			System.out.println("관심 목록 삭제 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 	//매너온도 (추천수) 확인
@@ -545,7 +545,7 @@ public class MemberController {
 			return false;
 		}catch(Exception e) {
 			System.out.println("매너 온도 확인 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return x;
 	}
@@ -570,7 +570,7 @@ public class MemberController {
 			
 		}catch(Exception e) {
 			System.out.println("아이디 찾기 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 	//비밀번호 찾기
@@ -599,7 +599,7 @@ public class MemberController {
 			
 		}catch(Exception e) {
 			System.err.println("비밀번호  찾기 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 

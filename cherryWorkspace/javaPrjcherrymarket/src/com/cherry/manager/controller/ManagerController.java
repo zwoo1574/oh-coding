@@ -117,7 +117,7 @@ public class ManagerController {
 //			managerLoginMenu();
 		}catch(Exception e) {
 			System.out.println("관리자 로그인 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		
 	}
@@ -152,7 +152,7 @@ public class ManagerController {
 			x = false;
 		}catch(Exception e) {
 			System.out.println("회원 조회 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return x;
 	}
@@ -189,7 +189,7 @@ public class ManagerController {
 			x = false;
 		}catch(Exception e) {
 			System.out.println("회원 조회 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return x;
 	}
@@ -215,7 +215,7 @@ public class ManagerController {
 			x = false;
 		}catch(Exception e) {
 			System.out.println("회원 강제 탈퇴 실패");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return x;
 	}
