@@ -40,7 +40,6 @@ public class ManagerController {
 	
 	//관리자 페이지 메뉴 선택
 	public void adminPage() {
-		try {Util.clearConsole();}catch(Exception e) {}
 		Boolean x = false;
 		while(!x) {
 			System.out.println("============================================= 관리자 페이지 메뉴 선택 =============================================");
@@ -138,7 +137,6 @@ public class ManagerController {
 	public boolean userList() {
 		boolean x = true;
 		try {
-			Util.clearConsole();
 			System.out.println("=============================================== 회원 전체 조회 ===============================================");
 			//로그인 검사
 			if(Main.loginManager == null) {
@@ -163,7 +161,6 @@ public class ManagerController {
 	public boolean userDetile() {
 		boolean x = true;
 		try {
-			Util.clearConsole();
 			System.out.println("=============================================== 회원 상세 조회 ===============================================");
 			//로그인 검사
 			if(Main.loginManager == null) {
@@ -172,13 +169,17 @@ public class ManagerController {
 			System.out.println("1.번호 2.아이디 3.닉네임");
 			System.out.print("번호를 입력해주세요: ");
 			String num = Main.SC.nextLine();
+			
 			switch(num) {
 			case "1" : System.out.print("조회할 회원의 회원번호를 입력해주세요 : "); break;
 			case "2" : System.out.print("조회할 회원의 아이디를 입력해주세요 : "); break;
 			case "3" : System.out.print("조회할 회원의 닉네임을 입력해주세요 : "); break;
 			}
+			
 			String userChoice = Main.SC.nextLine(); 
+			
 			List<MemberVo> voList = service.userDetile(userChoice,num);
+			
 			for(MemberVo vo : voList) {
 				System.out.println("사용자번호 | 동네번호 | 사용자명 | 아이디 | 닉네임 | 이메일 | 전화번호 | 주소 | 가입일자 | 마지막수정일자 | 탈퇴여부");
 				System.out.println(vo.getMemberNo()+" | "+vo.getAreasName()+" | "+vo.getName()+" | "+vo.getId()+" | "+vo.getNick()+" | "+vo.getEmail()
@@ -198,7 +199,6 @@ public class ManagerController {
 	public boolean userKick() {
 		boolean x = true;
 		try {
-			Util.clearConsole();
 			System.out.println("=================================== 회원 강제 탈퇴 ===================================");
 			//로그인 검사
 			if(Main.loginManager == null) {
