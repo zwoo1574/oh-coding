@@ -23,38 +23,50 @@ public class NoticeController {
 		
 
 		while(true) {
+			
 			if(Main.loginManager!=null) { //관리자
+			System.out.println();
+			adminNoticeList();
+			System.out.println();
 			System.out.println("===NOTICE===");
 			System.out.println("1. 공지글 작성");
 			System.out.println("2. 공지글 공개여부");
 			System.out.println("3. 공지글 수정");
-			System.out.println("4. 최신순으로 공지글 조회");
-			System.out.println("5. 조회순으로 공지글 조회");
-			System.out.println("6. 제목으로 공지글 검색");
-			System.out.println("7. 내용으로 공지글 검색");
-			System.out.println("8. 공지 번호로 검색해서 글 상세조회");
+			System.out.println("4. 공지글 검색(제목)");
+			System.out.println("5. 공지글 검색(내용)");
+			System.out.println("6. 공지글 조회(최신순)");
+			System.out.println("7. 공지글 조회(조회순)");
+			System.out.println("8. 공지글 상세조회(번호)");
 			System.out.println("9. 뒤로가기");
+			System.out.println("=======================");
+			System.out.print("원하시는 번호를 입력해주세요: ");
 			String num = Main.SC.nextLine();
 			switch (num) {
 			case "1":write(); break;
 			case "2": secret(); break;
 			case "3": modify(); break;
-			case "4":adminNoticeList(); break;
-			case "5":adminNoticeList2(); break;
-			case "6":adminSearchNoticeByTitle(); break;		
-			case "7":adminSearchNoticeByContent(); break;		
+			case "4":adminSearchNoticeByTitle(); break;//제목		
+			case "5":adminSearchNoticeByContent(); break;//내용	
+			case "6":adminNoticeList(); break;//최신
+			case "7":adminNoticeList2(); break;//조회수
 			case "8":adminNoticeDetailByNo(); break;
 			case "9": return; 
 			default: System.out.println("잘 못 입력하셨습니다.");
 			}
 		}else{ //유저
+			System.out.println();
+			noticeList();
+			System.out.println();
+			
 			System.out.println("===NOTICE===");
-			System.out.println("1. 최신순으로 공지글 조회");
-			System.out.println("2. 조회순으로 공지글 조회");
-			System.out.println("3. 제목으로 공지글 검색");
-			System.out.println("4. 내용으로 공지글 검색");
-			System.out.println("5. 공지 번호로 검색해서 글 상세조회");
+			System.out.println("1. 공지글 조회(최신순)");
+			System.out.println("2. 공지글 조회(조회순)");
+			System.out.println("3. 공지글 검색(제목)");
+			System.out.println("4. 공지글 검색(내용)");
+			System.out.println("5. 공지글 상세조회(번호)");
 			System.out.println("9. 뒤로가기");
+			System.out.println("=======================");
+			System.out.print("원하시는 번호를 입력해주세요: ");
 			String num = Main.SC.nextLine();
 			switch (num) {
 			case "1":noticeList(); break;
@@ -95,11 +107,10 @@ public class NoticeController {
 
 			// 결과
 			if (result != 1) {
-				throw new Exception();
+				throw new Exception("작성할 관리자번호를 잘 못 입력하셨습니다.");
 			}
 			System.out.println("공지글 작성에 성공하셨습니다.");
-			System.out.println("뒤로가기");
-			selectMenu();
+			
 		} catch (Exception e) {
 			System.out.println("공지글 작성에 실패하셨습니다.");
 			e.printStackTrace();
@@ -118,27 +129,27 @@ public class NoticeController {
 
 			// 결과
 			System.out.print("번호");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("제목");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("닉네임");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("조회수");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.println("작성일자");
 
 			for (NoticeVo vo : voList) {
 				System.out.print(vo.getNo());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print(vo.getTitle());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print(vo.getManagerName());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print(vo.getHit());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.println(vo.getEnrolldate());
 			}
-			
+			System.out.println("공지글 조회에 성공하였습니다.");
 		} catch (Exception e) {
 			System.out.println("공지글 조회를 실패하였습니다.");
 			e.printStackTrace();
@@ -157,26 +168,35 @@ public class NoticeController {
 
 				// 결과
 				System.out.print("번호");
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print("제목");
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print("닉네임");
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print("조회수");
-				System.out.print(" / ");
-				System.out.println("작성일자");
+				System.out.print(" | ");
+				System.out.print("작성일자");
+				System.out.print(" | ");
+				System.out.println("공지글 공개여부");
 
 				for (NoticeVo vo : voList) {
 					System.out.print(vo.getNo());
-					System.out.print(" / ");
+					System.out.print(" | ");
 					System.out.print(vo.getTitle());
-					System.out.print(" / ");
+					System.out.print(" | ");
 					System.out.print(vo.getManagerName());
-					System.out.print(" / ");
+					System.out.print(" | ");
 					System.out.print(vo.getHit());
-					System.out.print(" / ");
-					System.out.println(vo.getEnrolldate());
+					System.out.print(" | ");
+					System.out.print(vo.getEnrolldate());
+					System.out.print(" | ");
+					if(vo.getSecretYn().equals("Y")) {
+						System.out.println("비밀글");
+					}else {
+						System.out.println("전체공개");
+					}
 				}
+				System.out.println("공지글 조회에 성공하였습니다.");
 				
 			} catch (Exception e) {
 				System.out.println("공지글 조회를 실패하였습니다.");
@@ -211,7 +231,7 @@ public class NoticeController {
 				System.out.println("수정일시: " + vo.getEditDate());
 			}
 			System.out.println("------------------------------");
-			
+			System.out.println("공지글 상세 조회에 성공하였습니다.");
 			
 		} catch (Exception e) {
 			System.out.println("공지글 상세 조회 실패");
@@ -236,7 +256,7 @@ public class NoticeController {
 
 				// 결과
 				if (vo == null) {
-					throw new Exception("비공개 공지글 입니다.");
+					throw new Exception();
 				}
 				System.out.println("------------------------------");
 				System.out.println("글번호: " + vo.getNo());
@@ -248,8 +268,13 @@ public class NoticeController {
 				if(vo.getEditDate()!=null) {
 					System.out.println("수정일시: " + vo.getEditDate());
 				}
+				if(vo.getSecretYn().equals("Y")) {
+					System.out.println("공개여부: 비밀글");
+				}else {
+					System.out.println("공개여부: 전체공개");
+				}
 				System.out.println("------------------------------");
-				
+				System.out.println("공지글 상세 조회에 성공하였습니다.");
 				
 			} catch (Exception e) {
 				System.out.println("공지글 상세 조회 실패");
@@ -285,7 +310,7 @@ public class NoticeController {
 				System.out.println("작성일시: " + vo.getEnrolldate());
 				System.out.println("------------------------------");
 			}
-
+			System.out.println("공지글 검색에 성공하였습니다.");
 			
 		} catch (Exception e) {
 			System.out.println("검색에 실패 하셨습니다.");
@@ -321,7 +346,7 @@ public class NoticeController {
 				System.out.println("작성일시: " + vo.getEnrolldate());
 				System.out.println("------------------------------");
 			}
-
+			System.out.println("공지글 검색에 성공하였습니다.");
 			
 		} catch (Exception e) {
 			System.out.println("검색에 실패 하셨습니다.");
@@ -355,7 +380,7 @@ public class NoticeController {
 			int result = service.modify(vo);
 			// 결과
 			if (result != 1) {
-				throw new Exception();
+				throw new Exception("수정할 공지글 번호를 잘 못 입력하셨습니다.");
 			}
 			System.out.println("공지글 수정을 성공하셨습니다.");
 			
@@ -363,8 +388,7 @@ public class NoticeController {
 			System.out.println("공지글 수정을 실패하셨습니다.");
 			e.printStackTrace();
 		}
-		System.out.println("뒤로가기");
-		selectMenu();
+		
 	}// modify() end
 
 	// 공지글 공개 여부(관리자만)
@@ -390,7 +414,7 @@ public class NoticeController {
 
 			// 결과
 			if (result != 1) {
-				throw new Exception();
+				throw new Exception("공지글번호 또는 공개여부 체크를 잘 못 입력하셨습니다");
 			}
 			System.out.println("공지글 공개 여부를 완료하셨습니다.");
 			
@@ -413,26 +437,27 @@ public class NoticeController {
 
 			// 결과
 			System.out.print("번호");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("제목");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("닉네임");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("조회수");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.println("작성일자");
 
 			for (NoticeVo vo : voList) {
 				System.out.print(vo.getNo());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print(vo.getTitle());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print(vo.getManagerName());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print(vo.getHit());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.println(vo.getEnrolldate());
 			}
+			System.out.println("공지글 조회에 성공하였습니다.");
 
 		} catch (Exception e) {
 			System.out.println("공지글 조회를 실패하였습니다.");
@@ -452,27 +477,27 @@ public class NoticeController {
 
 				// 결과
 				System.out.print("번호");
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print("제목");
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print("닉네임");
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print("조회수");
-				System.out.print(" / ");
-				System.out.println("작성일자");
+				System.out.print(" |");
+				System.out.println("작성일자   ");
 
 				for (NoticeVo vo : voList) {
 					System.out.print(vo.getNo());
-					System.out.print(" / ");
+					System.out.print(" | ");
 					System.out.print(vo.getTitle());
-					System.out.print(" / ");
+					System.out.print(" | ");
 					System.out.print(vo.getManagerName());
-					System.out.print(" / ");
+					System.out.print(" | ");
 					System.out.print(vo.getHit());
-					System.out.print(" / ");
+					System.out.print(" | ");
 					System.out.println(vo.getEnrolldate());
 				}
-				
+				System.out.println("공지글 조회에 성공하였습니다.");
 			} catch (Exception e) {
 				System.out.println("공지글 조회를 실패하였습니다.");
 				e.printStackTrace();
@@ -507,7 +532,7 @@ public class NoticeController {
 				System.out.println("작성일시: " + vo.getEnrolldate());
 				System.out.println("------------------------------");
 			}
-			
+			System.out.println("공지글 검색에 성공하였습니다.");
 		} catch (Exception e) {
 			System.out.println("검색에 실패 하셨습니다.");
 			e.printStackTrace();
@@ -543,7 +568,7 @@ public class NoticeController {
 					System.out.println("작성일시: " + vo.getEnrolldate());
 					System.out.println("------------------------------");
 				}
-
+				System.out.println("공지글 조회에 성공하였습니다.");
 				
 			} catch (Exception e) {
 				System.out.println("검색에 실패 하셨습니다.");
