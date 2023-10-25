@@ -18,7 +18,7 @@ public class TownDao {
 	public List<TownVo> townlistAll(Connection conn, String num) throws Exception {
 		
 		//SQL
-		String sql = "SELECT T.TOWN_NO,CATEGORY, T.TITLE, M.MEMBER_NO AS WRITER_NICK, T.HIT , TO_CHAR(T.ENROLL_DATE , 'YYYY\"년 \"MM\"월\"DD \"일\"') AS ENROLL_DATE, DELETE_YN FROM TOWN T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO ORDER BY T.TOWN_NO DESC";
+		String sql = "SELECT T.TOWN_NO,CATEGORY, T.TITLE, M.MEMBER_NO AS WRITER_NICK, T.HIT , TO_CHAR(T.ENROLL_DATE , 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE, DELETE_YN FROM TOWN T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO ORDER BY T.TOWN_NO ASC";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
 		List<TownVo> voList = new ArrayList<TownVo>();
@@ -53,7 +53,7 @@ public class TownDao {
 	//---------------------게시글 상세조회(관리자)---------------------------------
 	public TownVo townDetailbynoAll(Connection conn, String searchValue) throws Exception {
 		//SQL
-		String sql = "SELECT T.TOWN_NO, T.TITLE, T.CONTENT,T.MEMBER_NO AS WRITER_NICK, T.HIT , TO_CHAR(T.ENROLL_DATE , 'MM/DD') AS ENROLL_DATE , TC.CONTENT AS TCCOMMENT FROM TOWN T LEFT JOIN TOWN_COMMENT TC ON T.TOWN_NO = TC.COMMENT_NO WHERE T.TOWN_NO = ?";
+		String sql = "SELECT T.TOWN_NO, T.TITLE, T.CONTENT,T.MEMBER_NO AS WRITER_NICK, T.HIT , TO_CHAR(T.ENROLL_DATE , 'YYYY\"년 \"MM\"월 \"DD\"일\" HH24:MM') AS ENROLL_DATE , TC.CONTENT AS TCCOMMENT FROM TOWN T LEFT JOIN TOWN_COMMENT TC ON T.TOWN_NO = TC.COMMENT_NO WHERE T.TOWN_NO = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, searchValue);
 		ResultSet rs = pstmt.executeQuery();
@@ -122,7 +122,7 @@ public class TownDao {
 	public List<TownVo> townList(Connection conn) throws Exception {
 		
 		//SQL
-		String sql = "SELECT T.TOWN_NO, T.CATEGORY, T.TITLE, M.MEMBER_NO AS WRITER_NICK, T.HIT , T.ENROLL_DATE  FROM TOWN T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.DELETE_YN = 'N'";
+		String sql = "SELECT T.TOWN_NO, T.CATEGORY, T.TITLE, M.MEMBER_NO AS WRITER_NICK, T.HIT , TO_CHAR(T.ENROLL_DATE , 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE FROM TOWN T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.DELETE_YN = 'N'";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
 		List<TownVo> voList = new ArrayList<TownVo>();
@@ -156,7 +156,7 @@ public class TownDao {
 	//-----------------------게시글 조회----------------------
 	public TownVo townDetailByNo(Connection conn, String searchValue) throws Exception {
 		//SQL
-		String sql = "SELECT T.TOWN_NO , T.TITLE , T.CONTENT , M.MEMBER_NO AS WRITER_NICK , T.HIT , TO_CHAR(T.ENROLL_DATE , 'MM/DD') AS ENROLL_DATE , TC.CONTENT AS TCCOMMENT FROM TOWN T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO LEFT OUTER JOIN TOWN_COMMENT TC ON T.TOWN_NO = TC.TOWN_NO WHERE T.TOWN_NO = ? AND T.DELETE_YN = 'N'";
+		String sql = "SELECT T.TOWN_NO , T.TITLE , T.CONTENT , M.MEMBER_NO AS WRITER_NICK , T.HIT , TO_CHAR(T.ENROLL_DATE , 'YYYY\"년 \"MM\"월 \"DD\"일\" HH24:MM') AS ENROLL_DATE , TC.CONTENT AS TCCOMMENT FROM TOWN T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO LEFT OUTER JOIN TOWN_COMMENT TC ON T.TOWN_NO = TC.TOWN_NO WHERE T.TOWN_NO = ? AND T.DELETE_YN = 'N'";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, searchValue);
 		ResultSet rs = pstmt.executeQuery();
