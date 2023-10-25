@@ -21,47 +21,53 @@ public class TradeController {
 	}
 	
 	// 게시글 조회 - 메뉴
-	public void postMenu(String boardNo) {
+	public boolean postMenu(String boardNo) {
 		try {
 			TradeVo vo = ts.searchPostInfo(boardNo);
 			
-			// 본인 게시글
-			if(Main.loginMember.getMemberNo().equals(vo.getMemberNo())) {            
+			if(Main.loginMember != null) {
 				
-				System.out.println("<메뉴> 1. 게시글 수정 2. 게시글 삭제 3. 목록으로 돌아가기");
-				
-				System.out.print("선택할 메뉴 : " + Color.CYAN);
-				String select = sc.nextLine();
-				System.out.print(Color.EXIT);
-				
-				switch(select) {
-				
-					case "1" : editPost(boardNo); break;
-					case "2" : delPost(boardNo); break;
-					case "3" : tradeMain(); break;
-					default : System.out.println("잘못 입력하셨습니다");
+				// 본인 게시글
+				if(Main.loginMember.getMemberNo().equals(vo.getMemberNo())) {            
 					
-				} 					
-			
-			// 타인 게시글
-			} else if(!Main.loginMember.getMemberNo().equals(vo.getMemberNo())) {
-				
-				System.out.println("<메뉴> 1. 구매 신청 2. 목록으로 돌아가기");
-				System.out.print("선택할 메뉴 : " + Color.CYAN);
-				String select = sc.nextLine();
-				System.out.print(Color.EXIT);
-				
-				switch(select) {
-				
-					case "1" : purchaseRequest(vo); break;
-					case "2" : tradeMain(); break;
-					default : System.out.println("잘못 입력하셨습니다.");
+					System.out.println("<메뉴> "+ Color.YELLOW +"➊" + Color.EXIT + "게시글 수정 "+ Color.YELLOW +"➋" + Color.EXIT + "게시글 삭제 "+ Color.RED +"➒" + Color.EXIT + "뒤로가기");
+
+					System.out.print("선택할 메뉴 : " + Color.CYAN);
+					String select = sc.nextLine();
+					System.out.print(Color.EXIT);
 					
-				}
+					switch(select) {
+					
+						case "1" : editPost(boardNo); break;
+						case "2" : delPost(boardNo); break;
+						case "9" : return true;
+						default : System.out.println("잘못 입력하셨습니다");
+						
+					} 					
+				
+				// 타인 게시글
+				} else if(!Main.loginMember.getMemberNo().equals(vo.getMemberNo())) {
+					
+					System.out.println("<메뉴> "+ Color.YELLOW +"➊" + Color.EXIT + "구매 신청 "+ Color.YELLOW +"➒" + Color.EXIT + "뒤로가기");
+
+					System.out.print("선택할 메뉴 : " + Color.CYAN);
+					String select = sc.nextLine();
+					System.out.print(Color.EXIT);
+					
+					switch(select) {
+					
+						case "1" : purchaseRequest(vo); break;
+						case "9" : return true;
+						default : System.out.println("잘못 입력하셨습니다.");
+						
+					}
+				} 
+			}
 			// 관리자일때
-			} else if(Main.loginMember == null || Main.loginManager != null) { 
+			if(Main.loginMember == null || Main.loginManager != null) { 
 				
-				System.out.println("<관리자 메뉴> 1. 게시글 수정 2. 게시글 삭제 3. 목록으로 돌아가기");
+				System.out.println("<관리자 메뉴> "+ Color.YELLOW +"➊" + Color.EXIT + "게시글 수정 "+ Color.YELLOW +"➋" + Color.EXIT + "게시글 삭제 "+ Color.YELLOW +"➒" + Color.EXIT + "뒤로가기");
+
 				System.out.print("선택할 메뉴 : " + Color.CYAN);
 				String select = sc.nextLine();
 				System.out.print(Color.EXIT);
@@ -69,31 +75,35 @@ public class TradeController {
 				switch(select) {				
 					case "1" : editPost(boardNo); break;
 					case "2" : delPost(boardNo); break;
-					case "3" : tradeMain(); break;
+					case "9" : return true;
 					default : System.out.println("잘못 입력하셨습니다");
-			} 					
-		
+				} 					
+			
 			}
 			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 
-	// 구매 신청 -- 미완성
+	// 구매 신청 
 	private void purchaseRequest(TradeVo vo) {
 		try {
 			System.out.println("구매신청");
 			System.out.println(vo);
-			System.out.print("거래완료 (y/n) : ");
+			System.out.print("거래완료 (y/n) : " + Color.CYAN);
 			String x = sc.nextLine();
+			System.out.print(Color.EXIT);
 			switch(x) {
 				case "y" : 
-					int purchaseNo = ts.confirmPurchase(vo);   // 구매확정 (히스토리 남기기) -- 미완성
-					writeReview(vo, purchaseNo); 	      // 후기 남기기 (매너온도 포함) -- 미완성
+					int purchaseNo = ts.confirmPurchase(vo);  
+					if(purchaseNo == 1) {
+						System.out.println("구매가 확정되었습니다.");
+					}
 					break; 
 				case "n" : return;
-				default : System.out.println("잘못 입력했습니다");
+				default : System.out.println("잘못 입력했습니다"); break;
 			}
 		} catch(Exception e) {
 			System.out.println("구매 확정 실패");
@@ -103,49 +113,48 @@ public class TradeController {
 		
 	
 
-	// 구매후기 작성 -- 미완성
-	private void writeReview(TradeVo vo, int purchaseNo) {
-		try {
-
-	        String manner;
-	        
-	        System.out.print("구매후기 : " + Color.CYAN);
-	        String content = sc.nextLine();
-	        System.out.print(Color.EXIT);
-
-	        do {
-
-	            System.out.println("거래는 어땠나요?");
-	            System.out.println("1.최고에요 2.무난해요 3.별로에요" + Color.CYAN);
-	            manner = sc.nextLine();
-	            System.out.print(Color.EXIT);
-	
-	            if (!(manner.equals("1") || manner.equals("2") || manner.equals("3"))) {
-	                System.out.println("잘못입력하셨습니다");
-	            }
-	           
-	        } while (!(manner.equals("1") || manner.equals("2") || manner.equals("3")));
-
-	        int result = ts.writeReview(content, vo, purchaseNo, manner);
-
-			if(result == 1) {
-				System.out.println("구매후기 작성 완료");
-			} else {
-				throw new Exception();
-			}
-			
-		} catch(Exception e) {
-			System.out.println("구매후기 작성 실패");
-			e.printStackTrace();
-		}
-		
-	}
+//	// 구매후기 작성 -- 미완성
+//	private void writeReview(TradeVo vo) {
+//		try {
+//
+//	        String manner;
+//	        
+//	        System.out.print("구매후기 : " + Color.CYAN);
+//	        String content = sc.nextLine();
+//	        System.out.print(Color.EXIT);
+//
+//	        do {
+//
+//	            System.out.println("거래는 어땠나요?");
+//	            System.out.println("1.최고에요 2.무난해요 3.별로에요" + Color.CYAN);
+//	            manner = sc.nextLine();
+//	            System.out.print(Color.EXIT);
+//	
+//	            if (!(manner.equals("1") || manner.equals("2") || manner.equals("3"))) {
+//	                System.out.println("잘못입력하셨습니다");
+//	            }
+//	           
+//	        } while (!(manner.equals("1") || manner.equals("2") || manner.equals("3")));
+//
+//	        int result = ts.writeReview(purchaseNo, manner, content);
+//
+//			if(result != 1) {
+//				throw new Exception();
+//			} 
+//			
+//			System.out.println("구매후기 작성 완료");
+//			
+//		} catch(Exception e) {
+//			System.out.println("구매후기 작성 실패");
+//			e.printStackTrace();
+//		}
+//	}
 
 	
 	// 게시글 수정
 	public void editPost(String boardNo) {
 		try {
-			System.out.println(Color.RED + "                        게시글 수정 | 수정할 내용을 입력해주세요");
+			System.out.println(Color.RED + "               게시글 수정 | 수정할 내용을 입력해주세요");
 			System.out.println(Color.GREEN + "▃▃▃​​​​▃​​​​▃▃​​​​​​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			System.out.printf("제목 : ");
 			String title = sc.nextLine();
@@ -156,7 +165,9 @@ public class TradeController {
 			String price = sc.nextLine();
 			System.out.print("거래 장소 : ");
 			String tradeArea = sc.nextLine();
-			System.out.println("접속 지역 : " + Main.loginMember.getAreasName());
+			if(Main.loginMember != null) {
+				System.out.println("접속 지역 : " + Main.loginMember.getAreasName());
+			}
 			System.out.println(Color.GREEN + "▃▃▃​​​​​▃▃▃​​​​​​​​​▃▃▃​​​​▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			System.out.print("내용 : ");
 			String content = sc.nextLine();
@@ -283,21 +294,23 @@ public class TradeController {
 	public boolean mainMenu() {
 		if(Main.loginMember == null || Main.loginManager != null) {
 			
-			System.out.println("<관리자 메뉴> 1.게시글 조회 2. 게시글 검색 0. 메인으로 돌아가기");
+			System.out.println("<관리자 메뉴> "+ Color.YELLOW +"➊" + Color.EXIT + "게시글 조회 "+ Color.YELLOW +"➋" + Color.EXIT + "게시글 검색 "+ Color.RED +"➒" + Color.EXIT + "뒤로가기");
 			System.out.print("선택할 메뉴 : " + Color.CYAN);
 			String select = sc.nextLine();
 			System.out.print(Color.EXIT);
 			
 			switch(select) {
+			
 				case "1" : showContent(); break;
 				case "2" : searchPost(); break;
-				case "0" : return true;
+				case "9" : return true;
 				default : System.out.println("잘못 입력하셨습니다.");
+				
 			}
 			
 		} else if(Main.loginMember != null || Main.loginManager == null) {
 		
-			System.out.println("<메뉴> 1. 게시글 작성 2. 게시글 조회 3. 관심목록에 추가 4. 게시글 검색 0. 메인으로 돌아가기");
+			System.out.println("<메뉴>"+ Color.YELLOW +"➊" + Color.EXIT + "게시글 작성 "+ Color.YELLOW +"➋" + Color.EXIT + "게시글 조회 "+ Color.YELLOW +"➌" + Color.EXIT + "관심목록에 추가 "+ Color.YELLOW +"➍" + Color.EXIT + "게시글 검색 "+ Color.RED +"➒" + Color.EXIT + "뒤로가기");
 			System.out.print("선택할 메뉴 : " + Color.CYAN);
 			String select = sc.nextLine();
 			System.out.print(Color.EXIT);
@@ -307,7 +320,7 @@ public class TradeController {
 				case "2" : showContent(); break;
 				case "3" : addWishList(); break;
 				case "4" : searchPost(); break;
-				case "0" : return true;
+				case "9" : return true;
 
 				default : System.out.println("잘못 입력하셨습니다.");
 			}
@@ -426,12 +439,13 @@ public class TradeController {
 			System.out.println(Color.YELLOW + "조회수 : " + vo.getHit() + Color.EXIT);
 			System.out.println(Color.CYAN + "▃▃▃​​​​​​​▃▃​​▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			
-			postMenu(vo.getBoardNo());
+			Boolean x = postMenu(vo.getBoardNo());
 			
 		} catch(Exception e) {
 			
 			System.out.println(Color.RED + "게시글 조회 실패" + Color.EXIT);
 			String ex = e.getMessage();
+//			e.printStackTrace();
 			if(ex.contains("ORA-01722")) {System.out.println("숫자만 입력해주세요."); }
 			
 		}
@@ -470,16 +484,18 @@ public class TradeController {
 	
 	// 게시글 목록(메인) -> 4. 게시글 검색
 	public void searchPost() {
-		System.out.println("1. 제목으로 검색 2. 제품명으로 검색");
+		System.out.println("➊제목으로 검색 ➋제품명으로 검색");
 		System.out.print("선택 : " + Color.CYAN);
 		String x = Main.SC.nextLine();
 		System.out.print(Color.EXIT);
 		
 		switch(x) {
 		case "1" : 
-			searchPostByTitle();				
+			searchPostByTitle();
+			break;
 		case "2" :
 			searchPostByProduct();
+			break;
 		default : System.out.println("잘못입력하셨습니다.");
 		}
 	}
