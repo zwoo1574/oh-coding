@@ -32,12 +32,12 @@ public class ManagerService {
 		return userList;
 	}
 
-	public MemberVo userDetile(String userNo) throws Exception{
+	public List<MemberVo> userDetile(String userChoice,String num) throws Exception{
 		Connection conn = JDBCTemplate.getConnection();
-		MemberVo vo = dao.userDetile(conn,userNo);
+		List<MemberVo> voList = dao.userDetile(conn,userChoice,num);
 		
 		JDBCTemplate.close(conn);
-		return vo;
+		return voList;
 	}
 
 	public int userKick(String userNo) throws Exception {
