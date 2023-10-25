@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 import com.cherry.jdbc.JDBCTemplate;
+import com.cherry.main.Main;
 import com.cherry.member.dao.MemberDao;
 import com.cherry.member.vo.MemberVo;
 import com.cherry.trade.vo.TradeVo;
@@ -89,7 +90,16 @@ public class MemberService {
 
 	public int changeAddress(MemberVo vo) throws Exception{
 		Connection conn = JDBCTemplate.getConnection();
+		
+		String code = dao.codeMake(conn,vo.getAddress());
+		if(code == null) {
+			throw new Exception("주소를 잘못 입력하셨습니다. 다시 입력해주세요");
+		}
+		vo.setAreasCode(code);
 		int result = dao.changeAddress(conn,vo);
+		vo = dao.login(conn,vo);
+		Main.loginMember.setAreasName(vo.getAreasName());
+		
 		if(result == 1 ) {
 			JDBCTemplate.commit(conn);
 		}else {
