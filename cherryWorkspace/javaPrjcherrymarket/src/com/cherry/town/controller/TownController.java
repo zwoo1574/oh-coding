@@ -138,7 +138,9 @@ public class TownController {
 				System.out.println("수정일자 :" + vo.getEditdate());
 			}
 			System.out.println("내용 :" + vo.getContent());
-			System.out.println("댓글 :" + vo.getTowncommentcont());
+			if(vo.getTowncommentcont() != null) {
+				System.out.println("댓글 :" + vo.getTowncommentcont());
+			}
 			System.out.println("--------------------------------------------");
 		}catch(Exception e) {
 			System.out.println("게시글 상세 조회 실패하였습니다.");
@@ -320,7 +322,9 @@ public class TownController {
 			System.out.println("조회수 :" + vo.getHit());
 			System.out.println("작성일자 :" + vo.getEnrollDate());
 			System.out.println("내용 :" + vo.getContent());
-			System.out.println("댓글 :" + vo.getTowncommentcont());
+			if(vo.getTowncommentcont() != null) {
+				System.out.println("댓글 :" + vo.getTowncommentcont());
+			}
 			System.out.println("--------------------------------------------");
 			tcom.commentwrite(vo);
 		}catch(Exception e) {

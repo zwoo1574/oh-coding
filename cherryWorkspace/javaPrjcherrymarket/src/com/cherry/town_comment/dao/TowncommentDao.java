@@ -13,7 +13,7 @@ public class TowncommentDao {
 
 	//----------댓글 작성-----------------------------
 	public int commentwrite(Connection conn, TowncommentVo vo, TownVo tvo) throws Exception {
-//		System.out.println(vo);
+		
 		String sql = "INSERT INTO TOWN_COMMENT(COMMENT_NO, TOWN_NO,CONTENT, MEMBER_NO) VALUES(SEQ_TOWN_COMMENT_NO.NEXTVAL,?,?,?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, tvo.getTownNO());
@@ -22,7 +22,7 @@ public class TowncommentDao {
 		int result = pstmt.executeUpdate();
 		
 		JDBCTemplate.close(pstmt);
-		System.out.println(result);
+
 		return result;
 	}
 
