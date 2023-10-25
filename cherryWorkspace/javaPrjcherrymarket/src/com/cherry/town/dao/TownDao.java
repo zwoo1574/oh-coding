@@ -53,7 +53,7 @@ public class TownDao {
 	//---------------------게시글 상세조회(관리자)---------------------------------
 	public TownVo townDetailbynoAll(Connection conn, String searchValue) throws Exception {
 		//SQL
-		String sql = "SELECT T.TOWN_NO, T.TITLE, T.CONTENT,T.MEMBER_NO AS WRITER_NICK, T.HIT , TO_CHAR(T.ENROLL_DATE , 'YYYY\"년 \"MM\"월 \"DD\"일\" HH24:MM') AS ENROLL_DATE , TC.CONTENT AS TCCOMMENT FROM TOWN T LEFT JOIN TOWN_COMMENT TC ON T.TOWN_NO = TC.COMMENT_NO WHERE T.TOWN_NO = ?";
+		String sql = "SELECT T.TOWN_NO, T.TITLE, T.CONTENT,T.MEMBER_NO AS WRITER_NICK, T.HIT , TO_CHAR(T.ENROLL_DATE , 'YYYY\"년 \"MM\"월 \"DD\"일\" HH24\":\"MI') AS ENROLL_DATE , TC.CONTENT AS TCCOMMENT , EDIT_DATE FROM TOWN T LEFT JOIN TOWN_COMMENT TC ON T.TOWN_NO = TC.COMMENT_NO WHERE T.TOWN_NO = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, searchValue);
 		ResultSet rs = pstmt.executeQuery();
@@ -67,6 +67,7 @@ public class TownDao {
 			String hit = rs.getString("HIT");
 			String enrollDate = rs.getString("ENROLL_DATE");
 			String content_1 = rs.getString("TCCOMMENT");
+			String editdate = rs.getString("EDIT_DATE");
 			
 			vo = new TownVo();
 			vo.setTownNO(no);
@@ -76,6 +77,7 @@ public class TownDao {
 			vo.setHit(hit);
 			vo.setEnrollDate(enrollDate);
 			vo.setTowncommentcont(content_1);
+			vo.setEditdate(editdate);
 		}
 		
 		JDBCTemplate.close(rs);
@@ -156,7 +158,7 @@ public class TownDao {
 	//-----------------------게시글 조회----------------------
 	public TownVo townDetailByNo(Connection conn, String searchValue) throws Exception {
 		//SQL
-		String sql = "SELECT T.TOWN_NO , T.TITLE , T.CONTENT , M.MEMBER_NO AS WRITER_NICK , T.HIT , TO_CHAR(T.ENROLL_DATE , 'YYYY\"년 \"MM\"월 \"DD\"일\" HH24:MM') AS ENROLL_DATE , TC.CONTENT AS TCCOMMENT FROM TOWN T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO LEFT OUTER JOIN TOWN_COMMENT TC ON T.TOWN_NO = TC.TOWN_NO WHERE T.TOWN_NO = ? AND T.DELETE_YN = 'N'";
+		String sql = "SELECT T.TOWN_NO , T.TITLE , T.CONTENT , M.MEMBER_NO AS WRITER_NICK , T.HIT , TO_CHAR(T.ENROLL_DATE , 'YYYY\"년 \"MM\"월 \"DD\"일\" HH24\":\"MI') AS ENROLL_DATE , TC.CONTENT AS TCCOMMENT FROM TOWN T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO LEFT OUTER JOIN TOWN_COMMENT TC ON T.TOWN_NO = TC.TOWN_NO WHERE T.TOWN_NO = ? AND T.DELETE_YN = 'N'";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, searchValue);
 		ResultSet rs = pstmt.executeQuery();
@@ -195,6 +197,21 @@ public class TownDao {
 		String sql = "UPDATE TOWN SET HIT = HIT+1 WHERE TOWN_NO = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, num);
+		int result = pstmt.executeUpdate();
+		
+		JDBCTemplate.close(pstmt);
+		
+		return result;
+	}
+
+//-----------------------------게시글 수정---------------
+	public int townupdate(Connection conn, TownVo tvo) throws Exception {
+		String sql = "UPDATE TOWN SET TITLE = ? , CONTENT = ? , EDIT_DATE = SYSDATE WHERE TOWN_NO = ? AND MEMBER_NO = ? AND DELETE_YN = 'N'";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, tvo.getTitle());
+		pstmt.setString(2, tvo.getContent());
+		pstmt.setString(3, tvo.getTownNO());
+		pstmt.setString(4, tvo.getWirterNick());
 		int result = pstmt.executeUpdate();
 		
 		JDBCTemplate.close(pstmt);

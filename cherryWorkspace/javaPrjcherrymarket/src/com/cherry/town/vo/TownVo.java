@@ -3,7 +3,27 @@ package com.cherry.town.vo;
 
 
 public class TownVo {
-
+	
+	
+	
+	public TownVo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public TownVo(String townNO, String title, String content, String wirterNick, String hit, String enrollDate,
+			String delYn, String category, String towncommentcont, String editdate) {
+		super();
+		this.townNO = townNO;
+		this.title = title;
+		this.content = content;
+		this.wirterNick = wirterNick;
+		this.hit = hit;
+		this.enrollDate = enrollDate;
+		this.delYn = delYn;
+		this.category = category;
+		this.towncommentcont = towncommentcont;
+		this.editdate = editdate;
+	}
 	public String getTownNO() {
 		return townNO;
 	}
@@ -52,53 +72,24 @@ public class TownVo {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
-	@Override
-	public String toString() {
-		return "TownVo [townNO=" + townNO + ", title=" + title + ", content=" + content + ", wirterNick=" + wirterNick
-				+ ", hit=" + hit + ", enrollDate=" + enrollDate + ", delYn=" + delYn + ", category=" + category
-				+ ", towncommentcont=" + towncommentcont + "]";
-	}
-	public TownVo(String townNO, String title, String content, String wirterNick, String hit, String enrollDate,
-			String delYn, String category) {
-		super();
-		this.townNO = townNO;
-		this.title = title;
-		this.content = content;
-		this.wirterNick = wirterNick;
-		this.hit = hit;
-		this.enrollDate = enrollDate;
-		this.delYn = delYn;
-		this.category = category;
-	}
-	public TownVo() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	
-	
-	public TownVo(String townNO, String title, String content, String wirterNick, String hit, String enrollDate,
-			String delYn, String category, String towncommentcont) {
-		super();
-		this.townNO = townNO;
-		this.title = title;
-		this.content = content;
-		this.wirterNick = wirterNick;
-		this.hit = hit;
-		this.enrollDate = enrollDate;
-		this.delYn = delYn;
-		this.category = category;
-		this.towncommentcont = towncommentcont;
-	}
 	public String getTowncommentcont() {
 		return towncommentcont;
 	}
 	public void setTowncommentcont(String towncommentcont) {
 		this.towncommentcont = towncommentcont;
 	}
-	
-	
+	public String getEditdate() {
+		return editdate;
+	}
+	public void setEditdate(String editdate) {
+		this.editdate = editdate;
+	}
+	@Override
+	public String toString() {
+		return "TownVo [townNO=" + townNO + ", title=" + title + ", content=" + content + ", wirterNick=" + wirterNick
+				+ ", hit=" + hit + ", enrollDate=" + enrollDate + ", delYn=" + delYn + ", category=" + category
+				+ ", towncommentcont=" + towncommentcont + ", editdate=" + editdate + "]";
+	}
 	private String townNO;
 	private String title;
 	private String content;
@@ -108,4 +99,6 @@ public class TownVo {
 	private String delYn;
 	private String category;
 	private String towncommentcont;
+	private String editdate;
+	
 }

@@ -24,7 +24,7 @@ public class TowncommentController {
 			try {
 				System.out.println("----------------댓글작성-----------------");
 				
-				System.out.println("댓글 : ");
+				System.out.print("댓글 : ");
 				String content = Main.SC.nextLine();
 				
 				TowncommentVo vo = new TowncommentVo();
