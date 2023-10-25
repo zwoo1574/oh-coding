@@ -179,7 +179,7 @@ public class QnaDao {
 	public List<QnaVo> qnaMyList(Connection conn, String loginMember) throws Exception {
 		
 		// sql
-		String sql = "SELECT Q.QNA_NO , Q.TITLE , M.NICK AS WRITER_NICK , Q.HIT , TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE, Q.SECRET_YN FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO WHERE M.MEMBER_NO = ? ORDER BY Q.QNA_NO DESC";
+		String sql = "SELECT Q.QNA_NO , Q.TITLE , M.NICK AS WRITER_NICK , Q.HIT , TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS MEMBER_ENROLL_DATE, Q.SECRET_YN FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO WHERE Q.MEMBER_NO = ? ORDER BY Q.QNA_NO DESC";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, loginMember);
 		ResultSet rs = pstmt.executeQuery();
@@ -191,7 +191,7 @@ public class QnaDao {
 			String title = rs.getString("TITLE");
 			String nick = rs.getString("WRITER_NICK");
 			String hit = rs.getString("HIT");
-			String enrollDate = rs.getString("ENROLL_DATE");
+			String enrollDate = rs.getString("MEMBER_ENROLL_DATE");
 			String secret = rs.getString("SECRET_YN");
 			
 			QnaVo vo = new QnaVo();

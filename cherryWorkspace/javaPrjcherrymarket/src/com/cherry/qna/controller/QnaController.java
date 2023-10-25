@@ -20,6 +20,11 @@ public class QnaController {
 	public void selectMenu() {
 		while(true) {
 			if(Main.loginManager == null) {
+				
+				System.out.println();
+				qnaList();
+				System.out.println();
+				
 				System.out.println("======= QnA Menu =======");
 				
 				System.out.println("1. 문의글 목록 (최신순)");
@@ -43,10 +48,15 @@ public class QnaController {
 				}  // 유저용
 				
 			}else if(Main.loginManager != null){
+				
+				System.out.println();
+				qnaListManager();
+				System.out.println();
+				
 				System.out.println("======= QnA Menu (관리자용)=======");
 				
 				System.out.println("1. 문의글 목록");
-				System.out.println("2. 문의글 상세조회 (번호)"); //구현하기!!!
+				System.out.println("2. 문의글 상세조회 (번호)"); 
 				System.out.println("3. 관리자 답변작성");
 				System.out.println("4. 관리자 답변수정");
 				System.out.println("5. 메뉴 돌아가기");
@@ -85,25 +95,25 @@ public class QnaController {
 				System.out.println("게시글이 없습니다.");
 			}
 			System.out.print("번호");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("제목");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("닉네임");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("조회수");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("작성일자");
 			System.out.println();
 			
 			for (QnaVo vo : voList) {
 				System.out.print(vo.getQnaNo());
-				System.out.print(" / ");
+				System.out.print("   | ");
 				System.out.print(vo.getTitle());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print(vo.getWriterNick());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print(vo.getHit());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print(vo.getMemberEnrollDate());
 				System.out.println();
 			}
@@ -131,13 +141,13 @@ public class QnaController {
 			String title = Main.SC.nextLine();
 			System.out.print("내용: ");
 			String content = Main.SC.nextLine();
-			System.out.print("비밀글로 올리시겠습니까? (비밀글을 원하시면 Y를 입력해주세요.)");
+			System.out.print("비밀글로 올리시겠습니까? (Y / N)");
 			String secretYn = Main.SC.nextLine();
 
 			QnaVo vo = new QnaVo();
 			vo.setTitle(title);
 			vo.setContent(content);
-			vo.setContent(secretYn);
+			vo.setSecretYn(secretYn);
 
 			// 서비스
 			int result = service.write(vo);
@@ -182,8 +192,16 @@ public class QnaController {
 			System.out.println("작성일자: " + vo.getMemberEnrollDate());
 			System.out.println("내용: " + vo.getContent());
 			System.out.println();
-			System.out.println("[관리자 답변] " + vo.getAnswer());
-			System.out.println("답변 작성일자: " + vo.getManagerEnrollDate());
+			
+			if(vo.getAnswer() != null) {
+				System.out.println("[관리자 답변] " + vo.getAnswer());
+				if(vo.getManagerEditDate() == null) {
+					System.out.println("[답변 작성일자]: " + vo.getManagerEnrollDate());
+				}else {
+					System.out.println("[답변 수정일자]: " + vo.getManagerEditDate());
+				}
+			}
+			
 			System.out.println("---------------------------------------");
 
 			
@@ -212,7 +230,22 @@ public class QnaController {
 				System.out.println("해당글이 존재하지 않습니다.");
 			}
 			for (QnaVo vo : voList) {
-				System.out.println(vo);
+				System.out.print("글번호: " + vo.getQnaNo());
+				System.out.print(" | ");
+				System.out.print("제목: " + vo.getTitle());
+				System.out.print(" | ");
+				System.out.print("작성자: " + vo.getWriterNick());
+				System.out.print(" | ");
+				System.out.print("조회수: " + vo.getHit());
+				System.out.print(" | ");
+				System.out.print("작성일자: " + vo.getMemberEnrollDate());
+				System.out.print(" | ");
+				if(vo.getSecretYn()== "Y") {
+					System.out.print("비밀글");
+				}else {
+					System.out.println("전체공개");
+				}
+				System.out.println();
 			}
 		} catch (Exception e) {
 			System.out.println("게시글 검색 실패 ...");
@@ -243,7 +276,22 @@ public class QnaController {
 				System.out.println("내가 작성한 글이 없습니다.");
 			}
 			for(QnaVo vo : voList) {
-				System.out.println(vo);
+				System.out.print("글번호: " + vo.getQnaNo());
+				System.out.print(" | ");
+				System.out.print("제목: " + vo.getTitle());
+				System.out.print(" | ");
+				System.out.print("작성자: " + vo.getWriterNick());
+				System.out.print(" | ");
+				System.out.print("조회수: " + vo.getHit());
+				System.out.print(" | ");
+				System.out.print("작성일자: " + vo.getMemberEnrollDate());
+				System.out.print(" | ");
+				if(vo.getSecretYn()== "Y") {
+					System.out.print("비밀글");
+				}else {
+					System.out.print("전체공개");
+				}
+				System.out.println();
 			}
 			
 		}catch(Exception e) {
@@ -276,11 +324,23 @@ public class QnaController {
 				System.out.println("조회수: " + vo.getHit());
 				System.out.println("작성일자: " + vo.getMemberEnrollDate());
 				System.out.println("내용: " + vo.getContent());
-				System.out.println("비밀글: " + vo.getSecretYn());
 				System.out.println();
-				System.out.println("[관리자 답변] " + vo.getAnswer());
-				System.out.println("답변 작성일자: " + vo.getManagerEnrollDate());
-				System.out.println("답변 수정일자: " + vo.getManagerEditDate());
+				if(vo.getSecretYn()== "Y") {
+					System.out.print("비밀글");
+				}else {
+					System.out.println("전체공개");
+				}
+				System.out.println();
+				
+				if(vo.getAnswer() != null) {
+					System.out.println("[관리자 답변] " + vo.getAnswer());
+					if(vo.getManagerEditDate() == null) {
+						System.out.println("답변 작성일자: " + vo.getManagerEnrollDate());
+					}else {
+						System.out.println("답변 수정일자: " + vo.getManagerEditDate());
+					}
+				}
+				
 				System.out.println("---------------------------------------");
 			}
 		} catch (Exception e) {
@@ -311,25 +371,25 @@ public class QnaController {
 				System.out.println("게시글이 존재하지 않습니다.");
 			}
 			System.out.print("번호");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("제목");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("닉네임");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("조회수");
-			System.out.print(" / ");
+			System.out.print(" | ");
 			System.out.print("작성일자");
 			System.out.println();
 			
 			for(QnaVo vo : voList) {
 				System.out.print(vo.getQnaNo());
-				System.out.print(" / ");
+				System.out.print("   | ");
 				System.out.print(vo.getTitle());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print(vo.getWriterNick());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print(vo.getHit());
-				System.out.print(" / ");
+				System.out.print(" | ");
 				System.out.print(vo.getMemberEnrollDate());
 				System.out.println();
 			}
@@ -365,11 +425,21 @@ public class QnaController {
 			System.out.println("조회수: " + vo.getHit());
 			System.out.println("작성일자: " + vo.getMemberEnrollDate());
 			System.out.println("내용: " + vo.getContent());
-			System.out.println("비밀글: " + vo.getSecretYn());
+			if(vo.getSecretYn()== "Y") {
+				System.out.print("비밀글");
+			}else {
+				System.out.println("전체공개");
+			}
 			System.out.println();
 			System.out.println("[관리자 답변] " + vo.getAnswer());
-			System.out.println("답변 작성일자: " + vo.getManagerEnrollDate());
-			System.out.println("답변 수정일자: " + vo.getManagerEditDate());
+			if(vo.getAnswer() != null) {
+				System.out.println("[관리자 답변] " + vo.getAnswer());
+				if(vo.getManagerEditDate() == null) {
+					System.out.println("답변 작성일자: " + vo.getManagerEnrollDate());
+				}else {
+					System.out.println("답변 수정일자: " + vo.getManagerEditDate());
+				}
+			}
 			System.out.println("---------------------------------------");
 
 		} catch (Exception e) {
@@ -412,9 +482,14 @@ public class QnaController {
 			System.out.println("작성자: " + Vo.getWriterNick());
 			System.out.println("작성일자: " + Vo.getMemberEnrollDate());
 			System.out.println();
-			System.out.println("[관리자 답변] " + Vo.getAnswer());
-			System.out.println("답변 작성일자: " + Vo.getManagerEnrollDate());
-			System.out.println("답변 수정일자: " + Vo.getManagerEditDate());
+			if(vo.getAnswer() != null) {
+				System.out.println("[관리자 답변] " + vo.getAnswer());
+				if(vo.getManagerEditDate() == null) {
+					System.out.println("답변 작성일자: " + vo.getManagerEnrollDate());
+				}else {
+					System.out.println("답변 수정일자: " + vo.getManagerEditDate());
+				}
+			}
 			System.out.println("---------------------------------------");
 			
 		}catch(Exception e) {
@@ -463,9 +538,14 @@ public class QnaController {
 			System.out.println("작성자: " + Vo.getWriterNick());
 			System.out.println("작성일자: " + Vo.getMemberEnrollDate());
 			System.out.println();
-			System.out.println("[관리자 답변] " + Vo.getAnswer());
-			System.out.println("답변 작성일자: " + Vo.getManagerEnrollDate());
-			System.out.println("답변 수정일자: " + Vo.getManagerEditDate());
+			if(vo.getAnswer() != null) {
+				System.out.println("[관리자 답변] " + vo.getAnswer());
+				if(vo.getManagerEditDate() == null) {
+					System.out.println("답변 작성일자: " + vo.getManagerEnrollDate());
+				}else {
+					System.out.println("답변 수정일자: " + vo.getManagerEditDate());
+				}
+			}
 			System.out.println("---------------------------------------");
 		}catch(Exception e) {
 			System.out.println("답변 수정 실패 ...");
