@@ -19,55 +19,60 @@ public class FaqController {
 	//메뉴 선택
 	public void selectMenu() {
 		
-		if(Main.loginManager != null) { //관리자일 때
-			System.out.println("======메뉴 선택=====");
-			System.out.println("1.게시판 등록");
-			System.out.println("2.게시판 수정");
-			System.out.println("3.게시판 삭제");
-			System.out.println("4.게시판 조회(번호)");
-			System.out.println("5.게시판 조회(제목)");
-			System.out.println("6.게시판 조회(작성자)");
-			System.out.println("7.게시판 전체 조회");
-			System.out.println("8.게시판 상세 조회(번호)");
-			System.out.println("9.프로그램 종료");
-			System.out.println("===================");
-			String num = Main.SC.nextLine();
+		while(true) {
+			if(Main.loginManager != null) { //관리자일 때
+				boardList();
+				System.out.println("======메뉴 선택=====");
+				System.out.println("1.게시판 등록");
+				System.out.println("2.게시판 수정");
+				System.out.println("3.게시판 삭제");
+				System.out.println("4.게시판 검색(번호)");
+				System.out.println("5.게시판 검색(제목)");
+				System.out.println("6.게시판 검색(작성자)");
+				System.out.println("7.게시판 전체 조회");
+				System.out.println("8.게시판 상세 조회(번호)");
+				System.out.println("9.뒤로가기");
+				System.out.println("===================");
+				System.out.print("번호를 입력해주세요 : ");
+				String num = Main.SC.nextLine();
+				
+				switch(num) {
+				case "1" : write(); break;
+				case "2" : edit(); break;
+				case "3" : delete(); break;
+				case "4" : boardPrintByNo(); break;
+				case "5" : boardPrintByTitle(); break;
+				case "6" : boardPrintByMno(); break;
+				case "7" : boardList(); break;
+				case "8" : boardDetailByNo(); break;
+				case "9" : return; 
+				default : System.out.println("올바른 번호를 입력하세요");
+				}
 			
-			switch(num) {
-			case "1" : write(); break;
-			case "2" : edit(); break;
-			case "3" : delete(); break;
-			case "4" : boardPrintByNo(); break;
-			case "5" : boardPrintByTitle(); break;
-			case "6" : boardPrintByMno(); break;
-			case "7" : boardList(); break;
-			case "8" : boardDetailByNo(); break;
-			case "9" : return; 
-			default : System.out.println("올바른 번호를 입력하세요");
-			}
-		}else {  //회원일 때
-			System.out.println("======메뉴 선택=====");
-			System.out.println("1.게시판 조회(번호)");
-			System.out.println("2.게시판 조회(제목)");
-			System.out.println("3.게시판 조회(작성자)");
-			System.out.println("4.게시판 전체 조회");
-			System.out.println("5.게시판 상세 조회(번호)");
-			System.out.println("9.프로그램 종료");
-			System.out.println("===================");
-			String num = Main.SC.nextLine();
-			
-			switch(num) {
-			case "1" : boardPrintByNo(); break;
-			case "2" : boardPrintByTitle(); break;
-			case "3" : boardPrintByMno(); break;
-			case "4" : boardList(); break;
-			case "5" : boardDetailByNo(); break;
-			case "9" : return; 
-			default : System.out.println("올바른 번호를 입력하세요");
-			}
-		}
-		
-	}
+			}else {  //회원일 때
+				boardList();
+				System.out.println("======메뉴 선택=====");
+				System.out.println("1.게시판 검색(번호)");
+				System.out.println("2.게시판 검색(제목)");
+				System.out.println("3.게시판 검색(작성자)");
+				System.out.println("4.게시판 전체 조회");
+				System.out.println("5.게시판 상세 조회(번호)");
+				System.out.println("9.뒤로가기");
+				System.out.println("===================");
+				String num = Main.SC.nextLine();
+				
+				switch(num) {
+				case "1" : boardPrintByNo(); break;
+				case "2" : boardPrintByTitle(); break;
+				case "3" : boardPrintByMno(); break;
+				case "4" : boardList(); break;
+				case "5" : boardDetailByNo(); break;
+				case "9" : return; 
+				default : System.out.println("올바른 번호를 입력하세요");
+				}//switch
+			}//else
+		}//while
+	}//selectMenu
 	
 	//게시판 등록
 	public void write() {
@@ -78,36 +83,31 @@ public class FaqController {
 			String title = Main.SC.nextLine();
 			System.out.print("게시판 내용: ");
 			String content = Main.SC.nextLine();
-			System.out.print("관리자 번호: ");
-			String managerNo = Main.SC.nextLine();
 			
 			FaqVo vo = new FaqVo();
 			vo.setTitle(title);
 			vo.setContent(content);
-			vo.setManagerNo(managerNo);
 			
 			//서비스
 			int result = fs.write(vo);
 			
 			//결과 처리
 			if(result!= 1) {
-				throw new Exception();
+				throw new Exception("");
 			}
 			System.out.println("게시판 등록 성공!");
 			
 		}catch(Exception e) {
 			System.out.println("게시판 등록 실패..");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
-		
-		selectMenu();
 	}
 	
 	//게시판 수정(번호)
 	public void edit() {
 		
 		try {
-			System.out.println("-----게시판 수정(제목)-----");
+			System.out.println("-----게시판 수정(제목, 내용)-----");
 			//데이터
 			System.out.print("게시판 번호: ");
 			String no = Main.SC.nextLine();
@@ -128,8 +128,6 @@ public class FaqController {
 			System.out.println("게시판 수정 실패");
 			e.printStackTrace();
 		}
-		
-		selectMenu();
 	}
 	
 	
@@ -157,8 +155,6 @@ public class FaqController {
 			System.out.println("게시판 삭제 실패...");
 			e.printStackTrace();
 		}
-		
-		selectMenu();
 	}
 	
 	//게시판 검색(게시판 번호)
@@ -179,14 +175,13 @@ public class FaqController {
 			}
 			
 			System.out.println("게시판 검색 성공!");
-			System.out.println(vo);
+			System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
+			+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate());
 			
 		}catch(Exception e) {
 			System.out.println("게시판 검색 실패..");
 			e.printStackTrace();
 		}
-		
-		selectMenu();
 	}
 	
 	//게시판 검색(제목)
@@ -208,16 +203,13 @@ public class FaqController {
 			}
 			
 			System.out.println("게시판 검색 성공!");
-			System.out.println(vo);
-			
-			selectMenu();
+			System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
+			+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate());
 			
 		}catch(Exception e) {
 			System.out.println("게시판 검색 실패..");
 			e.printStackTrace();
 		}
-		
-		selectMenu();
 	}
 	
 	
@@ -242,15 +234,14 @@ public class FaqController {
 			System.out.println("게시판 검색 성공!");
 			
 			for(FaqVo vo : voList) {
-				System.out.println(vo);
+				System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
+				+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate());
 			}
 			
 		}catch(Exception e) {
 			System.out.println("게시판 검색 실패..");
 			e.printStackTrace();
 		}
-		
-		selectMenu();
 	}
 	
 	//게시판 전체 조회
@@ -268,15 +259,13 @@ public class FaqController {
 			}
 			
 			for(FaqVo vo : voList) {
-				System.out.println(vo);
+				System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
+				+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate());
 			}
-		
 		}catch(Exception e) {
 			System.out.println("전체 게시판 조회 실패...");
 			e.printStackTrace();
 		}
-		
-		selectMenu();
 	}
 	
 	//게시판 상세 조회(게시판 번호)
@@ -297,12 +286,16 @@ public class FaqController {
 			
 			System.out.println("========================");
 			System.out.println("글 번호 : " + vo.getFaqNo());
-			System.out.println("매니저 번호 : " + vo.getManagerNo());
+			System.out.println("관리자 번호 : " + vo.getManagerNo());
 			System.out.println("글 제목 : " + vo.getTitle());
 			System.out.println("글 내용 : " + vo.getContent());
 			System.out.println("등록 일자 : " + vo.getEnrollDate());
-			System.out.println("비공개 여부 : " + vo.getSecretYn());
-			System.out.println("수정 일자 : " + vo.getEditDate());
+			if(Main.loginManager != null) {
+				System.out.println("비공개 여부 : " + vo.getSecretYn());
+			}
+			if(vo.getEditDate() != null) {
+				System.out.println("수정 일자 : " + vo.getEditDate());
+			}
 			System.out.println("조회수 : " + vo.getHit());
 			System.out.println("=========================");
 			
@@ -310,8 +303,6 @@ public class FaqController {
 			System.out.println("게시판 상세 조회 실패..");
 			e.printStackTrace();
 		}
-		
-		selectMenu();
 	}
 	
 }//class

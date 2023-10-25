@@ -16,11 +16,10 @@ public class FaqDao {
 	public int write(Connection conn, FaqVo vo) throws Exception{
 		
 		//sql
-		String sql = "INSERT INTO FAQ(FAQ_NO, MANAGER_NO, TITLE, CONTENT) VALUES(SEQ_FAQ_NO.NEXTVAL, ?, ?, ?)";
+		String sql = "INSERT INTO FAQ(FAQ_NO, MANAGER_NO, TITLE, CONTENT) VALUES(SEQ_FAQ_NO.NEXTVAL, ?, ?)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, vo.getManagerNo());
 		pstmt.setString(2, vo.getTitle());
-		pstmt.setString(3, vo.getContent());
 		int result = pstmt.executeUpdate();
 		
 		
@@ -68,9 +67,9 @@ public class FaqDao {
 		//SQL
 		String sql;
 		if(Main.loginMember != null) {  //회원일 때
-			sql = "SELECT * FROM FAQ WHERE FAQ_NO = ? AND SECRET_YN = 'N' ";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE F.FAQ_NO = ? AND F.SECRET_YN = 'N'";
 		}else {  //관리자일 때
-			sql = "SELECT * FROM FAQ WHERE FAQ_NO = ? ";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE F.FAQ_NO = ? ";
 		}
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, num);
@@ -83,6 +82,7 @@ public class FaqDao {
 			
 			String faqNo = rs.getString("FAQ_NO");
 			String managerNo= rs.getString("MANAGER_NO");
+			String managerName = rs.getString("NAME");
 			String title = rs.getString("TITLE");
 			String content = rs.getString("CONTENT");
 			String enrollDate = rs.getString("ENROLL_DATE");
@@ -94,6 +94,7 @@ public class FaqDao {
 			vo = new FaqVo();
 			vo.setFaqNo(faqNo);
 			vo.setManagerNo(managerNo);
+			vo.setManagerName(managerName);
 			vo.setTitle(title);
 			vo.setContent(content);
 			vo.setEnrollDate(enrollDate);
@@ -115,9 +116,9 @@ public class FaqDao {
 		//SQL
 		String sql;
 		if(Main.loginMember != null) {  //회원일 때
-			sql = "SELECT * FROM FAQ WHERE TITLE LIKE '%' || ? || '%' AND SECRET_YN = 'N'";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE F.TITLE LIKE '%' || ? || '%' AND F.SECRET_YN = 'N'";
 		}else { //관리자일 때
-			sql = "SELECT * FROM FAQ WHERE TITLE LIKE '%' || ? || '%'";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE F.TITLE LIKE '%' || ? || '%'";
 		}
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, boardTitle);
@@ -129,6 +130,7 @@ public class FaqDao {
 		if(rs.next()) {
 			String faqNo = rs.getString("FAQ_NO");
 			String managerNo = rs.getString("MANAGER_NO");
+			String managerName = rs.getString("NAME");
 			String title = rs.getString("TITLE");
 			String content = rs.getString("CONTENT");
 			String enrollDate = rs.getString("ENROLL_DATE");
@@ -140,6 +142,7 @@ public class FaqDao {
 			
 			vo.setFaqNo(faqNo);
 			vo.setManagerNo(managerNo);
+			vo.setManagerName(managerName);
 			vo.setTitle(title);
 			vo.setContent(content);
 			vo.setEnrollDate(enrollDate);
@@ -163,9 +166,9 @@ public class FaqDao {
 		//SQL
 		String sql;
 		if(Main.loginMember != null) {  //회원일 때
-			sql = "SELECT * FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE  M.NAME LIKE '%' || ? || '%' AND SECRET_YN = 'N'";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE M.NAME LIKE '%' || ? || '%' AND F.SECRET_YN = 'N'";
 		}else {  //관리자일 때
-			sql = "SELECT * FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE M.NAME LIKE '%' || ? || '%'";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE M.NAME LIKE '%' || ? || '%'";
 		}
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, mName);
@@ -181,6 +184,7 @@ public class FaqDao {
 		while(rs.next()) {
 			String faqNo = rs.getString("FAQ_NO");
 			String managerNo = rs.getString("MANAGER_NO");
+			String managerName = rs.getString("NAME");
 			String title = rs.getString("TITLE");
 			String content = rs.getString("CONTENT");
 			String enrollDate = rs.getString("ENROLL_DATE");
@@ -193,6 +197,7 @@ public class FaqDao {
 			
 			vo.setFaqNo(faqNo);
 			vo.setManagerNo(managerNo);
+			vo.setManagerName(managerName);
 			vo.setTitle(title);
 			vo.setContent(content);
 			vo.setEnrollDate(enrollDate);
@@ -219,9 +224,9 @@ public class FaqDao {
 		//SQL
 		String sql;
 		if(Main.loginMember != null) { //회원일 때
-			sql = "SELECT * FROM FAQ WHERE SECRET_YN = 'N' ORDER BY FAQ_NO DESC";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE F.SECRET_YN = 'N' ORDER BY F.ENROLL_DATE DESC";
 		}else { //관리자일 때
-			sql = "SELECT * FROM FAQ ORDER BY FAQ_NO DESC";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO ORDER BY F.ENROLL_DATE DESC";
 		}
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		
@@ -233,6 +238,7 @@ public class FaqDao {
 			
 			String faqNo = rs.getString("FAQ_NO");
 			String managerNo= rs.getString("MANAGER_NO");
+			String managerName = rs.getString("NAME");
 			String title = rs.getString("TITLE");
 			String content = rs.getString("CONTENT");
 			String enrollDate = rs.getString("ENROLL_DATE");
@@ -244,6 +250,7 @@ public class FaqDao {
 			
 			vo.setFaqNo(faqNo);
 			vo.setManagerNo(managerNo);
+			vo.setManagerName(managerName);
 			vo.setTitle(title);
 			vo.setContent(content);
 			vo.setEnrollDate(enrollDate);
@@ -267,9 +274,9 @@ public class FaqDao {
 		//SQL
 		String sql;
 		if(Main.loginMember != null) { //회원일 때
-			sql = "SELECT * FROM FAQ WHERE SECRET_YN = 'N' AND FAQ_NO = ?";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE SECRET_YN = 'N' AND FAQ_NO = ?";
 		}else { //관리자일 때
-			sql = "SELECT * FROM FAQ  WHERE FAQ_NO = ?";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE FAQ_NO = ?";
 		}
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, no);
@@ -283,6 +290,7 @@ public class FaqDao {
 		if(rs.next()) {
 			String faqNo = rs.getString("FAQ_NO");
 			String managerNo = rs.getString("MANAGER_NO");
+			String managerName = rs.getString("NAME");
 			String title = rs.getString("TITLE");
 			String content = rs.getString("CONTENT");
 			String enrollDate = rs.getString("ENROLL_DATE");
@@ -293,6 +301,7 @@ public class FaqDao {
 			vo = new FaqVo();
 			vo.setFaqNo(faqNo);
 			vo.setManagerNo(managerNo);
+			vo.setManagerName(managerName);
 			vo.setTitle(title);
 			vo.setContent(content);
 			vo.setEnrollDate(enrollDate);
@@ -328,7 +337,3 @@ public class FaqDao {
 	
 }//class
 		
-		
-
-	
-	

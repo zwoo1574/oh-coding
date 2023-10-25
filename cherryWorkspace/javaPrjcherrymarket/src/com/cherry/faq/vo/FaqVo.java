@@ -93,6 +93,7 @@ public class FaqVo {
 				+ title + ", content=" + content + ", enrollDate=" + enrollDate + ", secretYn=" + secretYn
 				+ ", editDate=" + editDate + ", hit=" + hit + "]";
 	}
+	
 
 	
 }//class
