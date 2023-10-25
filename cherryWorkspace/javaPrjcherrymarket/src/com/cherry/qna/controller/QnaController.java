@@ -98,7 +98,7 @@ public class QnaController {
 			
 			// 데이터
 			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
-			System.out.printf("%-10s%-20s%-10s%-10s%-10s\n", "번호", "제목", "닉네임", "조회수", "작성일");
+			System.out.printf("%-10s%-20s%-10s%-20s%-40s\n", "번호", "제목", "닉네임", "조회수", "작성일");
 			System.out.println(Color.CYAN + "▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			// 서비스
 			List<QnaVo> voList = service.qnaList();
@@ -122,7 +122,7 @@ public class QnaController {
 				String hit = vo.getHit();
 				String memberEnrollDate = vo.getMemberEnrollDate();
 				
-				System.out.printf("%s%s%-10s%s%-20s%-10s%-15s%-10s\n",
+				System.out.printf("%s%-10s%s%-20s%-10s%-15s%-10s\n",
 					    color, qnaNo, resetColor, title, writerNick, hit, memberEnrollDate);
 			}
 			
@@ -384,12 +384,6 @@ public class QnaController {
 				String color = "";
 				String resetColor = Color.EXIT;
 				
-//				if(vo.getSecretYn().equals("Y")) {
-//					System.out.print("비밀글");
-//				}else {
-//					System.out.println("전체공개");
-//				}
-				
 				String qnaNo = vo.getQnaNo();
 				String title = vo.getTitle();
 				String writerNick = vo.getWriterNick();
@@ -447,7 +441,6 @@ public class QnaController {
 				System.out.println("전체공개");
 			}
 			System.out.println();
-			System.out.println("[관리자 답변] " + vo.getAnswer());
 			if(vo.getAnswer() != null) {
 				System.out.println("[관리자 답변] " + vo.getAnswer());
 				if(vo.getManagerEditDate() == null) {
