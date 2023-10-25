@@ -137,6 +137,16 @@ public class TownService {
 		JDBCTemplate.close(conn);
 		return vo;
 	}
+	//-----------------------게시글 수정----------------
+	public int townupdate(TownVo tvo) throws Exception {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int result = dao.townupdate(conn, tvo);
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
 
 	
 	
