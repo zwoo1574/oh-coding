@@ -93,13 +93,13 @@ public class FaqController {
 			
 			//결과 처리
 			if(result!= 1) {
-				throw new Exception("");
+				throw new Exception();
 			}
 			System.out.println("게시판 등록 성공!");
 			
 		}catch(Exception e) {
 			System.out.println("게시판 등록 실패..");
-//			e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	
