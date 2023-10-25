@@ -63,16 +63,21 @@ public class ManagerDao {
 		return userList;
 	}
 
-	public MemberVo userDetile(Connection conn, String userNo) throws Exception{
-		String sql ="SELECT MEMBER_NO ,AREAS_NAME ,ID ,PWD ,NICK ,NAME ,EMAIL ,PHONE ,ADDRESS ,TO_CHAR(JOIN_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS JOIN_DATE ,TO_CHAR(EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS EDIT_DATE ,QUIT_YN FROM MEMBER JOIN AREAS USING (AREAS_CODE) WHERE MEMBER_NO = ? ORDER BY MEMBER_NO";
+	public List<MemberVo> userDetile(Connection conn, String userChoice,String num) throws Exception{
+		String sql = null;
+		switch(num) {
+		case "1" : sql ="SELECT MEMBER_NO ,AREAS_NAME ,ID ,PWD ,NICK ,NAME ,EMAIL ,PHONE ,ADDRESS ,TO_CHAR(JOIN_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS JOIN_DATE ,TO_CHAR(EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS EDIT_DATE ,QUIT_YN FROM MEMBER JOIN AREAS USING (AREAS_CODE) WHERE MEMBER_NO = ? ORDER BY MEMBER_NO";break;
+		case "2" : sql ="SELECT MEMBER_NO ,AREAS_NAME ,ID ,PWD ,NICK ,NAME ,EMAIL ,PHONE ,ADDRESS ,TO_CHAR(JOIN_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS JOIN_DATE ,TO_CHAR(EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS EDIT_DATE ,QUIT_YN FROM MEMBER JOIN AREAS USING (AREAS_CODE) WHERE ID LIKE '%'||UPPER(?)||'%' ORDER BY ID, MEMBER_NO";break;
+		case "3" : sql ="SELECT MEMBER_NO ,AREAS_NAME ,ID ,PWD ,NICK ,NAME ,EMAIL ,PHONE ,ADDRESS ,TO_CHAR(JOIN_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS JOIN_DATE ,TO_CHAR(EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS EDIT_DATE ,QUIT_YN FROM MEMBER JOIN AREAS USING (AREAS_CODE) WHERE NICK LIKE '%'||?||'%' ORDER BY NICK, MEMBER_NO";break;
+		}
+		System.out.println(sql);
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1,userNo);
+		pstmt.setString(1,userChoice);
 		
 		ResultSet rs = pstmt.executeQuery();
-		MemberVo vo = null;
-		
-		if(rs.next()) {
-			vo = new MemberVo();
+		ArrayList<MemberVo> voList = new ArrayList<MemberVo>();
+		while(rs.next()) {
+			MemberVo vo = new MemberVo();
 			vo.setMemberNo(rs.getString("MEMBER_NO"));
 			vo.setAreasName(rs.getString("AREAS_NAME"));
 			vo.setId(rs.getString("ID"));
@@ -85,9 +90,10 @@ public class ManagerDao {
 			vo.setJoinDate(rs.getString("JOIN_DATE"));
 			vo.setEditDate(rs.getString("EDIT_DATE"));
 			vo.setQuitYn(rs.getString("QUIT_YN"));
+			voList.add(vo);
 		}
 		
-		return vo;
+		return voList;
 	}
 
 	public int userKick(Connection conn, String userNo) throws Exception{
