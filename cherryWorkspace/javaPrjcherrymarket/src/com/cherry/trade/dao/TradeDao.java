@@ -54,7 +54,7 @@ public class TradeDao {
 	// 게시글 조회
 	public TradeVo showContent(String select, Connection conn) throws Exception {
 		
-		String sql = "SELECT T.BOARD_NO ,T.TITLE ,T.CONTENT ,T.TRADE_AREAS ,T.PRODUCT ,T.PRICE ,TO_CHAR(T.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\" HH24:MM') ENROLL_DATE ,TO_CHAR(T.EDIT_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\" HH24:MM') EDIT_DATE, M.NICK, A.AREAS_NAME, T.HIT FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO JOIN AREAS A ON M.AREAS_CODE = A.AREAS_CODE WHERE T.BOARD_NO = ? AND T.COMPLETE_YN = 'N' AND T.DEL_YN = 'N'";
+		String sql = "SELECT T.BOARD_NO ,T.TITLE ,T.CONTENT ,T.TRADE_AREAS ,T.PRODUCT ,T.PRICE ,TO_CHAR(T.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\" HH24:MI') ENROLL_DATE ,TO_CHAR(T.EDIT_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\" HH24:MI') EDIT_DATE, M.NICK, A.AREAS_NAME, T.HIT FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO JOIN AREAS A ON M.AREAS_CODE = A.AREAS_CODE WHERE T.BOARD_NO = ? AND T.COMPLETE_YN = 'N' AND T.DEL_YN = 'N'";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, select);
 		
@@ -336,7 +336,6 @@ public class TradeDao {
 
 	public List<TradeVo> searchPostByTitle(String searchTitle, Connection conn) throws Exception {
 		
-//		String sql = "SELECT RPAD(T.BOARD_NO, 30, ' ') BOARD_NO ,RPAD(T.TITLE, 50, ' ') TITLE ,RPAD(T.PRODUCT, 30, ' ') PRODUCT ,RPAD(T.PRICE, 30, ' ') PRICE ,RPAD(M.NICK, 30, ' ') NICK ,RPAD(TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD'), 30, ' ') ENROLL_DATE ,T.PRODUCT ,T.PRICE, T.HIT, T.MEMBER_NO FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE TITLE LIKE ? AND T.DEL_YN = 'N' AND T.COMPLETE_YN = 'N' ORDER BY ENROLL_DATE DESC";
 		String sql = "SELECT T.BOARD_NO, T.TITLE, T.PRODUCT, T.PRICE, M.NICK, TO_CHAR(T.ENROLL_DATE, 'YYYY-MM-DD') ENROLL_DATE , T.HIT, T.MEMBER_NO FROM TRADE T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.TITLE LIKE ? AND T.DEL_YN = 'N' AND T.COMPLETE_YN = 'N' ORDER BY ENROLL_DATE DESC";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, "%" + searchTitle + "%");

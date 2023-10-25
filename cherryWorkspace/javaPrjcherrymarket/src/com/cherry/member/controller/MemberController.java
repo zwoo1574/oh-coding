@@ -8,6 +8,7 @@ import com.cherry.main.Main;
 import com.cherry.member.service.MemberService;
 import com.cherry.member.vo.MemberVo;
 import com.cherry.trade.vo.TradeVo;
+import com.cherry.util.Color;
 import com.cherry.util.Util;
 
 	
@@ -370,26 +371,41 @@ public class MemberController {
 	//구매 내역 리스트
 	public boolean purchaseList() {
 		boolean x = true;
-		System.out.println("============================================ 구매 내역 목록 ============================================");
 		
 		try {
-			//로그인 검사
-			if(Main.loginMember == null) {
-				throw new Exception("로그인부터 진행해주세요");
-			}
-			String no = Main.loginMember.getMemberNo();
-			List<TradeVo> voList = service.purchaseList(no);
-			if(voList.isEmpty()){
-				System.out.println("조회된 내용이 없습니다.");
-			}else {
-				System.out.println("====================================================================================================");
-				System.out.println(" 구매일시  |  판매자닉네임  |  거래 장소  |  상품명  |  가격  ");
-				
-				for(TradeVo vo : voList) {
-					System.out.println(vo.getEnrollDate()+" | "+vo.getMemberNick()+" | "+vo.getTradeAreas()+" | "+vo.getProduct()+" | "+vo.getPrice());
+			
+				Util.clearConsole();
+				//로그인 검사
+				if(Main.loginMember == null) {
+					throw new Exception("로그인부터 진행해주세요");
 				}
+				String no = Main.loginMember.getMemberNo();
+				List<TradeVo> voList = service.purchaseList(no);
+				System.out.println("============================================ 구매 내역 목록 ============================================");
+				if(voList.isEmpty()){
+					System.out.println("조회된 내용이 없습니다.");
+				}else {
+					System.out.println("====================================================================================================");
+					System.out.println(" 구매번호 || 구매일시  |  판매자닉네임  |  거래 장소  |  상품명  |  가격  "); // 구매후기 작성 여부 추가해야함
+					
+					for(TradeVo vo : voList) {
+						System.out.println(vo.getPurchaseNo() + " | " + vo.getEnrollDate()+" | "+vo.getMemberNick()+" | "+vo.getTradeAreas()+" | "+vo.getProduct()+" | "+vo.getPrice());
+					}
+					
+					System.out.println("====================================================================================================\n\n");
+					System.out.println("<메뉴> 1.구매후기작성 9.뒤로가기(미구현)");
+					System.out.print("선택 : ");
+					String select = Main.SC.nextLine();
+					
+					switch(select) {
+						case "1" : 
+							System.out.print("구매후기 남길 내역 번호 : ");
+							String purchaseNo = Main.SC.nextLine();
+							writeReview(purchaseNo); break; // 리뷰 작성
+						case "9" : break;
+						default : System.out.println("잘못입력하셨습니다."); break;
+					}
 				
-				System.out.println("====================================================================================================\n\n");
 			}
 			 x =false;
 		}catch(Exception e) {
@@ -397,6 +413,56 @@ public class MemberController {
 			e.printStackTrace();
 		}
 		return x;
+	}
+	
+	// 리뷰 작성
+	public void writeReview(String purchaseNo) {
+		try {
+			
+			String rv = service.ReviewValidation(purchaseNo);
+			
+			if(!(Main.loginMember.getMemberNo().equals(rv))) {
+				throw new Exception("내역번호없음");
+			}
+			
+	        String manner;
+	        
+	        System.out.print("구매후기 : " + Color.CYAN);
+	        String content = Main.SC.nextLine();
+	        System.out.print(Color.EXIT);
+	        do {
+	            System.out.println("거래는 어땠나요?");
+	            System.out.println(Color.YELLOW +"➊" + Color.EXIT + "최고에요 "
+	            		  		+ Color.YELLOW +"➋" + Color.EXIT + "평범해요 "
+					            + Color.YELLOW +"➌" + Color.EXIT + "별로에요 ");
+	            System.out.print("선택 : " + Color.CYAN);
+	            manner = Main.SC.nextLine();
+	            System.out.print(Color.EXIT);
+	
+	            if (!(manner.equals("1") || manner.equals("2") || manner.equals("3"))) {
+	                System.out.println("잘못입력하셨습니다");
+	            }
+	           
+	        } while (!(manner.equals("1") || manner.equals("2") || manner.equals("3")));
+
+	        int result = service.writeReview(purchaseNo, manner, content); 
+
+			if(result != 1) {
+				throw new Exception();
+			} 
+			
+			System.out.println("구매후기 작성 완료");
+			
+		} catch(Exception e) {
+			String ex = e.getMessage();
+			System.out.println(Color.RED + "구매후기 작성 실패" + Color.EXIT);
+			if(ex.contains("ORA-01722")) {System.out.println("이미 후기를 작성했습니다.");}
+			if(ex.contains("내역번호")) {System.out.println("구매내역에 없는 번호입니다.");}
+			if(ex.contains("무결성")) {System.out.println("이미 구매후기를 작성하셨습니다.");}
+//			e.printStackTrace();
+		}
+
+		
 	}
 	//관심목록 리스트
 	public boolean wishList() {

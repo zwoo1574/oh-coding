@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 import com.cherry.jdbc.JDBCTemplate;
+import com.cherry.main.Main;
 import com.cherry.member.vo.MemberVo;
 import com.cherry.trade.vo.TradeVo;
 
@@ -52,7 +53,7 @@ public class MemberDao {
 	}
 	//로그인
 	public MemberVo login(Connection conn, MemberVo vo) throws Exception{
-		String sql = "SELECT MEMBER_NO ,AREAS_CODE ,AREAS_NAME ,ID ,PWD ,NICK ,NAME ,EMAIL ,PHONE ,ADDRESS ,TO_CHAR(JOIN_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS JOIN_DATE ,TO_CHAR(EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MM') AS EDIT_DATE "
+		String sql = "SELECT MEMBER_NO ,AREAS_CODE ,AREAS_NAME ,ID ,PWD ,NICK ,NAME ,EMAIL ,PHONE ,ADDRESS ,TO_CHAR(JOIN_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS JOIN_DATE ,TO_CHAR(EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS EDIT_DATE "
 				+ "FROM MEMBER JOIN AREAS USING(AREAS_CODE) WHERE ID = UPPER(?) AND PWD = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1,vo.getId());
@@ -82,7 +83,7 @@ public class MemberDao {
 	//회원탈퇴
 	public int quit(Connection conn,String no) throws Exception{
 		
-		String sql = "UPDATE MEMBER SET QUIT_YN = 'Y' WHERE MEMBER_NO = ?";
+		String sql = "UPDATE MEMBER SET QUIT_YN = 'Y', EDIT_DATE = SYSDATE WHERE MEMBER_NO = ?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, no);
@@ -95,7 +96,7 @@ public class MemberDao {
 	//비밀번호 변경
 	public int changePwd(Connection conn, HashMap<String, String> map) throws Exception{
 		
-		String sql = "UPDATE MEMBER SET PWD = ? WHERE MEMBER_NO = ? AND PWD = ?";
+		String sql = "UPDATE MEMBER SET PWD = ?, EDIT_DATE = SYSDATE WHERE MEMBER_NO = ? AND PWD = ?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, map.get("newPwd"));
@@ -111,7 +112,7 @@ public class MemberDao {
 	//닉네임 변경
 	public int changeNick(Connection conn, MemberVo vo) throws Exception{
 		
-		String sql ="UPDATE MEMBER SET NICK = ? WHERE MEMBER_NO = ?";
+		String sql ="UPDATE MEMBER SET NICK = ?, EDIT_DATE = SYSDATE WHERE MEMBER_NO = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, vo.getNick());
 		pstmt.setString(2, vo.getMemberNo());
@@ -123,7 +124,7 @@ public class MemberDao {
 	}
 	//주소 변경
 	public int changeAddress(Connection conn, MemberVo vo) throws Exception{
-		String sql ="UPDATE MEMBER SET ADDRESS = ?, AREAS_CODE = ? WHERE MEMBER_NO = ?";
+		String sql ="UPDATE MEMBER SET ADDRESS = ?, AREAS_CODE = ?, EDIT_DATE = SYSDATE WHERE MEMBER_NO = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, vo.getAddress());
 		pstmt.setString(2, vo.getAreasCode());
@@ -136,7 +137,7 @@ public class MemberDao {
 	}
 	//전화번호 변경
 	public int changePhone(Connection conn, MemberVo vo)  throws Exception{
-		String sql ="UPDATE MEMBER SET PHONE = ? WHERE MEMBER_NO = ?";
+		String sql ="UPDATE MEMBER SET PHONE = ?, EDIT_DATE = SYSDATE WHERE MEMBER_NO = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, vo.getPhone());
 		pstmt.setString(2, vo.getMemberNo());
@@ -258,7 +259,7 @@ public class MemberDao {
 	}
 	// findPwd() -> pwdReset()
 	public int pwdReset(Connection conn, MemberVo userVo) throws Exception {
-		String sql="UPDATE MEMBER SET PWD = '1Q2W3E4R' WHERE MEMBER_NO = ? AND PWD = ?";
+		String sql="UPDATE MEMBER SET PWD = '1Q2W3E4R', EDIT_DATE = SYSDATE WHERE MEMBER_NO = ? AND PWD = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, userVo.getMemberNo());
 		pstmt.setString(2, userVo.getPwd());
@@ -282,6 +283,46 @@ public class MemberDao {
 		JDBCTemplate.close(pstmt);
 		
 		return newPwd;
+	}
+
+	public int writeReview(String purchaseNo, String manner, String content, Connection conn) throws Exception {
+
+		String sql = "INSERT INTO REVIEW(REVIEW_NO, PURCHASE_NO, SCORE, CONTENT) VALUES(SEQ_REVIEW_NO.NEXTVAL, ?, ?, ?) ";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, purchaseNo);
+		switch(manner) {
+			case "1" : pstmt.setString(2, "1"); break;
+			case "2" : pstmt.setString(2, "0"); break;
+			case "3" : pstmt.setString(2, "-1"); break;
+		}
+		pstmt.setString(3, content);
+
+		int result = pstmt.executeUpdate();
+
+		JDBCTemplate.close(pstmt);
+		
+		return result;
+	}
+	
+	public String ReviewValidation(String purchaseNo, Connection conn) throws Exception {
+		
+		String sql = "SELECT BUYER_NO FROM PURCHASE_HISTORY WHERE PURCHASE_NO = ?";
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, purchaseNo);
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		String rv = null;
+		
+		if(rs.next()) {
+			rv = rs.getString("BUYER_NO");
+		}
+		
+		JDBCTemplate.close(pstmt);
+		JDBCTemplate.close(rs);
+		
+		return rv;
 	}
 
 }
