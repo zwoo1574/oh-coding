@@ -268,7 +268,7 @@ public class NoticeDao {
 		
 		int result=pstmt.executeUpdate();
 		
-		//rs
+	
 		
 		//close
 		JDBCTemplate.close(pstmt);
