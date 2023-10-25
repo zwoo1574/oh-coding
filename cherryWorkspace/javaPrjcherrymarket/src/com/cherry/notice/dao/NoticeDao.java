@@ -37,7 +37,7 @@ public class NoticeDao {
 	//공지글 조회(최신순)//유저
 	public ArrayList<NoticeVo> noticeList(Connection conn) throws Exception {
 		//sql
-		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\\\"년\\\"MM\\\"월\\\"DD\\\"일\\\"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE  SECRET_YN='N' ORDER BY N.NOTICE_NO DESC";
+		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE  SECRET_YN='N' ORDER BY N.NOTICE_NO DESC";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		ResultSet rs= pstmt.executeQuery();
 		
@@ -71,7 +71,7 @@ public class NoticeDao {
 	//공지글 조회(최신순)//관리자
 	public ArrayList<NoticeVo> adminNoticeList(Connection conn) throws Exception {
 		//sql
-		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\\\"년\\\"MM\\\"월\\\"DD\\\"일\\\"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO ORDER BY N.NOTICE_NO DESC";
+		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO ORDER BY N.NOTICE_NO DESC";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		ResultSet rs= pstmt.executeQuery();
 				
@@ -104,7 +104,7 @@ public class NoticeDao {
 	//공지글 상세 조회//유저
 	public NoticeVo noticeDetailByNo(Connection conn, String num) throws Exception {
 		//sql
-		String sql="SELECT N.NOTICE_NO,N.TITLE,N.CONTENT,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE,N.EDIT_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.NOTICE_NO=? AND N.SECRET_YN='N'";
+		String sql="SELECT N.NOTICE_NO,N.TITLE,N.CONTENT,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS ENROLL_DATE,TO_CHAR(N.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS EDIT_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.NOTICE_NO=? AND N.SECRET_YN='N'";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		pstmt.setString(1, num);
 		ResultSet rs=pstmt.executeQuery();
@@ -138,7 +138,7 @@ public class NoticeDao {
 	//공지글 상세 조회//관리자
 	public NoticeVo adminNoticeDetailByNo(Connection conn, String num) throws Exception {
 		//sql
-		String sql="SELECT N.NOTICE_NO,N.TITLE,N.CONTENT,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE,N.EDIT_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.NOTICE_NO=?";
+		String sql="SELECT N.NOTICE_NO,N.TITLE,N.CONTENT,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS ENROLL_DATE,TO_CHAR(N.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"HH24:MI') AS EDIT_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.NOTICE_NO=? ";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		pstmt.setString(1, num);
 		ResultSet rs=pstmt.executeQuery();
@@ -188,7 +188,7 @@ public class NoticeDao {
 	//공지글 검색(제목)//유저
 	public ArrayList<NoticeVo> searchNoticeByTitle(Connection conn, String search) throws Exception {
 		//sql
-		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE,N.EDIT_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.TITLE LIKE '%'||?||'%' AND SECRET_YN='N' ORDER BY N.NOTICE_NO DESC";
+		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"') AS ENROLL_DATE,N.EDIT_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.TITLE LIKE '%'||?||'%' AND SECRET_YN='N' ORDER BY N.NOTICE_NO DESC";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		pstmt.setString(1, search);
 		ResultSet rs=pstmt.executeQuery();
@@ -225,7 +225,7 @@ public class NoticeDao {
 	//공지글 검색(제목)//관리자
 	public ArrayList<NoticeVo> adminSearchNoticeByTitle(Connection conn, String search) throws Exception {
 		//sql
-		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE,N.EDIT_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.TITLE LIKE '%'||?||'%' ORDER BY N.NOTICE_NO DESC";
+		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"') AS ENROLL_DATE,N.EDIT_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.TITLE LIKE '%'||?||'%' ORDER BY N.NOTICE_NO DESC";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		pstmt.setString(1, search);
 		ResultSet rs=pstmt.executeQuery();
@@ -278,7 +278,7 @@ public class NoticeDao {
 	//공지글 수정
 	public int modify(Connection conn, NoticeVo vo) throws Exception {
 		//sql
-		String sql="UPDATE NOTICE SET TITLE=?, CONTENT=?, EDIT_DATE= SYSDATE WHERE NOTICE_NO=? AND SECRET_YN='Y' ";
+		String sql="UPDATE NOTICE SET TITLE=?, CONTENT=?, EDIT_DATE= SYSDATE WHERE NOTICE_NO=? ";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		pstmt.setString(1, vo.getTitle());
 		pstmt.setString(2, vo.getContent());
@@ -297,7 +297,7 @@ public class NoticeDao {
 	//공지사항(조회수순)//유저
 	public ArrayList<NoticeVo> noticeList2(Connection conn) throws Exception {
 		//sql
-		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\\\"년\\\"MM\\\"월\\\"DD\\\"일\\\"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE  SECRET_YN='N' ORDER BY N.HIT DESC";
+		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE  SECRET_YN='N' ORDER BY N.HIT DESC";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		ResultSet rs=pstmt.executeQuery();
 		//rs
@@ -328,7 +328,7 @@ public class NoticeDao {
 	//공지사항(조회수순)//관리자
 	public ArrayList<NoticeVo> adminNoticeList2(Connection conn) throws Exception {
 		//sql
-		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\\\"년\\\"MM\\\"월\\\"DD\\\"일\\\"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO ORDER BY N.HIT DESC";
+		String sql="SELECT N.NOTICE_NO,N.TITLE,M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO ORDER BY N.HIT DESC";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		ResultSet rs=pstmt.executeQuery();
 		//rs
@@ -358,7 +358,7 @@ public class NoticeDao {
 	//공지글 검색(내용)//유저
 	public ArrayList<NoticeVo> searchNoticeByContent(Connection conn, String content) throws Exception {
 		//sql
-		String sql="SELECT N.NOTICE_NO,N.TITLE, M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.CONTENT LIKE '%'||?||'%' AND SECRET_YN='N' ORDER BY N.NOTICE_NO DESC";
+		String sql="SELECT N.NOTICE_NO,N.TITLE, M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.CONTENT LIKE '%'||?||'%' AND SECRET_YN='N' ORDER BY N.NOTICE_NO DESC";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		pstmt.setString(1, content);
 		ResultSet rs=pstmt.executeQuery();
@@ -391,7 +391,7 @@ public class NoticeDao {
 	//공지글 검색(내용)//관리자
 	public ArrayList<NoticeVo> adminSearchNoticeByContent(Connection conn, String content) throws Exception {
 		//sql
-		String sql="SELECT N.NOTICE_NO,N.TITLE, M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.CONTENT LIKE '%'||?||'%' ORDER BY N.NOTICE_NO DESC";
+		String sql="SELECT N.NOTICE_NO,N.TITLE, M.NAME AS MANAGER_NAME,N.HIT,TO_CHAR(N.ENROLL_DATE,'YYYY\"년 \"MM\"월 \"DD\"일 \"') AS ENROLL_DATE FROM NOTICE N JOIN MANAGER M ON M.MANAGER_NO=N.MANAGER_NO WHERE N.CONTENT LIKE '%'||?||'%' ORDER BY N.NOTICE_NO DESC";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		pstmt.setString(1, content);
 		ResultSet rs=pstmt.executeQuery();
@@ -421,11 +421,5 @@ public class NoticeDao {
 		return voList;
 	}
 
-	
 
-	
-	
-
-	
-	
 }//class
