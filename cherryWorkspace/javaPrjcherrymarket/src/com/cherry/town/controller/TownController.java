@@ -134,7 +134,9 @@ public class TownController {
 			System.out.println("작성자 :" + vo.getWirterNick());
 			System.out.println("조회수 :" + vo.getHit());
 			System.out.println("작성일자 :" + vo.getEnrollDate());
-			System.out.println("수정일자 :" + vo.getEditdate());
+			if(vo.getEditdate() != null) {
+				System.out.println("수정일자 :" + vo.getEditdate());
+			}
 			System.out.println("내용 :" + vo.getContent());
 			System.out.println("댓글 :" + vo.getTowncommentcont());
 			System.out.println("--------------------------------------------");
@@ -143,7 +145,7 @@ public class TownController {
 			e.printStackTrace();
 			
 		}
-		selectMenu();
+		
 		
 		
 	}
