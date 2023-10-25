@@ -106,7 +106,7 @@ public class NoticeController {
 		}
 		
 
-	}// write() end
+	}// write()end
 
 	// 공지글 조회(최신순)//유저
 	public void noticeList() {
