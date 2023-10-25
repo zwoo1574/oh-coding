@@ -194,4 +194,31 @@ public class MemberService {
 		return newPwd;
 	}
 
+	public int writeReview(String purchaseNo,String manner, String content) throws Exception {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int result = dao.writeReview(purchaseNo, manner, content, conn);
+		
+		if(result == 1) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
+	public String ReviewValidation(String purchaseNo) throws Exception {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		String rv = dao.ReviewValidation(purchaseNo, conn);
+		
+		JDBCTemplate.close(conn);
+		
+		return rv;
+	}
 }

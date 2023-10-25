@@ -30,7 +30,9 @@ public class TradeController {
 				// 본인 게시글
 				if(Main.loginMember.getMemberNo().equals(vo.getMemberNo())) {            
 					
-					System.out.println("<메뉴> "+ Color.YELLOW +"➊" + Color.EXIT + "게시글 수정 "+ Color.YELLOW +"➋" + Color.EXIT + "게시글 삭제 "+ Color.RED +"➒" + Color.EXIT + "뒤로가기");
+					System.out.println("<메뉴> "+ Color.YELLOW +"➊" + Color.EXIT + "게시글 수정 "
+												+ Color.YELLOW +"➋" + Color.EXIT + "게시글 삭제 "
+												+ Color.RED +"➒" + Color.EXIT + "뒤로가기");
 
 					System.out.print("선택할 메뉴 : " + Color.CYAN);
 					String select = sc.nextLine();
@@ -48,7 +50,8 @@ public class TradeController {
 				// 타인 게시글
 				} else if(!Main.loginMember.getMemberNo().equals(vo.getMemberNo())) {
 					
-					System.out.println("<메뉴> "+ Color.YELLOW +"➊" + Color.EXIT + "구매 신청 "+ Color.YELLOW +"➒" + Color.EXIT + "뒤로가기");
+					System.out.println("<메뉴> "+ Color.YELLOW +"➊"+ Color.EXIT + "구매 신청 "
+												+ Color.RED + "➒" + Color.EXIT + "뒤로가기");
 
 					System.out.print("선택할 메뉴 : " + Color.CYAN);
 					String select = sc.nextLine();
@@ -66,7 +69,9 @@ public class TradeController {
 			// 관리자일때
 			if(Main.loginMember == null || Main.loginManager != null) { 
 				
-				System.out.println("<관리자 메뉴> "+ Color.YELLOW +"➊" + Color.EXIT + "게시글 수정 "+ Color.YELLOW +"➋" + Color.EXIT + "게시글 삭제 "+ Color.YELLOW +"➒" + Color.EXIT + "뒤로가기");
+				System.out.println("<관리자 메뉴> "+ Color.YELLOW +"➊" + Color.EXIT + "게시글 수정 "
+													+ Color.YELLOW +"➋" + Color.EXIT + "게시글 삭제 "
+													+ Color.RED +"➒" + Color.EXIT + "뒤로가기");
 
 				System.out.print("선택할 메뉴 : " + Color.CYAN);
 				String select = sc.nextLine();
@@ -133,10 +138,10 @@ public class TradeController {
 //	            if (!(manner.equals("1") || manner.equals("2") || manner.equals("3"))) {
 //	                System.out.println("잘못입력하셨습니다");
 //	            }
-//	           
+//	           ㅤ
 //	        } while (!(manner.equals("1") || manner.equals("2") || manner.equals("3")));
 //
-//	        int result = ts.writeReview(purchaseNo, manner, content);
+//	        int result = ts.writeReview(purchaseNo, manner, content); 
 //
 //			if(result != 1) {
 //				throw new Exception();
@@ -294,7 +299,9 @@ public class TradeController {
 	public boolean mainMenu() {
 		if(Main.loginMember == null || Main.loginManager != null) {
 			
-			System.out.println("<관리자 메뉴> "+ Color.YELLOW +"➊" + Color.EXIT + "게시글 조회 "+ Color.YELLOW +"➋" + Color.EXIT + "게시글 검색 "+ Color.RED +"➒" + Color.EXIT + "뒤로가기");
+			System.out.println("<관리자 메뉴> "+ Color.YELLOW +"➊" + Color.EXIT + "게시글 조회 "
+												+ Color.YELLOW +"➋" + Color.EXIT + "게시글 검색 "
+												+ Color.RED +"➒" + Color.EXIT + "뒤로가기");
 			System.out.print("선택할 메뉴 : " + Color.CYAN);
 			String select = sc.nextLine();
 			System.out.print(Color.EXIT);
@@ -310,7 +317,11 @@ public class TradeController {
 			
 		} else if(Main.loginMember != null || Main.loginManager == null) {
 		
-			System.out.println("<메뉴>"+ Color.YELLOW +"➊" + Color.EXIT + "게시글 작성 "+ Color.YELLOW +"➋" + Color.EXIT + "게시글 조회 "+ Color.YELLOW +"➌" + Color.EXIT + "관심목록에 추가 "+ Color.YELLOW +"➍" + Color.EXIT + "게시글 검색 "+ Color.RED +"➒" + Color.EXIT + "뒤로가기");
+			System.out.println("<메뉴> "+ Color.YELLOW +"➊" + Color.EXIT + "게시글 작성 "
+										+ Color.YELLOW +"➋" + Color.EXIT + "게시글 조회 "
+										+ Color.YELLOW +"➌" + Color.EXIT + "관심목록에 추가 "
+										+ Color.YELLOW +"➍" + Color.EXIT + "게시글 검색 "
+										+ Color.RED +"➒" + Color.EXIT + "뒤로가기");
 			System.out.print("선택할 메뉴 : " + Color.CYAN);
 			String select = sc.nextLine();
 			System.out.print(Color.EXIT);
@@ -484,7 +495,9 @@ public class TradeController {
 	
 	// 게시글 목록(메인) -> 4. 게시글 검색
 	public void searchPost() {
-		System.out.println("➊제목으로 검색 ➋제품명으로 검색");
+		System.out.println(Color.YELLOW +"➊" + Color.EXIT + "제목으로 검색" 
+							+ Color.YELLOW +"➋" + Color.EXIT + "제품명으로 검색");
+
 		System.out.print("선택 : " + Color.CYAN);
 		String x = Main.SC.nextLine();
 		System.out.print(Color.EXIT);
@@ -530,7 +543,7 @@ public class TradeController {
 
 			String color = "";
 			String resetColor = Color.EXIT;
-
+			
 			
 			if(Main.loginMember != null) {
 				if(vo.getMemberNo().equals(Main.loginMember.getMemberNo())) {
