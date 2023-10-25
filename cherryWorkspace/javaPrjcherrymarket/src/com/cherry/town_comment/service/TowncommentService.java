@@ -22,7 +22,7 @@ public class TowncommentService {
 		
 		int result = dao.commentwrite(conn,vo, tvo);
 		
-		System.out.println(result);
+		//System.out.println(result);
 		if(result == 1) {
 			JDBCTemplate.commit(conn);
 		}else {

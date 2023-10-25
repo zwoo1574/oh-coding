@@ -124,7 +124,7 @@ public class TownDao {
 	public List<TownVo> townList(Connection conn) throws Exception {
 		
 		//SQL
-		String sql = "SELECT T.TOWN_NO, T.CATEGORY, T.TITLE, M.MEMBER_NO AS WRITER_NICK, T.HIT , TO_CHAR(T.ENROLL_DATE , 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE FROM TOWN T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.DELETE_YN = 'N'";
+		String sql = "SELECT T.TOWN_NO, T.CATEGORY, T.TITLE, M.MEMBER_NO AS WRITER_NICK, T.HIT , TO_CHAR(T.ENROLL_DATE , 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE FROM TOWN T JOIN MEMBER M ON T.MEMBER_NO = M.MEMBER_NO WHERE T.DELETE_YN = 'N' ORDER BY T.TOWN_NO DESC";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
 		List<TownVo> voList = new ArrayList<TownVo>();
