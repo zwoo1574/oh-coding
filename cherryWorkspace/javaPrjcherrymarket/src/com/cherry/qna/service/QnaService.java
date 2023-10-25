@@ -192,13 +192,13 @@ public class QnaService {
 		Connection conn = JDBCTemplate.getConnection();
 		
 		// dao
-		QnaVo Vo = dao.answerPrint(conn, no);
+		QnaVo Mo = dao.answerPrint(conn, no);
 		
 		// tx
 		
 		// close
 		JDBCTemplate.close(conn);
-		return Vo;
+		return Mo;
 		
 	}//answerPrint end
 	
