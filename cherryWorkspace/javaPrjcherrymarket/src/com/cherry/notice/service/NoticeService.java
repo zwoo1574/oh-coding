@@ -86,7 +86,7 @@ public class NoticeService {
 		JDBCTemplate.close(conn);
 		return vo;
 
-	}//NoticeVo noticeDetailByNo(String num) end
+	}//NoticeVo noticeDetailByNo(String num)end
 	
 	//공지글 상세 조회//관리자
 	public NoticeVo adminNoticeDetailByNo(String num) throws Exception {
