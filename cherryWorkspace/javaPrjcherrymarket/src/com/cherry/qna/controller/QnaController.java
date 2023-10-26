@@ -145,14 +145,17 @@ public class QnaController {
 			if (Main.loginMember == null) {
 				throw new Exception("회원만 문의글 작성이 가능합니다.");
 			}
-
+			
 			// 데이터
-			System.out.print("제목: ");
+			System.out.print("제목: " + Color.CYAN);
 			String title = Main.SC.nextLine();
-			System.out.print("내용: ");
+			System.out.print(Color.EXIT);
+			System.out.print("내용: "+ Color.CYAN);
 			String content = Main.SC.nextLine();
-			System.out.print("비밀글로 올리시겠습니까? (Y / N)");
+			System.out.print(Color.EXIT);
+			System.out.print("비밀글로 올리시겠습니까? (Y / N)"+ Color.CYAN);
 			String secretYn = Main.SC.nextLine();
+			System.out.print(Color.EXIT);
 
 			QnaVo vo = new QnaVo();
 			vo.setTitle(title);
@@ -184,8 +187,9 @@ public class QnaController {
 			System.out.println("------- 문의글 상세 조회 (번호) -------");
 
 			// 데이터
-			System.out.print("조회할 문의글 번호: ");
+			System.out.print("조회할 문의글 번호: "+ Color.CYAN);
 			String num = Main.SC.nextLine();
+			System.out.print(Color.EXIT);
 
 			// 서비스
 			QnaVo vo = service.qnaDetailByNo(num);
@@ -227,10 +231,11 @@ public class QnaController {
 
 		try {
 			System.out.println("------- 문의글 제목 검색 -------");
-
+			
 			// 데이터
-			System.out.print("검색할 제목: ");
+			System.out.print("검색할 제목: " + Color.CYAN);
 			String searchValue = Main.SC.nextLine();
+			System.out.print(Color.EXIT);
 
 			// 서비스
 			List<QnaVo> voList = service.searchQnaByTitle(searchValue);
@@ -417,8 +422,9 @@ public class QnaController {
 			System.out.println("------- 문의글 상세 조회 (번호) -------");
 
 			// 데이터
-			System.out.print("조회할 문의글 번호: ");
+			System.out.print("조회할 문의글 번호: " + Color.CYAN);
 			String num = Main.SC.nextLine();
+			System.out.print(Color.EXIT);
 
 			// 서비스
 			QnaVo vo = service.qnaDetailByNoManager(num);
@@ -465,10 +471,12 @@ public class QnaController {
 			System.out.println("------- 관리자 답변작성 -------");
 			
 			// 데이터
-			System.out.print("답글을 작성할 글 번호: ");
+			System.out.print("답글을 작성할 글 번호: " + Color.CYAN);
 			String no = Main.SC.nextLine();
-			System.out.print("내용: ");
+			System.out.print(Color.EXIT);
+			System.out.print("내용: " + Color.CYAN);
 			String answer = Main.SC.nextLine();
+			System.out.print(Color.EXIT);
 			
 			QnaVo vo = new QnaVo();
 			vo.setQnaNo(no);
@@ -510,12 +518,14 @@ public class QnaController {
 
 		try {
 			System.out.println("------- 관리자 답변 수정 -------");
-			
+
 			// 데이터
-			System.out.print("수정할 글 번호: ");
+			System.out.print("수정할 글 번호: " + Color.CYAN);
 			String no = Main.SC.nextLine();
-			System.out.print("수정할 내용: ");
+			System.out.print(Color.EXIT);
+			System.out.print("수정할 내용: " + Color.CYAN);
 			String answer = Main.SC.nextLine();
+			System.out.print(Color.EXIT);
 			
 			QnaVo vo = new QnaVo();
 			vo.setQnaNo(no);
