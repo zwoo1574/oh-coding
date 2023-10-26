@@ -42,7 +42,7 @@ public class ManagerController {
 	public void adminPage() {
 		Boolean x = false;
 		while(!x) {
-			System.out.println("============================================= 관리자 페이지 메뉴 선택 =============================================");
+			System.out.println("=========================================== 관리자 페이지 메뉴 선택 ===========================================");
 			System.out.print(" 1.관리자 회원전체 조회");
 			System.out.print(" 2.관리자 회원 상세 조회(번호/아이디/닉네임)");
 			System.out.print(" 3.관리자 회원 강제 탈퇴");
@@ -91,7 +91,7 @@ public class ManagerController {
 	//관리자 로그인
 	public void loginManager() {
 		try {
-			System.out.println("=============================================== 관리자 로그인 ===============================================");
+			System.out.println("====== 관리자 로그인 ========================");
 			if(Main.loginManager != null) {
 				System.out.println("이미 로그인 상태입니다.");
 				return;
@@ -112,7 +112,7 @@ public class ManagerController {
 				throw new Exception();
 			}
 			System.out.println("============================================= 관리자 로그인 성공 =============================================");
-			System.out.println("                                            "+Main.loginManager.getName()+" 님 환영합니다                                            \n");
+			System.out.println("                                              "+Main.loginManager.getName()+" 님 환영합니다                                            \n");
 			
 //			managerLoginMenu();
 		}catch(Exception e) {
@@ -137,18 +137,22 @@ public class ManagerController {
 	public boolean userList() {
 		boolean x = true;
 		try {
-			System.out.println("=============================================== 회원 전체 조회 ===============================================");
+			System.out.println("================================================ 회원 전체 조회================================================");
 			//로그인 검사
 			if(Main.loginManager == null) {
 				throw new Exception("관리자 로그인부터 진행해주세요");
 			}
 			List<MemberVo> userList = service.userList();
 			
-			System.out.println("사용자번호 | 동네번호 | 사용자명 | 아이디 | 닉네임 | 이메일 | 전화번호 | 주소 | 가입일자 | 마지막수정일자 | 탈퇴여부");
+			System.out.println("번호 | 동네번호 | 사용자명 | 아이디 |  닉네임  |    이메일    |   전화번호  |        주소        |     가입일자     |  마지막수정일자  | 탈퇴여부 |");
 			for(MemberVo vo : userList) {
+				String quityn = "일반회원";
+				if(vo.getQuitYn().equals("Y")) {
+					quityn = "탈퇴회원";
+				}
 				System.out.println(vo.getMemberNo()+" | "+vo.getAreasName()+" | "+vo.getName()+" | "+vo.getId()+" | "+vo.getNick()+" | "+vo.getEmail()
-				+" | "+vo.getPhone()+" | "+vo.getAddress()+" | "+vo.getJoinDate()+" | "+vo.getEditDate()+" | "+vo.getQuitYn());
-			}			System.out.println("============================================================================================================\n");			
+				+" | "+vo.getPhone()+" | "+vo.getAddress()+" | "+vo.getJoinDate()+" | "+vo.getEditDate()+" | "+quityn+" |");
+			}			System.out.println("================================================================================================================\n");			
 			x = false;
 		}catch(Exception e) {
 			System.out.println("회원 조회 실패");
@@ -180,10 +184,14 @@ public class ManagerController {
 			
 			List<MemberVo> voList = service.userDetile(userChoice,num);
 			
+			System.out.println("번호 | 동네번호 | 사용자명 | 아이디 |  닉네임  |    이메일    |   전화번호  |        주소        |     가입일자     |  마지막수정일자  | 탈퇴여부 |");
 			for(MemberVo vo : voList) {
-				System.out.println("사용자번호 | 동네번호 | 사용자명 | 아이디 | 닉네임 | 이메일 | 전화번호 | 주소 | 가입일자 | 마지막수정일자 | 탈퇴여부");
+				String quityn = "일반회원";
+				if(vo.getQuitYn().equals("Y")) {
+					quityn = "탈퇴회원";
+				}
 				System.out.println(vo.getMemberNo()+" | "+vo.getAreasName()+" | "+vo.getName()+" | "+vo.getId()+" | "+vo.getNick()+" | "+vo.getEmail()
-				+" |  "+vo.getPhone()+"  | "+vo.getAddress()+" | "+vo.getJoinDate()+" | "+vo.getEditDate()+" | "+vo.getQuitYn());
+				+" | "+vo.getPhone()+" | "+vo.getAddress()+" | "+vo.getJoinDate()+"| "+vo.getEditDate()+"| "+quityn+" |");
 			}
 			System.out.println("============================================================================================================\n");			
 			x = false;
