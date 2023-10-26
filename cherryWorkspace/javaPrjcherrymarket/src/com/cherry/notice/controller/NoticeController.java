@@ -30,7 +30,7 @@ public class NoticeController {
 			System.out.println();
 			System.out.println("===NOTICE===");
 			System.out.println("1. 공지글 작성");
-			System.out.println("2. 공지글 공개여부");
+			System.out.println("2. 공지글 비공개여부");
 			System.out.println("3. 공지글 수정");
 			System.out.println("4. 공지글 검색(제목)");
 			System.out.println("5. 공지글 검색(내용)");
@@ -177,7 +177,7 @@ public class NoticeController {
 				System.out.print(" | ");
 				System.out.print("작성일자");
 				System.out.print(" | ");
-				System.out.println("공지글 공개여부");
+				System.out.println("공지글 비공개여부");
 
 				for (NoticeVo vo : voList) {
 					System.out.print(vo.getNo());
@@ -269,9 +269,9 @@ public class NoticeController {
 					System.out.println("수정일시: " + vo.getEditDate());
 				}
 				if(vo.getSecretYn().equals("Y")) {
-					System.out.println("공개여부: 비밀글");
+					System.out.println("비공개여부: 비밀글");
 				}else {
-					System.out.println("공개여부: 전체공개");
+					System.out.println("비공개여부: 전체공개");
 				}
 				System.out.println("------------------------------");
 				System.out.println("공지글 상세 조회에 성공하였습니다.");
@@ -398,11 +398,11 @@ public class NoticeController {
 //			if(Main.loginManager==null) {
 //				throw new Exception("관리자 로그인 하고 진행하세요");
 //			}
-			System.out.println("==공지글 공개 여부==");
+			System.out.println("==공지글 비공개 여부==");
 			// 데이터
 			System.out.print("공지글 번호: ");
 			String num = Main.SC.nextLine();
-			System.out.print("공지글 공개 여부: ");
+			System.out.print("공지글 비공개 여부: ");
 			String choice = Main.SC.nextLine();
 
 			HashMap<String, String> map = new HashMap<String, String>();
@@ -414,13 +414,13 @@ public class NoticeController {
 
 			// 결과
 			if (result != 1) {
-				throw new Exception("공지글번호 또는 공개여부 체크를 잘 못 입력하셨습니다");
+				throw new Exception("공지글번호 또는 비공개여부 체크를 잘 못 입력하셨습니다");
 			}
-			System.out.println("공지글 공개 여부를 완료하셨습니다.");
+			System.out.println("공지글 비공개 여부를 완료하셨습니다.");
 			
 			
 		} catch (Exception e) {
-			System.out.println("공지글 공개 여부를 실패하셨습니다.");
+			System.out.println("공지글 비공개 여부를 실패하셨습니다.");
 			e.printStackTrace();
 		}
 		
