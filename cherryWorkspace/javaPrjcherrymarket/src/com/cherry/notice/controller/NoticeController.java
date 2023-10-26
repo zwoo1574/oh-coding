@@ -94,13 +94,13 @@ public class NoticeController {
 			String title = Main.SC.nextLine();
 			System.out.print("내용: ");
 			String content = Main.SC.nextLine();
-			System.out.print("작성할 관리자번호: ");
-			String managerNo = Main.SC.nextLine();
+//			System.out.print("작성할 관리자번호: ");
+//			String managerNo = Main.SC.nextLine();
 
 			NoticeVo vo = new NoticeVo();
 			vo.setTitle(title);
 			vo.setContent(content);
-			vo.setManagerNo(managerNo);
+//			vo.setManagerNo(managerNo);
 
 			// 서비스
 			int result = service.write(vo);
@@ -122,7 +122,7 @@ public class NoticeController {
 	// 공지글 조회(최신순)//유저
 	public void noticeList() {
 
-		System.out.println("==공지글 목록 조회==");
+		System.out.println("==공지글 목록 조회 (최신순)==");
 		try {
 			// 서비스
 			ArrayList<NoticeVo> voList = service.noticeList();
@@ -161,7 +161,7 @@ public class NoticeController {
 	// 공지글 조회(최신순)//관리자
 		public void adminNoticeList() {
 
-			System.out.println("==공지글 목록 조회==");
+			System.out.println("==공지글 목록 조회 (최신순)==");
 			try {
 				// 서비스
 				ArrayList<NoticeVo> voList = service.adminNoticeList();
@@ -431,7 +431,7 @@ public class NoticeController {
 		// 데이터
 
 		try {
-			System.out.println("==공지글 목록 조회==");
+			System.out.println("==공지글 목록 조회 (조회수)==");
 			// 서비스
 			ArrayList<NoticeVo> voList = service.noticeList2();
 
@@ -471,7 +471,7 @@ public class NoticeController {
 			// 데이터
 
 			try {
-				System.out.println("==공지글 목록 조회==");
+				System.out.println("==공지글 목록 조회 (조회수)==");
 				// 서비스
 				ArrayList<NoticeVo> voList = service.adminNoticeList2();
 

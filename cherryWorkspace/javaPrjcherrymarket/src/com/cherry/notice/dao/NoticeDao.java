@@ -10,6 +10,7 @@ import java.util.HashMap;
 import javax.naming.spi.DirStateFactory.Result;
 
 import com.cherry.jdbc.JDBCTemplate;
+import com.cherry.main.Main;
 import com.cherry.member.vo.MemberVo;
 import com.cherry.notice.vo.NoticeVo;
 
@@ -22,7 +23,7 @@ public class NoticeDao {
 		//sql
 		String sql="INSERT INTO NOTICE(NOTICE_NO,MANAGER_NO,TITLE,CONTENT) VALUES(SEQ_NOTICE_NO.NEXTVAL,?,?,?)";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
-		pstmt.setString(1, vo.getManagerNo());
+		pstmt.setString(1, Main.loginManager.getManagerNo()); 
 		pstmt.setString(2, vo.getTitle());
 		pstmt.setString(3, vo.getContent());
 		
@@ -265,7 +266,7 @@ public class NoticeDao {
 	//공지글 감추기
 	public int secret(Connection conn, HashMap<String, String> map) throws Exception {
 		//sql
-		String sql="UPDATE NOTICE SET SECRET_YN=?, EDIT_DATE= SYSDATE WHERE NOTICE_NO=? ";
+		String sql="UPDATE NOTICE SET SECRET_YN=UPPER(?), EDIT_DATE= SYSDATE WHERE NOTICE_NO=? ";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
 		pstmt.setString(1, map.get("secretChoice"));
 		pstmt.setString(2, map.get("noticeNum"));
