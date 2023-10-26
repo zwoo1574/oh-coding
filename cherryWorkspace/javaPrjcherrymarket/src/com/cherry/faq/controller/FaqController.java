@@ -22,7 +22,7 @@ public class FaqController {
 		while(true) {
 			if(Main.loginManager != null) { //관리자일 때
 				boardList();
-				System.out.println("======메뉴 선택=====");
+				System.out.println("==================================================메뉴 선택===================================================");
 				System.out.println("1.게시판 등록");
 				System.out.println("2.게시판 수정");
 				System.out.println("3.게시판 삭제");
@@ -32,7 +32,7 @@ public class FaqController {
 				System.out.println("7.게시판 전체 조회");
 				System.out.println("8.게시판 상세 조회(번호)");
 				System.out.println("9.뒤로가기");
-				System.out.println("===================");
+				System.out.println("==============================================================================================================");
 				System.out.print("번호를 입력해주세요 : ");
 				String num = Main.SC.nextLine();
 				
@@ -51,14 +51,14 @@ public class FaqController {
 			
 			}else {  //회원일 때
 				boardList();
-				System.out.println("======메뉴 선택=====");
+				System.out.println("==================================================메뉴 선택====================================================");
 				System.out.println("1.게시판 검색(번호)");
 				System.out.println("2.게시판 검색(제목)");
 				System.out.println("3.게시판 검색(작성자)");
 				System.out.println("4.게시판 전체 조회");
 				System.out.println("5.게시판 상세 조회(번호)");
 				System.out.println("9.뒤로가기");
-				System.out.println("===================");
+				System.out.println("===============================================================================================================");
 				System.out.print("번호를 입력해주세요 : ");
 				String num = Main.SC.nextLine();
 				
@@ -78,7 +78,7 @@ public class FaqController {
 	//게시판 등록
 	public void write() {
 		try {
-			System.out.println("-----게시판 등록-----");
+			System.out.println("=================================================게시판 등록=================================================");
 			//데이터
 			System.out.print("게시판 제목: ");
 			String title = Main.SC.nextLine();
@@ -108,7 +108,7 @@ public class FaqController {
 	public void edit() {
 		
 		try {
-			System.out.println("-----게시판 수정(제목, 내용)-----");
+			System.out.println("=========================================게시판 수정(제목, 내용)============================================");
 			//데이터
 			System.out.print("게시판 번호: ");
 			String no = Main.SC.nextLine();
@@ -143,7 +143,7 @@ public class FaqController {
 	public void delete() {
 		
 		try {
-			System.out.println("-----게시판 삭제(번호)-----");
+			System.out.println("=============================================게시판 삭제(번호)=============================================");
 			//데이터
 			System.out.println("삭제할 게시판 번호: ");
 			String no = Main.SC.nextLine();
@@ -169,7 +169,7 @@ public class FaqController {
 	public void boardPrintByNo() {
 		try {
 			//데이터
-			System.out.println("-----게시판 검색-----");
+			System.out.println("=================================================게시판 검색=================================================");
 			System.out.print("게시판 번호: ");
 			String num = Main.SC.nextLine();
 			
@@ -202,7 +202,7 @@ public class FaqController {
 	public void boardPrintByTitle() {
 		try {
 
-			System.out.println("-----게시판 검색(제목)-----");
+			System.out.println("=============================================게시판 검색(제목)===============================================");
 			
 			//데이터
 			System.out.print("게시판 제목 : ");
@@ -237,7 +237,7 @@ public class FaqController {
 	public void boardPrintByMno() {
 		
 		try {
-			System.out.println("-----게시판 검색-----");
+			System.out.println("================================================게시판 검색==================================================");
 			
 			//데이터
 			System.out.print("작성자 이름: ");
@@ -276,7 +276,7 @@ public class FaqController {
 	public void boardList() {
 		try {
 
-			System.out.println("-----전체 게시판 조회-----");
+			System.out.println("==============================================전체 게시판 조회===============================================");
 			//서비스
 			List<FaqVo> voList = fs.boardList();
 			
@@ -306,7 +306,7 @@ public class FaqController {
 	//게시판 상세 조회(게시판 번호)
 	public void boardDetailByNo() {
 		try {
-			System.out.println("-----게시판 상세 조회-----");
+			System.out.println("==============================================게시판 상세 조회===============================================");
 			//데이터
 			System.out.print("게시판 번호: ");
 			String no = Main.SC.nextLine();
@@ -319,7 +319,7 @@ public class FaqController {
 				throw new Exception("해당 번호의 게시판은 존재하지 않습니다.");
 			}
 			
-			System.out.println("========================");
+			System.out.println("=============================================================================================================");
 			System.out.println("글 번호 : " + vo.getFaqNo());
 			System.out.println("관리자 번호 : " + vo.getManagerNo());
 			System.out.println("글 제목 : " + vo.getTitle());
@@ -332,7 +332,7 @@ public class FaqController {
 				System.out.println("수정 일자 : " + vo.getEditDate());
 			}
 			System.out.println("조회수 : " + vo.getHit());
-			System.out.println("=========================");
+			System.out.println("============================================================================================================");
 			
 		}catch(Exception e) {
 			System.out.println("게시판 상세 조회 실패..");
