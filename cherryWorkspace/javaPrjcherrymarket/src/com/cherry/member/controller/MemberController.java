@@ -208,7 +208,7 @@ public class MemberController {
 			if(Main.loginMember == null) {
 				throw new Exception();
 			}
-			System.out.println("============================================= 로그인 성공 =============================================");
+			System.out.println("============================================ 로그인 성공 ============================================");
 			System.out.println("                                          "+Main.loginMember.getName()+" 님 환영합니다                                          \n");
 			
 //			memberMenu();

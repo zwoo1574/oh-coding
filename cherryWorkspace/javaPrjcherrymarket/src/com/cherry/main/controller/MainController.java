@@ -31,8 +31,8 @@ public class MainController {
 	}
 	// 로그인 창
 	public void loginMenu() {
-		System.out.println("============================================= 메뉴 선택 =============================================");
-		
+		try {Util.clearConsole();} catch (Exception e) {}
+		System.out.println("====== 메뉴 선택 ===============================");
 		System.out.print(" 1.회원가입");
 		System.out.print(" 2.로그인");	
 		System.out.print(" 3.아이디 찾기");
@@ -53,8 +53,7 @@ public class MainController {
 	//로그인 메뉴 선택
 	public void memberMenu() {
 		while(Main.loginMember != null) {
-			System.out.println("============================================ 로그인 메뉴 선택 ============================================");
-			
+			System.out.println("=========================================== 로그인 메뉴선택 ===========================================");
 			System.out.print(" 1.거래게시판");
 			System.out.print(" 2.동네생활");
 			System.out.print(" 3.공지사항");
@@ -104,7 +103,7 @@ public class MainController {
 	public void managerLoginMenu() {
 		while(Main.loginManager != null) {
 			
-			System.out.println("=========================================== 관리자 로그인 메뉴 선택 ===========================================");
+			System.out.println("=========================================== 관리자 로그인 메뉴 선택===========================================");
 			System.out.print(" 1.거래게시판");
 			System.out.print(" 2.동네생활");
 			System.out.print(" 3.공지사항");
