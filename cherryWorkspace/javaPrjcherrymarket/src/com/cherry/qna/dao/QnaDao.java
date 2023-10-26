@@ -16,7 +16,7 @@ public class QnaDao {
 	public int write(Connection conn, QnaVo vo) throws Exception {
 		
 		//sql
-		String sql = "INSERT INTO QNA(QNA_NO, TITLE, CONTENT, MEMBER_NO, SECRET_YN) VALUES(SEQ_QNA_NO.NEXTVAL,?,?,?,?)";
+		String sql = "INSERT INTO QNA(QNA_NO, TITLE, CONTENT, MEMBER_NO, SECRET_YN) VALUES(SEQ_QNA_NO.NEXTVAL,?,?,?,UPPER(?))";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, vo.getTitle());
 		pstmt.setString(2, vo.getContent());
@@ -43,7 +43,7 @@ public class QnaDao {
 	public List<QnaVo> qnaList(Connection conn) throws Exception {
 		
 		//sql
-		String sql = "SELECT Q.QNA_NO , Q.TITLE , M.NICK AS WRITER_NICK , Q.HIT , TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS MEMBER_ENROLL_DATE FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO WHERE SECRET_YN = 'N' ORDER BY QNA_NO DESC";
+		String sql = "SELECT RPAD(Q.QNA_NO,12, 'ㅤ') AS QNA_NO , RPAD(Q.TITLE,35,'ㅤ') AS TITLE, RPAD(M.NICK,18,'ㅤ') AS WRITER_NICK , RPAD(Q.HIT,10,'ㅤ') AS HIT, TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS MEMBER_ENROLL_DATE FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO WHERE SECRET_YN = 'N' ORDER BY QNA_NO DESC";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
 		
@@ -267,7 +267,7 @@ public class QnaDao {
 	public List<QnaVo> qnaListManager(Connection conn) throws Exception {
 		
 		//sql
-		String sql = "SELECT Q.QNA_NO , Q.TITLE , M.NICK AS WRITER_NICK , Q.HIT , TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"') AS ENROLL_DATE, Q.SECRET_YN FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO ORDER BY QNA_NO DESC";
+		String sql = "SELECT RPAD(Q.QNA_NO,12, 'ㅤ') AS QNA_NO , RPAD(Q.TITLE,35,'ㅤ') AS TITLE , RPAD(M.NICK,18,'ㅤ') AS WRITER_NICK , RPAD(Q.HIT,10,'ㅤ') AS HIT , RPAD(TO_CHAR(Q.MEMBER_ENROLL_DATE, 'YYYY\"년\"MM\"월\"DD\"일\"'), 25,'ㅤ') AS ENROLL_DATE, RPAD(Q.SECRET_YN,10,'ㅤ') AS SECRET_YN FROM QNA Q JOIN MEMBER M ON Q.MEMBER_NO = M.MEMBER_NO ORDER BY QNA_NO DESC";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
 		

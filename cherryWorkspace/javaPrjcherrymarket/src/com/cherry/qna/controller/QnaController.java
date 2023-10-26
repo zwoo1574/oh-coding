@@ -27,8 +27,8 @@ public class QnaController {
 				qnaList();
 				System.out.println();
 				System.out.println();
-				
-				System.out.println(Color.RED + "======= QnA Menu =======" +  Color.EXIT);
+				                              
+				System.out.println(Color.RED + "========================================== QnA Menu =========================================" +  Color.EXIT);
 				
 				System.out.println(Color.YELLOW + "➊" + Color.EXIT + " 문의글 목록 (최신순)");
 				System.out.println(Color.YELLOW + "➋" + Color.EXIT +" 문의글 작성");
@@ -37,7 +37,7 @@ public class QnaController {
 				System.out.println(Color.YELLOW + "❺" + Color.EXIT + " 내가 작성한 문의글");
 				System.out.println(Color.YELLOW + "❻" + Color.EXIT + " 내가 작성한 문의글 상세보기"); 
 				System.out.println(Color.RED +"➒" + Color.EXIT + " 뒤로가기");  
-				System.out.println(Color.RED + "========================" + Color.EXIT);
+				System.out.println(Color.RED + "=============================================================================================" + Color.EXIT);
 				
 				System.out.print("선택할 메뉴 : " + Color.CYAN);
 				String num = Main.SC.nextLine();
@@ -57,17 +57,18 @@ public class QnaController {
 			}else if(Main.loginManager != null){
 				
 				System.out.println();
+				System.out.println();
 				qnaListManager();
 				System.out.println();
 				
-				System.out.println(Color.RED + "======= QnA Menu (관리자용)=======" +  Color.EXIT);
+				System.out.println(Color.RED + "==================================== QnA Menu (관리자용) ====================================" +  Color.EXIT);
 				
 				System.out.println(Color.YELLOW + "➊" + Color.EXIT +" 문의글 목록");
 				System.out.println(Color.YELLOW + "➋" + Color.EXIT +" 문의글 상세조회 (번호)"); 
 				System.out.println(Color.YELLOW + "❸" + Color.EXIT + " 관리자 답변작성");
 				System.out.println(Color.YELLOW + "❹" + Color.EXIT +" 관리자 답변수정");
 				System.out.println(Color.RED +"➒" + Color.EXIT + " 뒤로가기");
-				System.out.println(Color.RED + "================================" +  Color.EXIT);
+				System.out.println(Color.RED + "=============================================================================================" +  Color.EXIT);
 				
 				System.out.print("선택할 메뉴 : " + Color.CYAN);
 				String num = Main.SC.nextLine();
@@ -94,11 +95,14 @@ public class QnaController {
 	public void qnaList() {
 		
 		try {
-			System.out.println("------- 문의글 목록 -------");
+			System.out.println();
+			System.out.println();
+			System.out.println("< 문의글 목록 >");
+			System.out.println();
 			
 			// 데이터
 			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
-			System.out.printf("%-10s%-20s%-10s%-20s%-40s\n", "번호", "제목", "닉네임", "조회수", "작성일");
+			System.out.printf("%-15s%-30s%-10s%-15s%-15s\n", "번호", "제목", "닉네임", "조회수", "작성일");
 			System.out.println(Color.CYAN + "▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
 			// 서비스
 			List<QnaVo> voList = service.qnaList();
@@ -122,8 +126,8 @@ public class QnaController {
 				String hit = vo.getHit();
 				String memberEnrollDate = vo.getMemberEnrollDate();
 				
-				System.out.printf("%s%-10s%s%-20s%-10s%-15s%-10s\n",
-					    color, qnaNo, resetColor, title, writerNick, hit, memberEnrollDate);
+				System.out.println(
+					    color + qnaNo+ resetColor+ title+ writerNick+ hit+ memberEnrollDate);
 			}
 			
 			System.out.println(Color.CYAN + "▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​" + Color.EXIT);
@@ -139,7 +143,10 @@ public class QnaController {
 	public void write() {
 
 		try {
-			System.out.println("------- 문의글 작성 -------");
+			System.out.println();
+			System.out.println();
+			System.out.println("< 문의글 작성 >");
+			System.out.println();
 
 			// 로그인 여부
 			if (Main.loginMember == null) {
@@ -184,7 +191,10 @@ public class QnaController {
 	public void qnaDetailByNo() {
 
 		try {
-			System.out.println("------- 문의글 상세 조회 (번호) -------");
+			System.out.println();
+			System.out.println();
+			System.out.println("< 문의글 상세 조회 (번호) >");
+			System.out.println();
 
 			// 데이터
 			System.out.print("조회할 문의글 번호: "+ Color.CYAN);
@@ -230,7 +240,10 @@ public class QnaController {
 	public void searchQnaByTitle() {
 
 		try {
-			System.out.println("------- 문의글 제목 검색 -------");
+			System.out.println();
+			System.out.println();
+			System.out.println("< 문의글 제목 검색 >");
+			System.out.println();
 			
 			// 데이터
 			System.out.print("검색할 제목: " + Color.CYAN);
@@ -268,7 +281,10 @@ public class QnaController {
 	public void qnaMyList() {
 
 		try {
-			System.out.println("------- 내가 작성한 문의글 조회 -------");
+			System.out.println();
+			System.out.println();
+			System.out.println("< 내가 작성한 문의글 조회 >");
+			System.out.println();
 			
 			// 로그인 체크
 			if(Main.loginMember == null) {
@@ -315,7 +331,10 @@ public class QnaController {
 	// 6. 내가 작성한 문의글 상세보기
 	public void qnaMyDetail() {
 		try {
-			System.out.println("------- 나의 문의글 상세 조회 -------");
+			System.out.println();
+			System.out.println();
+			System.out.println("< 나의 문의글 상세 조회 >");
+			System.out.println();
 
 			// 데이터
 			String loginMember = Main.loginMember.getMemberNo();
@@ -370,12 +389,15 @@ public class QnaController {
 	// 1. 문의글 목록 (관리자용)
 	public void qnaListManager() {
 		try {
-			System.out.println("------- 문의글 목록 (관리자용) -------");
+			System.out.println();
+			System.out.println();
+			System.out.println("< 문의글 목록 (관리자용) >");
+			System.out.println();
 			
 			// 데이터 %-10s
-			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃▃▃▃▃▃▃▃​​​​​" + Color.EXIT);
-			System.out.printf("%-10s%-25s%-20s%-10s%-20s%-10s\n", "번호", "제목", "닉네임", "조회수", "작성일" , "비밀글 여부");
-			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃▃▃▃▃▃▃▃​​​​​​​​​​" + Color.EXIT);
+			System.out.println(Color.CYAN + "▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃▃▃▃▃▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃▃▃​​​​​" + Color.EXIT);
+			System.out.printf("%-15s%-30s%-10s%-15s%-15s%-5s\n", "번호", "제목", "닉네임", "조회수", "작성일" , "비밀글 여부");
+			System.out.println(Color.CYAN + "▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃▃▃▃▃▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃▃▃​​​​​" + Color.EXIT);
 			
 			// 서비스  %-10s
 			List<QnaVo> voList = service.qnaListManager();
@@ -395,17 +417,16 @@ public class QnaController {
 				String hit = vo.getHit();
 				String memberEnrollDate = vo.getMemberEnrollDate();
 				String secretYn = vo.getSecretYn();
-				if(vo.getSecretYn().equals("Y")) {
-					System.out.printf("%s%-10s%s%-25s%-20s%-10s%-20s%-15s\n",
-						    color, qnaNo, resetColor, title, writerNick, hit, memberEnrollDate, "비밀글");
-				}else {
-					System.out.printf("%s%-10s%s%-25s%-20s%-10s%-20s%-15s\n",
-						    color, qnaNo, resetColor, title, writerNick, hit, memberEnrollDate, "전체공개");
-				}
 				
+				if (secretYn.substring(0,1).equals("Y")) {
+					secretYn = "비밀글";
+				} else {
+					secretYn = "전체공개";
+				}
+				System.out.println(color + qnaNo + resetColor + title + writerNick + hit + memberEnrollDate + secretYn);
 			}
 			
-			System.out.println(Color.CYAN + "▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃▃▃▃▃▃▃▃​​​​​" + Color.EXIT);
+			System.out.println(Color.CYAN + "▃▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​▃▃▃​​​​​▃▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃​​​​​▃▃▃​​​​​▃▃▃​​​​​▃▃▃▃▃▃▃▃▃▃▃▃​​​​​▃▃▃▃▃​​​​​▃▃▃▃▃​​​​​" + Color.EXIT);
 			
 		}catch(Exception e) {
 			System.out.println("게시글 목록 조회 실패 ...");
@@ -419,7 +440,10 @@ public class QnaController {
 	public void qnaDetailByNoManager() {
 		
 		try {
-			System.out.println("------- 문의글 상세 조회 (번호) -------");
+			System.out.println();
+			System.out.println();
+			System.out.println("< 문의글 상세 조회 (번호) >");
+			System.out.println();
 
 			// 데이터
 			System.out.print("조회할 문의글 번호: " + Color.CYAN);
@@ -468,7 +492,10 @@ public class QnaController {
 	// 3. 관리자 답변작성
 	public void answer() {
 		try {
-			System.out.println("------- 관리자 답변작성 -------");
+			System.out.println();
+			System.out.println();
+			System.out.println("< 관리자 답변작성 >");
+			System.out.println();
 			
 			// 데이터
 			System.out.print("답글을 작성할 글 번호: " + Color.CYAN);
@@ -517,7 +544,10 @@ public class QnaController {
 	public void answerEdit() {
 
 		try {
-			System.out.println("------- 관리자 답변 수정 -------");
+			System.out.println();
+			System.out.println();
+			System.out.println("< 관리자 답변 수정 >");
+			System.out.println();
 
 			// 데이터
 			System.out.print("수정할 글 번호: " + Color.CYAN);
