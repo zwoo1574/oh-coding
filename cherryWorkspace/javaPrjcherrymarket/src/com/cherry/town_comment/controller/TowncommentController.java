@@ -22,7 +22,7 @@ public class TowncommentController {
 	public void commentwrite(TownVo tvo) {
 		while(true) {
 			try {
-				System.out.println("----------------댓글작성-----------------");
+				System.out.println("============================================= 댓글작성 =============================================");
 				
 				System.out.print("댓글 : ");
 				String content = Main.SC.nextLine();
