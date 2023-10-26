@@ -32,12 +32,13 @@ public class FaqDao {
 	}
 	
 	//게시글 수정
-	public int edit(Connection conn, String no, String content) throws Exception {
+	public int edit(Connection conn, FaqVo vo) throws Exception {
 		//SQL
-		String sql = "UPDATE FAQ SET CONTENT = ? ,EDIT_DATE = SYSDATE WHERE FAQ_NO = ?";
+		String sql = "UPDATE FAQ SET TITLE = ?, CONTENT = ? ,EDIT_DATE = SYSDATE WHERE FAQ_NO = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, content);
-		pstmt.setString(2, no);
+		pstmt.setString(1, vo.getTitle());
+		pstmt.setString(2, vo.getContent());
+		pstmt.setString(3, vo.getFaqNo());
 		
 		int result = pstmt.executeUpdate();
 		
@@ -226,9 +227,9 @@ public class FaqDao {
 		//SQL
 		String sql;
 		if(Main.loginMember != null) { //회원일 때
-			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE F.SECRET_YN = 'N' ORDER BY F.ENROLL_DATE DESC";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE F.SECRET_YN = 'N' ORDER BY F.ENROLL_DATE DESC, FAQ_NO DESC";
 		}else { //관리자일 때
-			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO ORDER BY F.ENROLL_DATE DESC";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO ORDER BY F.ENROLL_DATE DESC, FAQ_NO DESC";
 		}
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		
