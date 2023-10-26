@@ -24,11 +24,11 @@ public class TownController {
 	//메뉴선택
 	public void selectMenu() {
 		while(true) {
-			System.out.println(Color.PURPLE +"====================동네생활====================" + Color.EXIT);
+			System.out.println(Color.PURPLE +"============================================ 동네생활============================================ " + Color.EXIT);
 			
 			if(Main.loginManager != null) {
 				boardListall();
-				System.out.println("--------------------------------------------");
+				System.out.println("=================================================================================================");
 				System.out.println("1.게시글 상세조회");
 				System.out.println("9. 뒤로가기");
 				
@@ -41,7 +41,7 @@ public class TownController {
 				}
 			}else {
 				boardList();
-				System.out.println("--------------------------------------------");
+				System.out.println("===================================================================================================");
 				System.out.println("1.게시글 작성");
 				System.out.println("2.게시글 수정");
 				System.out.println("3.게시글 삭제");
@@ -68,7 +68,7 @@ public class TownController {
 	//---------------------게시글목록 조회(관리자)---------------------------------	
 	private void boardListall() {
 		try {
-			System.out.println("--------------------------------------------");
+			System.out.println("===================================================================================================");
 			
 			//서비스
 			List<TownVo> townList = service.townlistAll();
@@ -114,12 +114,12 @@ public class TownController {
 	//---------------------게시글 상세조회(관리자)---------------------------------	
 	private void townDetailByNoAll() {
 		try {
-			System.out.println("----------------게시글 상세 조회----------------");
+			System.out.println("========================================= 게시글 상세조회 =========================================");
 			
 			//데이터
 			System.out.print("게시글 번호 : ");
 			String num = Main.SC.nextLine();
-			System.out.println("--------------------------------------------");
+			System.out.println("=================================================================================================");
 			
 			//서비스
 			TownVo vo = service.townDetailbynoAll(num);
@@ -128,7 +128,7 @@ public class TownController {
 			if(vo == null) {
 				throw new Exception(); 
 			}
-			System.out.println("--------------------------------------------");
+			System.out.println("===================================================================================================");
 			System.out.println("글 번호 : " + vo.getTownNO());
 			System.out.println("제목 : " + vo.getTitle());
 			System.out.println("작성자 :" + vo.getWirterNick());
@@ -141,7 +141,7 @@ public class TownController {
 			if(vo.getTowncommentcont() != null) {
 				System.out.println("댓글 :" + vo.getTowncommentcont());
 			}
-			System.out.println("--------------------------------------------");
+			System.out.println("===================================================================================================");
 		}catch(Exception e) {
 			System.out.println("게시글 상세 조회 실패하였습니다.");
 			e.printStackTrace();
@@ -156,7 +156,7 @@ public class TownController {
 	//---------------------게시글작성---------------------------------
 	public void write() throws Exception{
 		try {
-			System.out.println("-----------------게시글 작성----------------");
+			System.out.println("============================================ 게시글 작성 ============================================");
 			
 			//로그인
 			if(Main.loginMember == null) {
@@ -193,7 +193,7 @@ public class TownController {
 	//------------------------게시글 수정--------------------------------------
 	private void townupdate() {
 		try{
-			System.out.println("----------------게시글 수정----------------");
+			System.out.println("============================================ 게시글 수정 ============================================");
 			if(Main.loginMember == null) {
 				throw new Exception("로그인하세요");
 			}
@@ -225,7 +225,7 @@ public class TownController {
 	//-----------------------게시글삭제------------------------------
 	public void towndelete() {
 		try {
-			System.out.println("----------------게시글 삭제----------------");
+			System.out.println("============================================ 게시글 삭제 ============================================");
 			
 			if(Main.loginMember == null) {
 				throw new Exception("로그인 해주세요.");
@@ -255,7 +255,7 @@ public class TownController {
 	//-------------------------게시글목록------------------------------
 	public void boardList() {
 		try {
-			System.out.println("--------------------------------------------");
+			System.out.println("=================================================================================================");
 			
 			//서비스
 			List<TownVo> townList = service.townList();
@@ -302,7 +302,7 @@ public class TownController {
 	public void townDetailByNo() {
 		
 		try {
-			System.out.println("----------------게시글 상세 조회----------------");
+			System.out.println("========================================= 게시글 상세조회 =========================================");
 			
 			//데이터
 			System.out.print("게시글 번호 : ");
@@ -315,7 +315,7 @@ public class TownController {
 			if(vo == null) {
 				throw new Exception();
 			}
-			System.out.println("--------------------------------------------");
+			System.out.println("===================================================================================================");
 			System.out.println("글 번호 : " + vo.getTownNO());
 			System.out.println("제목 : " + vo.getTitle());
 			System.out.println("작성자 :" + vo.getWirterNick());
@@ -325,7 +325,7 @@ public class TownController {
 			if(vo.getTowncommentcont() != null) {
 				System.out.println("댓글 :" + vo.getTowncommentcont());
 			}
-			System.out.println("--------------------------------------------");
+			System.out.println("===================================================================================================");
 			tcom.commentwrite(vo);
 		}catch(Exception e) {
 			System.out.println("게시글 상세 조회 실패하였습니다.");
