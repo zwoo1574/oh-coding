@@ -112,11 +112,18 @@ public class FaqController {
 			//데이터
 			System.out.print("게시판 번호: ");
 			String no = Main.SC.nextLine();
+			System.out.println("수정할 게시판 제목: ");
+			String title = Main.SC.nextLine();
 			System.out.print("수정할 게시판 내용: ");
 			String content = Main.SC.nextLine();
 			
+			FaqVo vo = new FaqVo();
+			vo.setFaqNo(no);
+			vo.setTitle(title);
+			vo.setContent(content);
+			
 			//서비스
-			int result = fs.edit(no, content);
+			int result = fs.edit(vo);
 			
 			//결과 처리
 			if(result != 1) {
@@ -176,8 +183,14 @@ public class FaqController {
 			}
 			
 			System.out.println("게시판 검색 성공!");
-			System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
-			+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate());
+			if(Main.loginManager != null) {
+				System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
+				+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate() + "| 조회 수 : " + vo.getHit()
+				+ "| 비공개: " + vo.getSecretYn());
+			}else {
+				System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
+				+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate() + "| 조회 수 : " + vo.getHit());
+			}
 			
 		}catch(Exception e) {
 			System.out.println("게시판 검색 실패..");
@@ -204,8 +217,14 @@ public class FaqController {
 			}
 			
 			System.out.println("게시판 검색 성공!");
-			System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
-			+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate());
+			if(Main.loginManager != null) {
+				System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
+				+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate() + "| 조회 수 : " + vo.getHit()
+				+ "| 비공개: " + vo.getSecretYn());
+			}else {
+				System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
+				+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate() + "| 조회 수 : " + vo.getHit());
+			}
 			
 		}catch(Exception e) {
 			System.out.println("게시판 검색 실패..");
@@ -234,9 +253,17 @@ public class FaqController {
 			
 			System.out.println("게시판 검색 성공!");
 			
-			for(FaqVo vo : voList) {
-				System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
-				+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate());
+			if(Main.loginManager != null) {
+				for(FaqVo vo : voList) {
+					System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
+					+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate() + "| 조회 수 : " + vo.getHit()
+					+ "| 비공개: " + vo.getSecretYn());
+				}
+			}else {
+				for(FaqVo vo : voList) {
+					System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
+					+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate() + "| 조회 수 : " + vo.getHit());
+				}
 			}
 			
 		}catch(Exception e) {
@@ -258,11 +285,12 @@ public class FaqController {
 			if(voList.size() == 0) {
 				throw new Exception();
 			}
-			if(Main.loginManager != null)
+			if(Main.loginManager != null) {
 				for(FaqVo vo : voList) {
 					System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 
 					+ "| 글쓴이 : " + vo.getManagerName() + "| 작성일자 : " + vo.getEnrollDate() + "| 조회 수 : " + vo.getHit()
 					+ "| 비공개: " + vo.getSecretYn());
+				}
 			}else {
 				for(FaqVo vo : voList) {
 					System.out.println("게시판 번호 : " + vo.getFaqNo() + " | 게시판 제목 : " + vo.getTitle() 

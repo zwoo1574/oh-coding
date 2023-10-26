@@ -43,13 +43,13 @@ public class FaqService {
 	
 	//게시판 수정
 
-	public int edit(String no, String content) throws Exception {
+	public int edit(FaqVo vo) throws Exception {
 	
 		//conn
 		Connection conn = JDBCTemplate.getConnection();
 		
 		//DAO
-		int result = dao.edit(conn, no, content);
+		int result = dao.edit(conn, vo);
 		
 		//tx
 		if(result == 1) {
