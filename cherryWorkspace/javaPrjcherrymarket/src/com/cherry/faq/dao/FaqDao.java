@@ -169,16 +169,14 @@ public class FaqDao {
 		//SQL
 		String sql;
 		if(Main.loginMember != null) {  //회원일 때
-			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') "
-					+ "AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F "
-					+ "JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE M.NAME LIKE '%' || ? || '%' AND F.SECRET_YN = 'N'";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE M.NAME LIKE '%' || ? || '%' AND F.SECRET_YN = 'N'";
 		}else {  //관리자일 때
-			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE ,"
-					+ " F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F "
-					+ "JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE M.NAME LIKE '%' || ? || '%'";
+			sql = "SELECT F.FAQ_NO , F.MANAGER_NO , M.NAME , F.TITLE , F.CONTENT , TO_CHAR(F.ENROLL_DATE, 'YYYY\"년 \"MM\"월 \"DD\"일\"') AS ENROLL_DATE , F.SECRET_YN, TO_CHAR(F.EDIT_DATE,'YYYY\"년 \"MM\"월 \"DD\"일\"') AS EDIT_DATE , F.HIT FROM FAQ F JOIN MANAGER M ON F.MANAGER_NO = M.MANAGER_NO WHERE M.NAME LIKE '%' || ? || '%'";
 		}
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, mName);
+		
+
 		
 		ResultSet rs = pstmt.executeQuery();
 		
@@ -196,7 +194,8 @@ public class FaqDao {
 			String secretYn = rs.getString("SECRET_YN");
 			String editDate = rs.getString("EDIT_DATE");
 			String hit = rs.getString("HIT");
-				
+			
+			
 			FaqVo vo = new FaqVo();
 			
 			vo.setFaqNo(faqNo);
